@@ -10,7 +10,7 @@ export const DashboardAdminPage = () => {
         <Sidebar />
       </div>
 
-      <div className="flex w-full h-[calc(100vh-70px)] mt-[70px] bg-gray-200 ">
+      <div className="flex w-full h-[calc(100vh-70px)] mt-[70px] bg-gray-200 overflow-y-scroll">
         <Outlet />
       </div>
     </div>
