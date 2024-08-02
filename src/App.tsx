@@ -1,7 +1,7 @@
+import { AppRouter } from '@/routes/router'
 //import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { Suspense } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { AppRouter } from '@/routes/router'
 
 function App() {
   /*

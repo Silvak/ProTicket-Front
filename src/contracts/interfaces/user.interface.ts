@@ -1,11 +1,7 @@
 export interface User {
-  _id: string
-  name: string
+  id: string
   email: string
-  rol: string
-  colorbg: string
-  colorText: string
-  uid: string
+  fullName: string
+  isActive: boolean
+  roles: string[]
 }
-
-export interface UserID extends User {}
