@@ -1,0 +1,45 @@
+import { useAuthStore } from '@/store'
+import { useState } from 'react'
+import { LuUser2 } from 'react-icons/lu'
+
+export const UserButton = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const logoutUser = useAuthStore((state) => state.logoutUser)
+
+  const handleClic = () => {
+    setIsOpen(!isOpen)
+  }
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={handleClic}
+        className="flex justify-between items-center gap-4 md:pl-8 pl-2  pr-2 h-[52px] bg-gray-200 rounded-full"
+      >
+        <span className="hidden md:flex">Admin</span>
+        <div className=" flex justify-center items-center w-[40px] h-[40px] bg-slate-900 rounded-full text-white ">
+          <LuUser2 />
+        </div>
+      </button>
+
+      {isOpen && (
+        <div className="absolute flex flex-col items-start gap-2 top-[68px] right-0 bg-white border w-[200px] p-2 rounded-md shadow-lg z-[100]">
+          <button
+            type="button"
+            className="w-full h-[42px] hover:bg-gray-200 text-left px-2 rounded-md"
+          >
+            Profile
+          </button>
+          <button
+            type="button"
+            onClick={() => logoutUser()}
+            className="w-full h-[42px] bg-red-600/20 hover:bg-gray-200 text-left px-2 rounded-md"
+          >
+            Logout
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}

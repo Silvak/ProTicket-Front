@@ -1,7 +1,7 @@
 import { useSidebarStore } from '@/store'
 import { CgMenuGridO } from 'react-icons/cg'
-import { IoNotificationsOutline } from 'react-icons/io5'
-import { LuUser2 } from 'react-icons/lu'
+import { NotificationButton } from './notificationButton'
+import { UserButton } from './userButton'
 
 export const Navbar = () => {
   const isOpen = useSidebarStore((state) => state.isOpen)
@@ -30,25 +30,10 @@ export const Navbar = () => {
 
       <div className="flex justify-end items-center gap-2 md:gap-4 w-[calc(100vw-70px)] pr-4 ">
         {/* notification */}
-        <button
-          type="button"
-          className="flex justify-center items-center gap-4 w-[52px] h-[52px] bg-gray-200 rounded-full"
-        >
-          <span className="text-2xl">
-            <IoNotificationsOutline />
-          </span>
-        </button>
+        <NotificationButton />
 
         {/* user button */}
-        <button
-          type="button"
-          className="flex justify-between items-center gap-4 md:pl-8 pl-2  pr-2 h-[52px] bg-gray-200 rounded-full"
-        >
-          <span className="hidden md:flex">Admin</span>
-          <div className=" flex justify-center items-center w-[40px] h-[40px] bg-slate-900 rounded-full text-white ">
-            <LuUser2 />
-          </div>
-        </button>
+        <UserButton />
       </div>
     </header>
   )
