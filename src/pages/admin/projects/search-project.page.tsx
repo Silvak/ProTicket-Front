@@ -1,4 +1,4 @@
-import { LayoutGrid } from "@/components";
+import { LayoutGrid } from '@/components'
 
 export const SearchProjectsPage = () => {
   return (
@@ -7,5 +7,5 @@ export const SearchProjectsPage = () => {
         Buscar Proyectos
       </div>
     </LayoutGrid>
-  );
-};
+  )
+}

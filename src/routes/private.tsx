@@ -1,108 +1,108 @@
 import {
   DashboardAdminPage,
+  EditProjectsPage,
   OverviewPage,
   ProjectsPage,
   SearchProjectsPage,
-  EditProjectsPage,
   UsersPage,
-} from "@/pages";
+} from '@/pages'
 
 export const privateRoutes = [
   {
-    path: "/admin",
+    path: '/admin',
     element: <DashboardAdminPage />,
     children: [
       //Overview
       {
-        path: "overview",
+        path: 'overview',
         element: <OverviewPage />,
       },
 
       // projects
       {
-        path: "projects",
+        path: 'projects',
         element: <ProjectsPage />,
       },
       {
-        path: "projects/search",
+        path: 'projects/search',
         element: <SearchProjectsPage />,
       },
       {
-        path: "projects/edit/:id",
+        path: 'projects/edit/:id',
         element: <EditProjectsPage />,
       },
 
       // users
       {
-        path: "users",
+        path: 'users',
         element: <ProjectsPage />,
       },
       {
-        path: "users/search",
+        path: 'users/search',
         element: <UsersPage />,
       },
       {
-        path: "users/edit/:id",
+        path: 'users/edit/:id',
         element: <ProjectsPage />,
       },
 
       // notifications
       {
-        path: "notification",
+        path: 'notification',
         element: <ProjectsPage />,
       },
       {
-        path: "notification/search",
+        path: 'notification/search',
         element: <UsersPage />,
       },
       {
-        path: "notification/email",
+        path: 'notification/email',
         element: <UsersPage />,
       },
       {
-        path: "notification/edit/:id",
+        path: 'notification/edit/:id',
         element: <ProjectsPage />,
       },
 
       // database
       {
-        path: "data",
+        path: 'data',
         element: <ProjectsPage />,
       },
       {
-        path: "data/search",
+        path: 'data/search',
         element: <UsersPage />,
       },
       {
-        path: "data/edit/:id",
+        path: 'data/edit/:id',
         element: <ProjectsPage />,
       },
 
       // report
       {
-        path: "reports",
+        path: 'reports',
         element: <ProjectsPage />,
       },
       {
-        path: "reports/search",
+        path: 'reports/search',
         element: <UsersPage />,
       },
       {
-        path: "reports/edit/:id",
+        path: 'reports/edit/:id',
         element: <ProjectsPage />,
       },
     ],
   },
 
   {
-    path: "/user",
+    path: '/user',
     element: <DashboardAdminPage />,
     children: [],
   },
 
   {
-    path: "/reseller",
+    path: '/reseller',
     element: <DashboardAdminPage />,
     children: [],
   },
-];
+]

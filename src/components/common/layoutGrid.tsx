@@ -7,7 +7,7 @@ interface LayoutProps {
 export const LayoutGrid: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="flex justify-center w-full">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 xl:grid-cols-12 gap-2 border-x border-gray-400 max-w-[1200px] w-full h-min py-8 px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 xl:grid-cols-12 gap-2 max-w-[1200px] w-full h-min py-8 px-4">
         {children}
       </div>
     </div>

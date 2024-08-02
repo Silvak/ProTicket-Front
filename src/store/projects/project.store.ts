@@ -4,7 +4,7 @@ import { create } from 'zustand'
 import type { StateCreator } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
-export interface AuthState {
+export interface ProjectState {
   status: AuthStatus
   token?: string
   user?: User
@@ -14,7 +14,7 @@ export interface AuthState {
   logoutUser: () => void
 }
 
-const storeApi: StateCreator<AuthState> = (set) => ({
+const storeApi: StateCreator<ProjectState> = (set) => ({
   status: 'pending',
   token: undefined,
   user: undefined,
@@ -41,6 +41,6 @@ const storeApi: StateCreator<AuthState> = (set) => ({
   },
 })
 
-export const useAuthStore = create<AuthState>()(
-  devtools(persist(storeApi, { name: 'auth-storage' }))
+export const useProjectStore = create<ProjectState>()(
+  devtools(persist(storeApi, { name: 'project-storage' }))
 )
