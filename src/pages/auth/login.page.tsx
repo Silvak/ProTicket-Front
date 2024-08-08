@@ -17,7 +17,7 @@ export const LoginPage = () => {
 
     try {
       await loginUser(username.value, password.value)
-      navigate('/dashboard')
+      navigate('/admin/overview')
       console.log(username.value, password.value)
     } catch (_error) {
       console.log('no se pudo autenticar')

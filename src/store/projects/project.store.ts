@@ -1,44 +1,33 @@
-import type { AuthStatus, User } from '@/contracts'
-import { checkStatus, login } from '@/services/auth.service'
+//import type { AuthStatus, User } from "@/contracts";
+import { getProjects } from '@/services/project.service'
 import { create } from 'zustand'
 import type { StateCreator } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
 export interface ProjectState {
-  status: AuthStatus
-  token?: string
-  user?: User
-
-  loginUser: (email: string, password: string) => Promise<void>
-  checkAuthStatus: () => Promise<void>
-  logoutUser: () => void
+  data: object
+  page: number
+  limit: number
+  getProjects: () => Promise<void>
+  setPage: (page: number) => void
+  setLimit: (limit: number) => void
 }
 
-const storeApi: StateCreator<ProjectState> = (set) => ({
-  status: 'pending',
-  token: undefined,
-  user: undefined,
+const storeApi: StateCreator<ProjectState> = (set, get) => ({
+  data: {},
+  page: 1,
+  limit: 5,
 
-  loginUser: async (email: string, password: string) => {
+  getProjects: async () => {
     try {
-      const { token, ...user } = await login(email, password)
-      set({ status: 'authorized', token, user })
+      const data = await getProjects(get().page, get().limit)
+      set({ data: data })
     } catch (_error) {
-      set({ status: 'unauthorized', token: undefined, user: undefined })
-      throw 'Unauthorized'
+      set({ data: {} })
     }
   },
-  checkAuthStatus: async () => {
-    try {
-      const { token, ...user } = await checkStatus()
-      set({ status: 'authorized', token, user })
-    } catch (_error) {
-      set({ status: 'unauthorized', token: undefined, user: undefined })
-    }
-  },
-  logoutUser: () => {
-    set({ status: 'unauthorized', token: undefined, user: undefined })
-  },
+  setPage: async (page: number) => set({ page: page }),
+  setLimit: async (limit: number) => set({ page: limit }),
 })
 
 export const useProjectStore = create<ProjectState>()(
