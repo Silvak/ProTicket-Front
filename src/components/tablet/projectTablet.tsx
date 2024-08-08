@@ -1,8 +1,8 @@
-import type { ProjectTabletProp } from "@/contracts";
+import type { ProjectTabletProp } from '@/contracts'
 //import { useProjectStore } from '@/store'
-import type { FC } from "react";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { ProjectRow } from "./projectRow";
+import type { FC } from 'react'
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
+import { ProjectRow } from './projectRow'
 
 export const ProjectTablet: FC<ProjectTabletProp> = ({
   limit,
@@ -10,7 +10,7 @@ export const ProjectTablet: FC<ProjectTabletProp> = ({
   projects,
   total,
 }) => {
-  const numberPages = Math.ceil(total / limit);
+  const numberPages = Math.ceil(total / limit)
   //const setPage = useProjectStore((state) => state.setPage);
   //const setLimit = useProjectStore((state) => state.setLimit);
 
@@ -52,5 +52,5 @@ export const ProjectTablet: FC<ProjectTabletProp> = ({
         Paginas: {numberPages}
       </nav>
     </table>
-  );
-};
+  )
+}

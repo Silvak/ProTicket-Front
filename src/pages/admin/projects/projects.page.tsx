@@ -1,18 +1,18 @@
-import { LayoutGrid, ProjectTablet } from "@/components";
-import type { ProjectTabletProp } from "@/contracts";
-import { useProjectStore } from "@/store";
-import { useEffect } from "react";
+import { LayoutGrid, ProjectTablet } from '@/components'
+import type { ProjectTabletProp } from '@/contracts'
+import { useProjectStore } from '@/store'
+import { useEffect } from 'react'
 
 export const ProjectsPage = () => {
-  const data = useProjectStore((state) => state.data as ProjectTabletProp);
-  const getProjects = useProjectStore((state) => state.getProjects);
+  const data = useProjectStore((state) => state.data as ProjectTabletProp)
+  const getProjects = useProjectStore((state) => state.getProjects)
 
   useEffect(() => {
-    getProjects();
-  }, [getProjects]);
+    getProjects()
+  }, [getProjects])
 
   if (!data) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
   return (
     <LayoutGrid>
@@ -37,5 +37,5 @@ export const ProjectsPage = () => {
         />
       )}
     </LayoutGrid>
-  );
-};
+  )
+}
