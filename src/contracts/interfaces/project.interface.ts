@@ -10,6 +10,7 @@ export interface Owner {
 export interface Project {
   id: string
   name: string
+  priceTicket: number
   totalTickets: number
   state: string[]
   owner: Owner | string

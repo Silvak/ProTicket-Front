@@ -20,8 +20,9 @@ export const SidebarButton = ({
   return (
     <>
       {/* main button */}
-      <button
-        type="button"
+      <div
+        onKeyUp={() => ''}
+        onKeyDown={() => navigate(url)}
         onClick={() => navigate(url)}
         className={` bg-gray-300 ${
           url !== '' && 'hover:bg-indigo-300 cursor-pointer'
@@ -43,7 +44,7 @@ export const SidebarButton = ({
             {menuIsOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
           </button>
         )}
-      </button>
+      </div>
 
       {/* submenu */}
       <div

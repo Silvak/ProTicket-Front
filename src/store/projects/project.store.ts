@@ -16,7 +16,7 @@ export interface ProjectState {
 const storeApi: StateCreator<ProjectState> = (set, get) => ({
   data: {},
   page: 1,
-  limit: 5,
+  limit: 3,
 
   getProjects: async () => {
     try {
@@ -27,7 +27,7 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
     }
   },
   setPage: async (page: number) => set({ page: page }),
-  setLimit: async (limit: number) => set({ page: limit }),
+  setLimit: async (limit: number) => set({ limit: limit }),
 })
 
 export const useProjectStore = create<ProjectState>()(
