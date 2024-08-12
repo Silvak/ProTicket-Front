@@ -1,8 +1,8 @@
-import type { ProjectList } from "@/contracts";
-import type { FC } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
-import { FaRegEdit } from "react-icons/fa";
-import { LuUser2 } from "react-icons/lu";
+import type { ProjectList } from '@/contracts'
+import type { FC } from 'react'
+import { AiOutlineDelete } from 'react-icons/ai'
+import { FaRegEdit } from 'react-icons/fa'
+import { LuUser2 } from 'react-icons/lu'
 
 export const ProjectRow: FC<ProjectList> = ({
   id,
@@ -12,7 +12,7 @@ export const ProjectRow: FC<ProjectList> = ({
   state,
   owner,
 }) => {
-  const ownerName = typeof owner === "string" ? owner : owner.name;
+  const ownerName = typeof owner === 'string' ? owner : owner.name
 
   return (
     <>
@@ -84,5 +84,5 @@ export const ProjectRow: FC<ProjectList> = ({
         </div>
       </div>
     </>
-  );
-};
+  )
+}

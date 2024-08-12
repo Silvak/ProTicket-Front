@@ -1,46 +1,46 @@
-import type { AuthStatus, UserLogin } from "@/contracts";
-import { checkStatus, login } from "@/services/auth.service";
-import { create } from "zustand";
-import type { StateCreator } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import type { AuthStatus, UserLogin } from '@/contracts'
+import { checkStatus, login } from '@/services/auth.service'
+import { create } from 'zustand'
+import type { StateCreator } from 'zustand'
+import { devtools, persist } from 'zustand/middleware'
 
 export interface AuthState {
-  status: AuthStatus;
-  token?: string;
-  user?: UserLogin;
+  status: AuthStatus
+  token?: string
+  user?: UserLogin
 
-  loginUser: (email: string, password: string) => Promise<void>;
-  checkAuthStatus: () => Promise<void>;
-  logoutUser: () => void;
+  loginUser: (email: string, password: string) => Promise<void>
+  checkAuthStatus: () => Promise<void>
+  logoutUser: () => void
 }
 
 const storeApi: StateCreator<AuthState> = (set) => ({
-  status: "pending",
+  status: 'pending',
   token: undefined,
   user: undefined,
 
   loginUser: async (email: string, password: string) => {
     try {
-      const { token, ...user } = await login(email, password);
-      set({ status: "authorized", token, user });
+      const { token, ...user } = await login(email, password)
+      set({ status: 'authorized', token, user })
     } catch (_error) {
-      set({ status: "unauthorized", token: undefined, user: undefined });
-      throw "Unauthorized";
+      set({ status: 'unauthorized', token: undefined, user: undefined })
+      throw 'Unauthorized'
     }
   },
   checkAuthStatus: async () => {
     try {
-      const { token, ...user } = await checkStatus();
-      set({ status: "authorized", token, user });
+      const { token, ...user } = await checkStatus()
+      set({ status: 'authorized', token, user })
     } catch (_error) {
-      set({ status: "unauthorized", token: undefined, user: undefined });
+      set({ status: 'unauthorized', token: undefined, user: undefined })
     }
   },
   logoutUser: () => {
-    set({ status: "unauthorized", token: undefined, user: undefined });
+    set({ status: 'unauthorized', token: undefined, user: undefined })
   },
-});
+})
 
 export const useAuthStore = create<AuthState>()(
-  devtools(persist(storeApi, { name: "auth-storage" }))
-);
+  devtools(persist(storeApi, { name: 'auth-storage' }))
+)
