@@ -3,13 +3,7 @@ import { useState } from 'react'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { useNavigate } from 'react-router-dom'
 
-export const SidebarButton = ({
-  isOpen,
-  icon,
-  text,
-  url,
-  submenu,
-}: SidebarBtn) => {
+export const SidebarButton = ({ isOpen, icon, text, url, submenu }: SidebarBtn) => {
   const navigate = useNavigate()
   const [menuIsOpen, setMenuOpen] = useState(false)
 
@@ -36,11 +30,7 @@ export const SidebarButton = ({
         </div>
 
         {isOpen && submenu.length > 0 && (
-          <button
-            type="button"
-            className="absolute right-3"
-            onClick={handleOpen}
-          >
+          <button type="button" className="absolute right-3" onClick={handleOpen}>
             {menuIsOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
           </button>
         )}

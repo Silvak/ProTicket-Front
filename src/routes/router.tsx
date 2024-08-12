@@ -11,10 +11,7 @@ export const AppRouter = () => {
     Generates route configurations based on input routes, 
     optionally wrapping private routes with ProtectedRoute.
   **/
-  const generateRouteConfig = (
-    routes: Routes[],
-    isPrivate = false
-  ): RouteObject[] => {
+  const generateRouteConfig = (routes: Routes[], isPrivate = false): RouteObject[] => {
     return routes.map((route) => {
       // protected routes
       const routeObject: RouteObject = {
@@ -39,11 +36,7 @@ export const AppRouter = () => {
   const privateRouteObjects = generateRouteConfig(privateRoutes, true)
   const fallbackRouteObjects = generateRouteConfig(fallbackRoutes)
 
-  const routes = [
-    ...publicRouteObjects,
-    ...privateRouteObjects,
-    ...fallbackRouteObjects,
-  ]
+  const routes = [...publicRouteObjects, ...privateRouteObjects, ...fallbackRouteObjects]
 
   const allRoutes = useRoutes(routes)
 

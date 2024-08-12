@@ -7,7 +7,7 @@ export interface Owner {
   state: string[]
 }
 
-export interface Project {
+export interface ProjectList {
   id: string
   name: string
   priceTicket: number
@@ -16,11 +16,29 @@ export interface Project {
   owner: Owner | string
 }
 
+// --------------------------- PROPS --------------------------
 export interface ProjectTabletProp {
   limit: number
   page: number
   //next: string | null;
   //prev: string | null;
-  projects: Project[]
+  projects: ProjectList[]
   total: number
+}
+
+export interface ProjectProp {
+  name: string
+  date: {
+    start: string
+    end: string
+  }
+  raffleConfig: {
+    priceTicket: number
+    totalTickets: number
+    perTicket: number
+    qrPosition: string
+    numberPosition: string
+  }
+  state: string[]
+  owner: Owner | string | null
 }

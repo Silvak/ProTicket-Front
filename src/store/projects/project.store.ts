@@ -1,23 +1,37 @@
+import type { ProjectProp } from '@/contracts'
+import { createProject, getProjects } from '@/services/project.service'
 //import type { AuthStatus, User } from "@/contracts";
-import { getProjects } from '@/services/project.service'
-import { create } from 'zustand'
 import type { StateCreator } from 'zustand'
+import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
 export interface ProjectState {
   data: object
   page: number
   limit: number
+  selectedProject: object
+
   getProjects: () => Promise<void>
+  createProject: (projectData: ProjectProp) => Promise<void>
+  setSelectedProject: () => Promise<void>
   setPage: (page: number) => void
   setLimit: (limit: number) => void
 }
 
 const storeApi: StateCreator<ProjectState> = (set, get) => ({
+  selectedProject: {},
   data: {},
   page: 1,
   limit: 3,
 
+  createProject: async (projectData: ProjectProp) => {
+    try {
+      const data = await createProject(projectData)
+      return console.log(data)
+    } catch (_error) {
+      console.log(_error)
+    }
+  },
   getProjects: async () => {
     try {
       const data = await getProjects(get().page, get().limit)
@@ -26,6 +40,7 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
       set({ data: {} })
     }
   },
+  setSelectedProject: async () => set({}),
   setPage: async (page: number) => set({ page: page }),
   setLimit: async (limit: number) => set({ limit: limit }),
 })

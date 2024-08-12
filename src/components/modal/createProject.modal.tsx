@@ -1,4 +1,5 @@
 import { FaPlus } from 'react-icons/fa'
+import { CreateProjectForm } from '../form/createProject.form'
 import { CustomModal } from './customModal'
 
 export const CreateProjectModal = () => {
@@ -9,7 +10,7 @@ export const CreateProjectModal = () => {
       buttonType="create"
       buttonIcon={<FaPlus />}
     >
-      <p>This is the modal content for creating an item.</p>
+      <CreateProjectForm />
     </CustomModal>
   )
 }

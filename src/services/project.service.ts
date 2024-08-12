@@ -1,22 +1,6 @@
 import { tesloApi } from '@/api/teslo'
+import type { ProjectList, ProjectProp } from '@/contracts'
 import { useAuthStore } from '@/store'
-
-export interface Owner {
-  name: string
-  email: string
-  emailValidated: boolean
-  role: string[]
-  state: string[]
-  id: string
-}
-
-interface Project {
-  id: string
-  name: string
-  totalTickets: number
-  state: string[]
-  owner: Owner
-}
 
 export interface ProjectResponse {
   page: number
@@ -24,7 +8,7 @@ export interface ProjectResponse {
   total: number
   next: string
   prev: string
-  projects: Project[]
+  projects: ProjectList[]
 }
 
 export const getProjects = async (
@@ -51,10 +35,35 @@ export const getProjects = async (
   }
 }
 
-//todo: get project by Id
+export const getProjectById = async () => {
+  return console.log('GET:  project by ID')
+}
 
-//todo: create project
+export const createProject = async (projectData: ProjectProp) => {
+  try {
+    const token = useAuthStore.getState().token
+    if (!token) {
+      throw new Error('UnAuthorized')
+    }
 
-//todo: update project
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }
 
-//todo: delete project
+    const { data } = await tesloApi.post('/projects', projectData, { headers })
+
+    return data
+  } catch (error) {
+    console.log(error)
+    throw new Error('Failed to create project')
+  }
+}
+
+export const updateProject = async () => {
+  return console.log('PUT: update project')
+}
+
+export const deleteProject = async () => {
+  return console.log('DELETE: delete project')
+}
