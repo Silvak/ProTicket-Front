@@ -30,9 +30,10 @@ export const adminMenu = [
         text: 'Overview',
         url: 'projects',
       },
-      { icon: <IoIosSearch />, text: 'Buscar', url: 'projects/search' },
     ],
   },
+
+  //
   {
     icon: <PiUsersBold />,
     text: 'Usuarios',

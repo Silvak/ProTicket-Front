@@ -3,7 +3,6 @@ import {
   EditProjectsPage,
   OverviewPage,
   ProjectsPage,
-  SearchProjectsPage,
   UsersPage,
 } from '@/pages'
 
@@ -24,11 +23,7 @@ export const privateRoutes = [
         element: <ProjectsPage />,
       },
       {
-        path: 'projects/search',
-        element: <SearchProjectsPage />,
-      },
-      {
-        path: 'projects/edit/:id',
+        path: 'projects/details/:id',
         element: <EditProjectsPage />,
       },
 

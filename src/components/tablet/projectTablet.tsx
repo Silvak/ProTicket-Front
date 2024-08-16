@@ -70,7 +70,7 @@ export const ProjectTablet: FC<ProjectTabletProp> = ({
             }}
             className="border rounded-md h-[42px] px-2"
           >
-            <option value={2}>2</option>
+            <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={40}>50</option>

@@ -1,8 +1,11 @@
 import type { ProjectList } from '@/contracts'
+import { useProjectStore } from '@/store'
 import type { FC } from 'react'
 import { AiOutlineDelete } from 'react-icons/ai'
-import { FaRegEdit } from 'react-icons/fa'
+//import { FaRegEdit } from "react-icons/fa";
 import { LuUser2 } from 'react-icons/lu'
+import { MdOutlineDashboard } from 'react-icons/md'
+import { useNavigate } from 'react-router-dom'
 
 export const ProjectRow: FC<ProjectList> = ({
   id,
@@ -12,6 +15,8 @@ export const ProjectRow: FC<ProjectList> = ({
   state,
   owner,
 }) => {
+  const navigate = useNavigate()
+  const deleteProject = useProjectStore((state) => state.deleteProject)
   const ownerName = typeof owner === 'string' ? owner : owner.name
 
   return (
@@ -71,12 +76,14 @@ export const ProjectRow: FC<ProjectList> = ({
         <div className="flex items-center justify-end gap-2 col-span-1 lg:col-span-1 mt-6 lg:mt-0">
           <button
             type="button"
+            onClick={() => navigate(`details/${id}`)}
             className="flex justify-center items-center h-[42px] min-w-[42px] w-full lg:w-min border rounded-md hover:bg-gray-300"
           >
-            <FaRegEdit />
+            <MdOutlineDashboard />
           </button>
           <button
             type="button"
+            onClick={() => deleteProject(id)}
             className="flex justify-center items-center h-[42px] min-w-[42px] w-full lg:w-min border rounded-md hover:bg-gray-300"
           >
             <AiOutlineDelete />

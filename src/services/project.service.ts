@@ -64,6 +64,28 @@ export const updateProject = async () => {
   return console.log('PUT: update project')
 }
 
-export const deleteProject = async () => {
-  return console.log('DELETE: delete project')
+export const deleteProject = async (projectId: string) => {
+  try {
+    const token = useAuthStore.getState().token
+    if (!token) {
+      throw new Error('UnAuthorized')
+    }
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }
+
+    const data = new URLSearchParams({ id: projectId }).toString()
+
+    const response = await tesloApi.delete('/projects', {
+      headers,
+      data,
+    })
+
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw new Error('Failed to delete project')
+  }
 }

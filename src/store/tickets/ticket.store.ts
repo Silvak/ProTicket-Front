@@ -1,64 +1,46 @@
 import type { ProjectProp } from '@/contracts'
-import { createProject, deleteProject, getProjects } from '@/services/project.service'
+import { createProject, getProjects } from '@/services/project.service'
+//import type { AuthStatus, User } from "@/contracts";
 import type { StateCreator } from 'zustand'
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
 export interface ProjectState {
-  selectedProject: string
   data: object
   page: number
   limit: number
+  selectedProject: object
 
-  getProjects: (projectId?: string) => Promise<void>
+  getProjects: () => Promise<void>
   createProject: (projectData: ProjectProp) => Promise<void>
-  deleteProject: (projectID: string) => Promise<void>
   setSelectedProject: (projectID: string) => Promise<void>
   setPage: (page: number) => void
   setLimit: (limit: number) => void
 }
 
 const storeApi: StateCreator<ProjectState> = (set, get) => ({
-  selectedProject: '',
+  selectedProject: {},
   data: {},
   page: 1,
   limit: 3,
 
-  getProjects: async (projectId?: string) => {
-    if (projectId !== undefined) {
-      console.log('busqueda por ID')
-    } else {
-      try {
-        const data = await getProjects(get().page, get().limit)
-        set({ data: data })
-      } catch (_error) {
-        set({ data: {} })
-      }
-    }
-  },
-
   createProject: async (projectData: ProjectProp) => {
     try {
       const data = await createProject(projectData)
-      console.log(data)
-      await get().getProjects()
+      return console.log(data)
     } catch (_error) {
       console.log(_error)
     }
   },
-
-  deleteProject: async (_projectID: string) => {
+  getProjects: async () => {
     try {
-      const res = await deleteProject(_projectID)
-      console.log(res)
-      await get().getProjects()
+      const data = await getProjects(get().page, get().limit)
+      set({ data: data })
     } catch (_error) {
       set({ data: {} })
     }
   },
-
-  setSelectedProject: async (projectID: string) => set({ selectedProject: projectID }),
-
+  setSelectedProject: async (_projectID: string) => set({}),
   setPage: async (page: number) => set({ page: page }),
   setLimit: async (limit: number) => set({ limit: limit }),
 })
