@@ -2,9 +2,14 @@ import { tesloApi } from '@/api/teslo'
 import type { User } from '@/contracts'
 import { AxiosError } from 'axios'
 
-export const login = async (email: string, password: string): Promise<User> => {
+interface LoginResponse {
+  user?: User
+  token?: string
+}
+
+export const login = async (email: string, password: string): Promise<LoginResponse> => {
   try {
-    const { data } = await tesloApi.post<User>('/auth/login', {
+    const { data } = await tesloApi.post<LoginResponse>('/auth/login', {
       email,
       password,
     })
@@ -20,9 +25,9 @@ export const login = async (email: string, password: string): Promise<User> => {
   }
 }
 
-export const checkStatus = async (): Promise<User> => {
+export const checkStatus = async (): Promise<LoginResponse> => {
   try {
-    const { data } = await tesloApi.get<User>('/auth/check-status')
+    const { data } = await tesloApi.get<LoginResponse>('/auth/check-status')
     return data
   } catch (error) {
     console.log(error)

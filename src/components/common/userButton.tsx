@@ -18,7 +18,7 @@ export const UserButton = () => {
         onClick={handleClic}
         className="flex justify-between items-center gap-4 md:pl-8 pl-2  pr-2 h-[52px] bg-gray-200 rounded-full"
       >
-        <span className="hidden md:flex">{user ? user.name : 'user'}</span>
+        <span className="hidden md:flex">{user?.name || 'user'}</span>
         <div className=" flex justify-center items-center w-[40px] h-[40px] bg-slate-900 rounded-full text-white ">
           <LuUser2 />
         </div>

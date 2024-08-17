@@ -1,10 +1,10 @@
 export interface User {
-  id: string
-  name: string
-  email: string
-  emailValidated: string
-  state: string[]
-  role: string[]
+  id?: string
+  name?: string
+  email?: string
+  emailValidated?: string
+  state?: string[]
+  role?: string[]
   token?: string
 }
 

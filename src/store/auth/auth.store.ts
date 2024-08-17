@@ -21,8 +21,8 @@ const storeApi: StateCreator<AuthState> = (set) => ({
 
   loginUser: async (email: string, password: string) => {
     try {
-      const { token, ...user } = await login(email, password)
-      set({ status: 'authorized', token, user })
+      const { token, user } = await login(email, password)
+      set({ status: 'authorized', token, user: { ...user } })
     } catch (_error) {
       set({ status: 'unauthorized', token: undefined, user: undefined })
       throw 'Unauthorized'
@@ -30,8 +30,8 @@ const storeApi: StateCreator<AuthState> = (set) => ({
   },
   checkAuthStatus: async () => {
     try {
-      const { token, ...user } = await checkStatus()
-      set({ status: 'authorized', token, user })
+      const { token, user } = await checkStatus()
+      set({ status: 'authorized', token, user: { ...user } })
     } catch (_error) {
       set({ status: 'unauthorized', token: undefined, user: undefined })
     }

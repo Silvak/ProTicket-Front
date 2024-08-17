@@ -18,7 +18,7 @@ export const UserSelect: React.FC<{ onSelect: (userId: string) => void }> = ({
   const filteredUsers = useMemo(() => {
     if (!searchTerm) return validUserData
     return validUserData.filter((user: User) =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase())
+      user.name?.toLowerCase().includes(searchTerm.toLowerCase())
     )
   }, [searchTerm, validUserData])
 

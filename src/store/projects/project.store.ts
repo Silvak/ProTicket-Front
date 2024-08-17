@@ -22,7 +22,7 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
   selectedProject: '',
   data: {},
   page: 1,
-  limit: 3,
+  limit: 5,
 
   getProjects: async (projectId?: string) => {
     if (projectId !== undefined) {

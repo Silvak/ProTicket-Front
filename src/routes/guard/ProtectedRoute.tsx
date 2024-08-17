@@ -8,9 +8,8 @@ interface ProtectedRouteProps {
 
 export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
   const isLoggedIn = useAuthStore((state) => state.status) === 'authorized'
-  const user = useAuthStore((state) => state.user)
-  const userRole = user
-  console.log(userRole)
+  const user = useAuthStore((state) => state.user) // Obtén todo el estado de autenticación
+  const userRole = user?.role || []
 
   const { pathname } = useLocation()
 
@@ -20,9 +19,10 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
   }
 
   // Verifica si el rol del usuario está permitido
-  if (allowedRoles && !allowedRoles.includes('ADMIN_ROLE')) {
+  const isRoleAllowed = allowedRoles?.some((role) => userRole.includes(role))
+
+  if (allowedRoles && !isRoleAllowed) {
     return <Navigate to="/unauthorized" />
   }
-
   return <>{children}</>
 }
