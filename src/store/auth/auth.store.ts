@@ -1,4 +1,4 @@
-import type { AuthStatus, UserLogin } from '@/contracts'
+import type { AuthStatus, User } from '@/contracts'
 import { checkStatus, login } from '@/services/auth.service'
 import { create } from 'zustand'
 import type { StateCreator } from 'zustand'
@@ -7,7 +7,7 @@ import { devtools, persist } from 'zustand/middleware'
 export interface AuthState {
   status: AuthStatus
   token?: string
-  user?: UserLogin
+  user?: User | null
 
   loginUser: (email: string, password: string) => Promise<void>
   checkAuthStatus: () => Promise<void>
