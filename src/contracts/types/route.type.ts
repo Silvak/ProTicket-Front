@@ -1,5 +1,6 @@
-export type Routes = {
+export interface Routes {
   path: string
-  element: JSX.Element
+  element: React.ReactNode
+  allowedRoles?: string[]
   children?: Routes[]
 }

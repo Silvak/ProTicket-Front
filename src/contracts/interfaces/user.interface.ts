@@ -4,7 +4,7 @@ export interface User {
   email: string
   emailValidated: string
   state: string[]
-  roles: string[]
+  role: string[]
   token?: string
 }
 

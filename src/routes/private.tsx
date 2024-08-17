@@ -1,6 +1,7 @@
 import {
   DashboardAdminPage,
-  EditProjectsPage,
+  DetailProjectsPage,
+  DetailUserPage,
   OverviewPage,
   ProjectsPage,
   UsersPage,
@@ -10,6 +11,7 @@ export const privateRoutes = [
   {
     path: '/admin',
     element: <DashboardAdminPage />,
+    allowedRoles: ['ADMIN_ROLE'],
     children: [
       //Overview
       {
@@ -24,67 +26,17 @@ export const privateRoutes = [
       },
       {
         path: 'projects/details/:id',
-        element: <EditProjectsPage />,
+        element: <DetailProjectsPage />,
       },
 
       // users
       {
         path: 'users',
-        element: <ProjectsPage />,
-      },
-      {
-        path: 'users/search',
         element: <UsersPage />,
       },
       {
-        path: 'users/edit/:id',
-        element: <ProjectsPage />,
-      },
-
-      // notifications
-      {
-        path: 'notification',
-        element: <ProjectsPage />,
-      },
-      {
-        path: 'notification/search',
-        element: <UsersPage />,
-      },
-      {
-        path: 'notification/email',
-        element: <UsersPage />,
-      },
-      {
-        path: 'notification/edit/:id',
-        element: <ProjectsPage />,
-      },
-
-      // database
-      {
-        path: 'data',
-        element: <ProjectsPage />,
-      },
-      {
-        path: 'data/search',
-        element: <UsersPage />,
-      },
-      {
-        path: 'data/edit/:id',
-        element: <ProjectsPage />,
-      },
-
-      // report
-      {
-        path: 'reports',
-        element: <ProjectsPage />,
-      },
-      {
-        path: 'reports/search',
-        element: <UsersPage />,
-      },
-      {
-        path: 'reports/edit/:id',
-        element: <ProjectsPage />,
+        path: 'users/details/:id',
+        element: <DetailUserPage />,
       },
     ],
   },
@@ -92,12 +44,14 @@ export const privateRoutes = [
   {
     path: '/user',
     element: <DashboardAdminPage />,
+    allowedRoles: ['USER_ROLE'],
     children: [],
   },
 
   {
     path: '/reseller',
     element: <DashboardAdminPage />,
+    allowedRoles: ['RESELLER_ROLE'],
     children: [],
   },
 ]

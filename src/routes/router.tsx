@@ -17,7 +17,9 @@ export const AppRouter = () => {
       const routeObject: RouteObject = {
         path: route.path,
         element: isPrivate ? (
-          <ProtectedRoute>{route.element}</ProtectedRoute>
+          <ProtectedRoute allowedRoles={route.allowedRoles}>
+            {route.element}
+          </ProtectedRoute>
         ) : (
           route.element
         ),
