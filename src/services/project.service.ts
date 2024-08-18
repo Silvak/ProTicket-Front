@@ -35,12 +35,13 @@ export const getProjectById = async (projectId: string) => {
     }
     const headers = {
       Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
     }
-    const data = new URLSearchParams({ id: projectId }).toString()
-    const { data: projectData } = await tesloApi.post<ProjectProp>('/projects/id', data, {
-      headers,
-    })
+    const { data: projectData } = await tesloApi.get<ProjectProp>(
+      `/projects/${projectId}`,
+      {
+        headers,
+      }
+    )
     return projectData
   } catch (error) {
     if (error instanceof AxiosError) {
