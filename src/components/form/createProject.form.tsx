@@ -1,5 +1,6 @@
 import { useProjectStore } from '@/store'
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 import { UserSelect } from '../form/userSelect'
 
 export const CreateProjectForm = () => {
@@ -50,7 +51,25 @@ export const CreateProjectForm = () => {
       owner: selectedUser,
     }
 
-    await createProject(projectData)
+    try {
+      await createProject(projectData)
+      toast.success('Proyecto creado exitosamente')
+      // clean form
+      setFormData({
+        name: '',
+        startDate: '',
+        endDate: '',
+        priceTicket: '',
+        totalTickets: '',
+        perTicket: '1',
+        qrPosition: 'bl',
+        numberPosition: 'bl',
+        state: 'ACTIVE',
+      })
+      setSelectedUser(null)
+    } catch (_error) {
+      toast.error('Error al crear el proyecto')
+    }
   }
 
   return (

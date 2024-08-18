@@ -6,6 +6,8 @@ import { AiOutlineDelete } from 'react-icons/ai'
 import { LuUser2 } from 'react-icons/lu'
 import { MdOutlineDashboard } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { CustomModal } from '../modal/customModal'
 
 export const ProjectRow: FC<ProjectList> = ({
   id,
@@ -18,6 +20,15 @@ export const ProjectRow: FC<ProjectList> = ({
   const navigate = useNavigate()
   const deleteProject = useProjectStore((state) => state.deleteProject)
   const ownerName = typeof owner === 'string' ? owner : owner.name
+
+  const handleDelete = async () => {
+    try {
+      await deleteProject(id)
+      toast.success('Proyecto eliminado exitosamente.')
+    } catch (_error) {
+      toast.error('Hubo un error al eliminar el proyecto.')
+    }
+  }
 
   return (
     <>
@@ -81,6 +92,7 @@ export const ProjectRow: FC<ProjectList> = ({
           >
             <MdOutlineDashboard />
           </button>
+          {/*
           <button
             type="button"
             onClick={() => deleteProject(id)}
@@ -88,6 +100,25 @@ export const ProjectRow: FC<ProjectList> = ({
           >
             <AiOutlineDelete />
           </button>
+          */}
+
+          <CustomModal
+            header={<h2>Confirmar Eliminación</h2>}
+            buttonText=""
+            buttonType="delete"
+            buttonIcon={<AiOutlineDelete />}
+          >
+            <p>¿Estás seguro de que deseas eliminar el proyecto "{name}"?</p>
+            <div className="flex justify-end gap-4 mt-4">
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              >
+                Confirmar
+              </button>
+            </div>
+          </CustomModal>
         </div>
       </div>
     </>

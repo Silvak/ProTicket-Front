@@ -1,6 +1,7 @@
 import { useAuthStore } from '@/store'
 import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 export const LoginPage = () => {
   const navigate = useNavigate()
@@ -18,9 +19,9 @@ export const LoginPage = () => {
     try {
       await loginUser(username.value, password.value)
       navigate('/admin/overview')
-      console.log(username.value, password.value)
+      toast.success('Autenticación exitosa')
     } catch (_error) {
-      console.log('no se pudo autenticar')
+      toast.error('No se pudo autenticar')
     }
 
     //username.value = "";

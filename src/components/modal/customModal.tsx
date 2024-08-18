@@ -34,9 +34,9 @@ export const CustomModal: React.FC<CustomModalProps> = ({
       <button
         type="button"
         onClick={openModal}
-        className={`flex items-center px-4 py-2 text-white rounded ${buttonStyles[buttonType]}`}
+        className={`flex items-center justify-center gap-2  text-white rounded px-3  h-full max-h-[40px]   sm:w-full lg:w-min  ${buttonStyles[buttonType]}`}
       >
-        {buttonIcon && <span className="mr-2">{buttonIcon}</span>}
+        {buttonIcon && <span className="">{buttonIcon}</span>}
         {buttonText}
       </button>
 

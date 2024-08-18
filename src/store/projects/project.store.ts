@@ -39,21 +39,23 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
 
   createProject: async (projectData: ProjectProp) => {
     try {
-      const data = await createProject(projectData)
-      console.log(data)
-      await get().getProjects()
+      const res = await createProject(projectData)
+      if (res) {
+        await get().getProjects()
+      }
     } catch (_error) {
-      console.log(_error)
+      throw 'Create Error'
     }
   },
 
   deleteProject: async (_projectID: string) => {
     try {
       const res = await deleteProject(_projectID)
-      console.log(res)
-      await get().getProjects()
+      if (res) {
+        await get().getProjects()
+      }
     } catch (_error) {
-      set({ data: {} })
+      throw 'Delete error'
     }
   },
 
