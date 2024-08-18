@@ -1,17 +1,9 @@
 import { tesloApi } from '@/api/teslo'
-import type { ProjectList, ProjectProp } from '@/contracts'
+import type { ProjectProp, ProjectResponse } from '@/contracts'
 import { useAuthStore } from '@/store'
 import { AxiosError } from 'axios'
 
-export interface ProjectResponse {
-  page: number
-  limit: number
-  total: number
-  next: string
-  prev: string
-  projects: ProjectList[]
-}
-
+//----------------------------------------------------- GET LIST ---------------------------------------------------------
 export const getProjects = async (
   page: number,
   limit: number
@@ -34,12 +26,8 @@ export const getProjects = async (
   }
 }
 
-export const getProjectById = async () => {
-  return console.log('GET:  project by ID')
-}
-
-//--------------------------------------------------------------------
-export const createProject = async (projectData: ProjectProp) => {
+//----------------------------------------------------- BY ID ---------------------------------------------------------
+export const getProjectById = async (projectId: string) => {
   try {
     const token = useAuthStore.getState().token
     if (!token) {
@@ -49,7 +37,49 @@ export const createProject = async (projectData: ProjectProp) => {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/x-www-form-urlencoded',
     }
-    const { data } = await tesloApi.post('/projects', projectData, { headers })
+    const data = new URLSearchParams({ id: projectId }).toString()
+    const { data: projectData } = await tesloApi.post<ProjectProp>('/projects/id', data, {
+      headers,
+    })
+    return projectData
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data)
+      throw new Error(error.response?.data)
+    }
+    throw new Error('Failed to get project by ID')
+  }
+}
+
+//----------------------------------------------------- CREATE ---------------------------------------------------------
+export const createProject = async (projectData: ProjectProp) => {
+  try {
+    console.log(projectData)
+    const token = useAuthStore.getState().token
+    if (!token) {
+      throw new Error('UnAuthorized')
+    }
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }
+
+    const data2 = new URLSearchParams({
+      name: projectData.name,
+      'date[start]': projectData.date.start,
+      'date[end]': projectData.date.end,
+      'raffleConfig[img]': projectData.raffleConfig.img || '',
+      'raffleConfig[priceTicket]': projectData.raffleConfig.priceTicket.toString(),
+      'raffleConfig[totalTickets]': projectData.raffleConfig.totalTickets.toString(),
+      'raffleConfig[perTicket]': projectData.raffleConfig.perTicket.toString(),
+      'raffleConfig[qrPosition]': projectData.raffleConfig.qrPosition,
+      'raffleConfig[numberPosition]': projectData.raffleConfig.numberPosition,
+      owner: projectData.owner.id as string, // Cambia esto
+      state: projectData.state.join(','),
+    }).toString()
+
+    const { data } = await tesloApi.post('/projects', data2, { headers })
+
     return data
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -60,10 +90,48 @@ export const createProject = async (projectData: ProjectProp) => {
   }
 }
 
-export const updateProject = async () => {
-  return console.log('PUT: update project')
+//----------------------------------------------------- UPDATE ---------------------------------------------------------
+export const updateProject = async (projectData: ProjectProp) => {
+  try {
+    const token = useAuthStore.getState().token
+    if (!token) {
+      throw new Error('UnAuthorized')
+    }
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }
+
+    const data = new URLSearchParams({
+      id: projectData.id as string,
+      name: projectData.name,
+      'date[start]': projectData.date.start,
+      'date[end]': projectData.date.end,
+      'raffleConfig[img]': projectData.raffleConfig.img || '',
+      'raffleConfig[priceTicket]': projectData.raffleConfig.priceTicket.toString(),
+      'raffleConfig[totalTickets]': projectData.raffleConfig.totalTickets.toString(),
+      'raffleConfig[perTicket]': projectData.raffleConfig.perTicket.toString(),
+      'raffleConfig[qrPosition]': projectData.raffleConfig.qrPosition,
+      'raffleConfig[numberPosition]': projectData.raffleConfig.numberPosition,
+      owner: projectData.owner.id as string, // Cambia esto
+      state: projectData.state.join(','),
+    }).toString()
+
+    const { data: updatedProject } = await tesloApi.put('/projects', data, {
+      headers,
+    })
+    return updatedProject
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data)
+      throw new Error(error.response?.data)
+    }
+    throw new Error('Failed to update project')
+  }
 }
 
+//----------------------------------------------------- DELETE ---------------------------------------------------------
 export const deleteProject = async (projectId: string) => {
   try {
     const token = useAuthStore.getState().token

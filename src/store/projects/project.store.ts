@@ -1,32 +1,39 @@
 import type { ProjectProp } from '@/contracts'
-import { createProject, deleteProject, getProjects } from '@/services/project.service'
+import {
+  createProject,
+  deleteProject,
+  getProjectById,
+  getProjects,
+  updateProject,
+} from '@/services/project.service'
 import type { StateCreator } from 'zustand'
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
 export interface ProjectState {
-  selectedProject: string
+  selectedProject: object
   data: object
   page: number
   limit: number
 
   getProjects: (projectId?: string) => Promise<void>
   createProject: (projectData: ProjectProp) => Promise<void>
+  updateProject: (projectData: ProjectProp) => Promise<void>
   deleteProject: (projectID: string) => Promise<void>
-  setSelectedProject: (projectID: string) => Promise<void>
   setPage: (page: number) => void
   setLimit: (limit: number) => void
 }
 
 const storeApi: StateCreator<ProjectState> = (set, get) => ({
-  selectedProject: '',
+  selectedProject: {},
   data: {},
   page: 1,
   limit: 5,
 
   getProjects: async (projectId?: string) => {
     if (projectId !== undefined) {
-      console.log('busqueda por ID')
+      const data = await getProjectById(projectId)
+      set({ selectedProject: data })
     } else {
       try {
         const data = await getProjects(get().page, get().limit)
@@ -48,9 +55,20 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
     }
   },
 
-  deleteProject: async (_projectID: string) => {
+  updateProject: async (projectData: ProjectProp) => {
     try {
-      const res = await deleteProject(_projectID)
+      const res = await updateProject(projectData)
+      if (res) {
+        await get().getProjects()
+      }
+    } catch (_error) {
+      throw 'Update error'
+    }
+  },
+
+  deleteProject: async (projectID: string) => {
+    try {
+      const res = await deleteProject(projectID)
       if (res) {
         await get().getProjects()
       }
@@ -58,8 +76,6 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
       throw 'Delete error'
     }
   },
-
-  setSelectedProject: async (projectID: string) => set({ selectedProject: projectID }),
 
   setPage: async (page: number) => set({ page: page }),
   setLimit: async (limit: number) => set({ limit: limit }),

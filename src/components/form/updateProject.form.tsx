@@ -1,24 +1,46 @@
+import type { ProjectProp } from '@/contracts'
 import { useProjectStore } from '@/store'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { UserSelect } from '../form/userSelect'
 
-export const CreateProjectForm = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    startDate: '',
-    endDate: '',
-    priceTicket: '',
-    totalTickets: '',
-    perTicket: '1',
-    qrPosition: 'bl',
-    numberPosition: 'bl',
-    state: 'ACTIVE',
-  })
-  const [selectedUser, setSelectedUser] = useState<string | null>(null)
-  const createProject = useProjectStore((state) => state.createProject)
+interface UpdateProjectFormProps {
+  project: ProjectProp // Tipado del prop `project`
+}
 
-  // logic
+export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
+  const [formData, setFormData] = useState({
+    name: project.name || '',
+    startDate: project.date?.start || '',
+    endDate: project.date?.end || '',
+    priceTicket: project.raffleConfig?.priceTicket || '',
+    totalTickets: project.raffleConfig?.totalTickets || '',
+    perTicket: project.raffleConfig?.perTicket || '1',
+    qrPosition: project.raffleConfig?.qrPosition || 'bl',
+    numberPosition: project.raffleConfig?.numberPosition || 'bl',
+    state: project.state?.[0] || 'ACTIVE',
+  })
+
+  const [selectedUser, setSelectedUser] = useState<string | null>(
+    project.owner.id || null
+  )
+  const updateProject = useProjectStore((state) => state.updateProject)
+
+  useEffect(() => {
+    setFormData({
+      name: project.name || '',
+      startDate: project.date?.start.toString() || '',
+      endDate: project.date?.end.toString() || '',
+      priceTicket: project.raffleConfig?.priceTicket || '',
+      totalTickets: project.raffleConfig?.totalTickets || '',
+      perTicket: project.raffleConfig?.perTicket || '1',
+      qrPosition: project.raffleConfig?.qrPosition || 'bl',
+      numberPosition: project.raffleConfig?.numberPosition || 'bl',
+      state: project.state?.[0] || 'ACTIVE',
+    })
+    setSelectedUser(project.owner.id || null)
+  }, [project])
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
@@ -34,14 +56,15 @@ export const CreateProjectForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const projectData = {
+    const updatedProjectData = {
+      id: project.id as string,
       name: formData.name,
       date: {
         start: formData.startDate,
         end: formData.endDate,
       },
       raffleConfig: {
-        img: '',
+        img: project.raffleConfig.img || '',
         priceTicket: Number(formData.priceTicket),
         totalTickets: Number(formData.totalTickets),
         perTicket: Number(formData.perTicket),
@@ -55,23 +78,10 @@ export const CreateProjectForm = () => {
     }
 
     try {
-      await createProject(projectData)
-      toast.success('Proyecto creado exitosamente')
-      // clean form
-      setFormData({
-        name: '',
-        startDate: '',
-        endDate: '',
-        priceTicket: '',
-        totalTickets: '',
-        perTicket: '1',
-        qrPosition: 'bl',
-        numberPosition: 'bl',
-        state: 'ACTIVE',
-      })
-      setSelectedUser(null)
+      await updateProject(updatedProjectData)
+      toast.success('Proyecto actualizado exitosamente')
     } catch (_error) {
-      toast.error('Error al crear el proyecto')
+      toast.error('Error al actualizar el proyecto')
     }
   }
 
@@ -200,7 +210,7 @@ export const CreateProjectForm = () => {
           type="submit"
           className="w-full py-2 px-4 bg-blue-600 text-white rounded mt-4"
         >
-          Crear Proyecto
+          Actualizar Proyecto
         </button>
       </form>
     </>

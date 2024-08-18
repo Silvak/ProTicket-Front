@@ -10,3 +10,4 @@ export * from './common/redirectToDashboard'
 // modals
 export * from './modal/customModal'
 export * from './modal/createProject.modal'
+export * from './form/createProject.form'

@@ -1,12 +1,3 @@
-export interface Owner {
-  id: string
-  name: string
-  email: string
-  emailValidated: boolean
-  role: string[]
-  state: string[]
-}
-
 export interface ProjectList {
   id: string
   name: string
@@ -16,23 +7,37 @@ export interface ProjectList {
   owner: Owner | string
 }
 
-// --------------------------- PROPS --------------------------
-export interface ProjectTabletProp {
-  limit: number
+export interface ProjectResponse {
   page: number
-  //next: string | null;
-  //prev: string | null;
-  projects: ProjectList[]
+  limit: number
   total: number
+  next: string
+  prev: string
+  projects: ProjectList[]
+}
+
+// --------------------------- PROPS --------------------------
+export interface Owner {
+  id: string
+  name: string
+  email: string
+  emailValidated: boolean
+  role: string[]
+  state: string[]
 }
 
 export interface ProjectProp {
+  id?: string
   name: string
   date: {
     start: string
     end: string
   }
+  owner: {
+    id: string | null
+  }
   raffleConfig: {
+    img: string
     priceTicket: number
     totalTickets: number
     perTicket: number
@@ -40,5 +45,13 @@ export interface ProjectProp {
     numberPosition: string
   }
   state: string[]
-  owner: Owner | string | null
+}
+
+export interface ProjectTabletProp {
+  limit: number
+  page: number
+  //next: string | null;
+  //prev: string | null;
+  projects: ProjectList[]
+  total: number
 }
