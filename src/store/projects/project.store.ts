@@ -59,7 +59,7 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
     try {
       const res = await updateProject(projectData)
       if (res) {
-        await get().getProjects()
+        await get().getProjects(projectData.id)
       }
     } catch (_error) {
       throw 'Update error'
