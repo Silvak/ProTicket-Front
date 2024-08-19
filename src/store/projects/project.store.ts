@@ -4,6 +4,7 @@ import {
   deleteProject,
   getProjectById,
   getProjects,
+  getRelatedProjectTickets,
   updateProject,
 } from '@/services/project.service'
 import type { StateCreator } from 'zustand'
@@ -13,10 +14,12 @@ import { devtools, persist } from 'zustand/middleware'
 export interface ProjectState {
   selectedProject: object
   data: object
+  tickets: object
   page: number
   limit: number
 
   getProjects: (projectId?: string) => Promise<void>
+  getRelatedTickets: (projectId: string) => Promise<void>
   createProject: (projectData: ProjectProp) => Promise<void>
   updateProject: (projectData: ProjectProp) => Promise<void>
   deleteProject: (projectID: string) => Promise<void>
@@ -27,6 +30,7 @@ export interface ProjectState {
 const storeApi: StateCreator<ProjectState> = (set, get) => ({
   selectedProject: {},
   data: {},
+  tickets: {},
   page: 1,
   limit: 5,
 
@@ -41,6 +45,15 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
       } catch (_error) {
         set({ data: {} })
       }
+    }
+  },
+
+  getRelatedTickets: async (projectId: string) => {
+    try {
+      const data = await getRelatedProjectTickets(projectId, get().page, get().limit)
+      set({ tickets: data })
+    } catch (_error) {
+      set({ tickets: {} })
     }
   },
 
