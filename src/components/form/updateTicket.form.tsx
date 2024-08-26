@@ -2,7 +2,6 @@ import type { TicketProp } from '@/contracts'
 import { useAuthStore, useProjectStore, useTicketStore } from '@/store'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-//import { UserSelect } from "./userSelect";
 
 interface UpdateTicketFormProps {
   ticket: TicketProp
@@ -19,12 +18,11 @@ export const UpdateTicketForm = ({ ticket }: UpdateTicketFormProps) => {
     other: ticket.ownerData.other || '',
     state: ticket.state || '',
   })
-  //const [selectedUser, setSelectedUser] = useState<string | null>(null);
+
   const userId = useAuthStore((state) => state.user?.id)
   const selectedProjectId = useProjectStore((state) => state.selectedProject?.id)
   const updateTicket = useTicketStore((state) => state.updateTicket)
 
-  // logic
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
@@ -54,7 +52,6 @@ export const UpdateTicketForm = ({ ticket }: UpdateTicketFormProps) => {
     try {
       await updateTicket(ticketData)
       toast.success('Ticket actualizado exitosamente')
-      //setSelectedUser(null);
     } catch (_error) {
       toast.error('Error al actualizar el ticket')
     }
@@ -69,6 +66,7 @@ export const UpdateTicketForm = ({ ticket }: UpdateTicketFormProps) => {
             type="text"
             name="number"
             value={formData.number}
+            disabled
             onChange={handleChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required
@@ -165,7 +163,7 @@ export const UpdateTicketForm = ({ ticket }: UpdateTicketFormProps) => {
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required
           >
-            <option value="PAID">Vendido</option>
+            <option value="PAID">Pagado</option>
             <option value="UNPAID">Pendiente</option>
             <option value="CANCELLED ">Cancelado</option>
           </select>

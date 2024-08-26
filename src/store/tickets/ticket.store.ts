@@ -65,7 +65,7 @@ const storeApi: StateCreator<TicketState> = (set, get) => ({
     try {
       const res = await updateTicket(ticketData)
       if (res) {
-        await get().getTickets(ticketData.id)
+        await get().getTicket(ticketData.id)
       }
     } catch (_error) {
       throw 'Update error'

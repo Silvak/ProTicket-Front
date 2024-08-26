@@ -1,16 +1,16 @@
 import { tesloApi } from '@/api/teslo'
-import type { TicketCreate, TicketUpdate } from '@/contracts'
+import type { HistoryCreate, HistoryUpdate } from '@/contracts'
 import { useAuthStore } from '@/store'
 import { AxiosError } from 'axios'
 
 //----------------------------------------------------- GET LIST ---------------------------------------------------------
-export const getTickets = async (projectId: string, page: number, limit: number) => {
+export const getHistory = async (ticketId: string, page: number, limit: number) => {
   try {
     const token = useAuthStore.getState().token
     if (!token) {
       throw new Error('UnAuthorized')
     }
-    const response = await tesloApi.get(`/tickets/list/${projectId}`, {
+    const response = await tesloApi.get(`/history/list/${ticketId}`, {
       params: {
         page: page,
         limit: limit,
@@ -24,7 +24,7 @@ export const getTickets = async (projectId: string, page: number, limit: number)
 }
 
 //----------------------------------------------------- BY ID ---------------------------------------------------------
-export const getTicketById = async (ticketId: string) => {
+export const getHistoryById = async (historyId: string) => {
   try {
     const token = useAuthStore.getState().token
     if (!token) {
@@ -33,7 +33,7 @@ export const getTicketById = async (ticketId: string) => {
     const headers = {
       Authorization: `Bearer ${token}`,
     }
-    const response = await tesloApi.get(`/tickets/${ticketId}`, {
+    const response = await tesloApi.get(`/history/${historyId}`, {
       headers,
     })
 
@@ -49,7 +49,7 @@ export const getTicketById = async (ticketId: string) => {
 
 //----------------------------------------------------- CREATE ---------------------------------------------------------
 
-export const createTicket = async (ticket: TicketCreate) => {
+export const createHistory = async (history: HistoryCreate) => {
   try {
     const token = useAuthStore.getState().token
     if (!token) {
@@ -61,18 +61,18 @@ export const createTicket = async (ticket: TicketCreate) => {
     }
 
     const data = new URLSearchParams({
-      number: ticket.number.toString(),
-      project: ticket.project,
-      seller: ticket.seller,
-      'ownerData[name]': ticket.ownerData.name,
-      'ownerData[dni]': ticket.ownerData.dni,
-      'ownerData[phone1]': ticket.ownerData.phone1,
-      'ownerData[phone2]': ticket.ownerData.phone2 ?? '',
-      'ownerData[address]': ticket.ownerData.address,
-      'ownerData[other]': ticket.ownerData.other ?? '',
+      note: history.note,
+      date: history.date,
+      dolarAmount: history.dolarAmount,
+      amount: history.amount,
+      badge: history.badge,
+      paymentType: history.paymentType,
+      ref: history.ref,
+      ticket: history.ticket,
+      seller: history.seller,
     }).toString()
 
-    const response = await tesloApi.post('/tickets', data, { headers })
+    const response = await tesloApi.post('/history', data, { headers })
 
     return response.data
   } catch (error) {
@@ -86,7 +86,7 @@ export const createTicket = async (ticket: TicketCreate) => {
 
 //----------------------------------------------------- UPDATE ---------------------------------------------------------
 
-export const updateTicket = async (ticket: TicketUpdate) => {
+export const updateHistory = async (history: HistoryUpdate) => {
   try {
     const token = useAuthStore.getState().token
     if (!token) {
@@ -99,17 +99,19 @@ export const updateTicket = async (ticket: TicketUpdate) => {
     }
 
     const data = new URLSearchParams({
-      id: ticket.id,
-      'ownerData[name]': ticket.ownerData.name,
-      'ownerData[dni]': ticket.ownerData.dni,
-      'ownerData[phone1]': ticket.ownerData.phone1,
-      'ownerData[phone2]': ticket.ownerData.phone2 ?? '',
-      'ownerData[address]': ticket.ownerData.address,
-      'ownerData[other]': ticket.ownerData.other ?? '',
-      state: ticket.state ?? '',
+      id: history.id,
+      note: history.note,
+      date: history.date,
+      dolarAmount: history.dolarAmount,
+      amount: history.amount,
+      badge: history.badge,
+      paymentType: history.paymentType,
+      ref: history.ref,
+      ticket: history.ticket,
+      seller: history.seller,
     }).toString()
 
-    const response = await tesloApi.put('/tickets', data, {
+    const response = await tesloApi.put('/history', data, {
       headers,
     })
 
@@ -124,7 +126,7 @@ export const updateTicket = async (ticket: TicketUpdate) => {
 }
 
 //----------------------------------------------------- DELETE ---------------------------------------------------------
-export const deleteTicket = async (projectId: string) => {
+export const deleteHistory = async (historyId: string) => {
   try {
     const token = useAuthStore.getState().token
     if (!token) {
@@ -134,8 +136,8 @@ export const deleteTicket = async (projectId: string) => {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/x-www-form-urlencoded',
     }
-    const data = new URLSearchParams({ id: projectId }).toString()
-    const response = await tesloApi.delete('/tickets', {
+    const data = new URLSearchParams({ id: historyId }).toString()
+    const response = await tesloApi.delete('/history', {
       headers,
       data,
     })
