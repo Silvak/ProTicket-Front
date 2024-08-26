@@ -12,7 +12,7 @@ import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
 export interface ProjectState {
-  selectedProject: object
+  selectedProject: ProjectProp | null
   data: object
   tickets: object
   page: number
@@ -28,7 +28,7 @@ export interface ProjectState {
 }
 
 const storeApi: StateCreator<ProjectState> = (set, get) => ({
-  selectedProject: {},
+  selectedProject: null,
   data: {},
   tickets: {},
   page: 1,

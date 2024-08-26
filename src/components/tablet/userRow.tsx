@@ -1,36 +1,37 @@
-import type { ProjectList } from '@/contracts'
 import { useProjectStore } from '@/store'
+
 import { AiOutlineDelete } from 'react-icons/ai'
-import { LuUser2 } from 'react-icons/lu'
+//import { FaRegEdit } from "react-icons/fa";
+//import { LuUser2 } from 'react-icons/lu'
 import { MdOutlineDashboard } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { CustomModal } from '../modal/customModal'
 
-export const ProjectRow = ({
-  id,
-  name,
-  priceTicket,
-  totalTickets,
-  state,
-  owner,
-}: ProjectList) => {
+interface UserRowProp {
+  id: string
+  name: string
+  email: string
+  role: string[]
+  state: string[]
+}
+
+export const UserRow = ({ id, name, email, role, state }: UserRowProp) => {
   const navigate = useNavigate()
   const deleteProject = useProjectStore((state) => state.deleteProject)
-  const ownerName = typeof owner === 'string' ? owner : owner.name
 
   const handleDelete = async () => {
     try {
       await deleteProject(id)
       toast.success('Proyecto eliminado exitosamente.')
     } catch (_error) {
-      toast.error('Ha ocurrido un error!')
+      toast.error('Hubo un error al eliminar el proyecto.')
     }
   }
 
   return (
     <>
-      <div className="grid  grid-cols-1 lg:grid-cols-7 border-b p-4 gap-y-2 xl:gap-0">
+      <div className="grid  grid-cols-1 lg:grid-cols-5 border-b p-4 gap-y-2 xl:gap-0">
         {/* project info */}
         <div className="flex gap-2 col-span-1 lg:col-span-2 overflow-hidden">
           <div className="h-[64px] w-[64px]  bg-gray-200 rounded-md overflow-hidden">
@@ -43,34 +44,14 @@ export const ProjectRow = ({
           <div>
             <h2 className="font-semibold">{name}</h2>
             <p className="text-sm text-gray-400">ID: {id}</p>
+            <p className="text-sm text-gray-400">ID: {email}</p>
           </div>
         </div>
 
         {/* tickets */}
         <div className="flex items-center">
           <label className="flex lg:hidden mr-2">Total Tickets:</label>
-          <div className="px-2 py-1 text-white bg-slate-900 rounded-md">
-            {totalTickets}
-          </div>
-        </div>
-
-        {/* owner */}
-        <div className="flex items-center">
-          <label className="flex lg:hidden mr-2">Precio:</label>
-          <p>
-            <span className="">{priceTicket}</span>$
-          </p>
-        </div>
-
-        {/* owner */}
-        <div className="flex items-center">
-          <label className="flex lg:hidden mr-2">Dueño:</label>
-          <div className="flex items-center gap-2 pl-2 pr-4 p-1 border w-min rounded-full">
-            <div className="bg-slate-700 h-[32px] w-[32px] rounded-full text-white flex justify-center items-center">
-              <LuUser2 />
-            </div>
-            <p className="min-w">{ownerName}</p>
-          </div>
+          <div className="px-2 py-1 text-white bg-slate-900 rounded-md">{role}</div>
         </div>
 
         {/* state */}
@@ -90,6 +71,7 @@ export const ProjectRow = ({
           >
             <MdOutlineDashboard />
           </button>
+
           {/*
           <button
             type="button"

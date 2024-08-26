@@ -1,22 +1,22 @@
-import type { ProjectTabletProp } from '@/contracts'
-import { useProjectStore } from '@/store'
+import type { UserTabletProp } from '@/contracts'
+import { useUserStore } from '@/store'
 import { useEffect } from 'react'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
-import { ProjectRow } from './projectRow'
+import { UserRow } from './userRow'
 
-export const ProjectTablet = ({ limit, page, projects, total }: ProjectTabletProp) => {
+export const UsersTablet = ({ limit, page, users, total }: UserTabletProp) => {
   const numberPages = Math.ceil(total / limit)
-  const actualPage = useProjectStore((state) => state.page)
-  const actualLimit = useProjectStore((state) => state.limit)
-  const setPage = useProjectStore((state) => state.setPage)
-  const setLimit = useProjectStore((state) => state.setLimit)
-  const getProjects = useProjectStore((state) => state.getProjects)
+  const actualPage = useUserStore((state) => state.page)
+  const actualLimit = useUserStore((state) => state.limit)
+  const setPage = useUserStore((state) => state.setPage)
+  const setLimit = useUserStore((state) => state.setLimit)
+  const getUsers = useUserStore((state) => state.getUser)
 
   useEffect(() => {
-    getProjects()
+    getUsers()
     actualPage
     actualLimit
-  }, [actualPage, actualLimit, getProjects])
+  }, [actualPage, actualLimit, getUsers])
 
   const handlePrevius = () => {
     if (page > 1) setPage(page - 1)
@@ -25,30 +25,27 @@ export const ProjectTablet = ({ limit, page, projects, total }: ProjectTabletPro
     if (page < numberPages) setPage(page + 1)
   }
 
-  if (projects.length === 0) return <div> No hay proyectos</div>
+  //if (projects.length == 0) return <div> No hay proyectos</div>;
   return (
     <div className="bg-white border border-gray-300  overflow-hidden rounded-md col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
       {/* head */}
-      <div className="hidden lg:grid grid-cols-7 border-b p-4 text-sm text-gray-400">
+      <div className="hidden lg:grid grid-cols-5 border-b p-4 text-sm text-gray-400">
         <p className="col-span-2">Proyecto</p>
-        <p>Total Tickets</p>
-        <p>Precio</p>
-        <p>Dueño</p>
+        <p>Rol</p>
         <p>Estado</p>
         <p className="text-right">Acciones</p>
       </div>
 
       {/* body */}
       <div>
-        {projects.map((project) => (
-          <ProjectRow
-            key={project.id}
-            id={project.id}
-            name={project.name}
-            priceTicket={project.priceTicket}
-            totalTickets={project.totalTickets}
-            state={project.state}
-            owner={project.owner}
+        {users.map((user) => (
+          <UserRow
+            key={user.id}
+            id={user.id}
+            name={user.name}
+            email={user.email}
+            role={user.role}
+            state={user.state}
           />
         ))}
       </div>
@@ -65,7 +62,7 @@ export const ProjectTablet = ({ limit, page, projects, total }: ProjectTabletPro
             }}
             className="border rounded-md h-[42px] px-2"
           >
-            <option value={5}>5</option>
+            <option value={2}>2</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={40}>50</option>

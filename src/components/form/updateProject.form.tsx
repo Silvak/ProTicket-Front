@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import { UserSelect } from '../form/userSelect'
 
 interface UpdateProjectFormProps {
-  project: ProjectProp // Tipado del prop `project`
+  project: ProjectProp
 }
 
 export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {

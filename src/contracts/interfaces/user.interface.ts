@@ -16,3 +16,20 @@ export interface UserResponse {
   prev: string
   users: User[]
 }
+
+// --------------------------- PROPS --------------------------
+export interface UserProp {
+  id: string
+  name: string
+  email: string
+  emailValidated: string
+  role: string[]
+  state: string[]
+}
+
+export type UserTabletProp = {
+  limit: number
+  page: number
+  users: UserProp[]
+  total: number
+}

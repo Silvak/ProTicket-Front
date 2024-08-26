@@ -89,7 +89,6 @@ export const getRelatedProjectTickets = async (
 //----------------------------------------------------- CREATE ---------------------------------------------------------
 export const createProject = async (projectData: ProjectProp) => {
   try {
-    console.log(projectData)
     const token = useAuthStore.getState().token
     if (!token) {
       throw new Error('UnAuthorized')

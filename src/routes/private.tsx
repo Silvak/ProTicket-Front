@@ -1,6 +1,9 @@
 import {
   DashboardAdminPage,
+  DashboardPage,
+  DashboardUserPage,
   DetailProjectsPage,
+  DetailTicketPage,
   DetailUserPage,
   OverviewPage,
   ProjectsPage,
@@ -25,8 +28,12 @@ export const privateRoutes = [
         element: <ProjectsPage />,
       },
       {
-        path: 'projects/details/:id',
+        path: 'projects/details/:projectId',
         element: <DetailProjectsPage />,
+      },
+      {
+        path: 'projects/details/:projectId/ticket/:ticketId',
+        element: <DetailTicketPage />,
       },
 
       // users
@@ -43,14 +50,14 @@ export const privateRoutes = [
 
   {
     path: '/user',
-    element: <DashboardAdminPage />,
+    element: <DashboardUserPage />,
     allowedRoles: ['USER_ROLE'],
     children: [],
   },
 
   {
     path: '/reseller',
-    element: <DashboardAdminPage />,
+    element: <DashboardPage />,
     allowedRoles: ['RESELLER_ROLE'],
     children: [],
   },
