@@ -165,7 +165,7 @@ export const UpdateTicketForm = ({ ticket }: UpdateTicketFormProps) => {
           >
             <option value="PAID">Pagado</option>
             <option value="UNPAID">Pendiente</option>
-            <option value="CANCELLED ">Cancelado</option>
+            <option value="CANCELLED">Cancelado</option>
           </select>
         </div>
 

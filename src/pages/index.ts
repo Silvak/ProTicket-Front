@@ -16,7 +16,7 @@ export * from './admin/tickets/detail-ticket.page'
 export * from './reseller/dashboard.page'
 
 // private
-export * from './private/dashboardUser.page'
+export * from './user/dashboardUser.page'
 
 //fallback
 // export * from './NotFound'

@@ -18,9 +18,9 @@ export interface HistoryState {
 
   getHistory: (historyId: string) => Promise<void>
   getHistories: (ticketId: string) => Promise<void>
-  createTicket: (historyData: HistoryCreate) => Promise<void>
-  updateTicket: (historyData: HistoryUpdate) => Promise<void>
-  deleteTicket: (historyId: string, ticketId: string) => Promise<void>
+  createHistory: (historyData: HistoryCreate) => Promise<void>
+  updateHistory: (historyData: HistoryUpdate) => Promise<void>
+  deleteHistory: (historyId: string, ticketId: string) => Promise<void>
 
   setPage: (page: number) => void
   setLimit: (limit: number) => void
@@ -50,7 +50,7 @@ const storeApi: StateCreator<HistoryState> = (set, get) => ({
     }
   },
 
-  createTicket: async (historyData) => {
+  createHistory: async (historyData) => {
     try {
       const res = await createHistory(historyData)
       if (res) {
@@ -61,7 +61,7 @@ const storeApi: StateCreator<HistoryState> = (set, get) => ({
     }
   },
 
-  updateTicket: async (historyData) => {
+  updateHistory: async (historyData) => {
     try {
       const res = await updateHistory(historyData)
       if (res) {
@@ -72,7 +72,7 @@ const storeApi: StateCreator<HistoryState> = (set, get) => ({
     }
   },
 
-  deleteTicket: async (historyId, ticketId) => {
+  deleteHistory: async (historyId, ticketId) => {
     try {
       const res = await deleteHistory(historyId)
       if (res) {
@@ -87,6 +87,6 @@ const storeApi: StateCreator<HistoryState> = (set, get) => ({
   setLimit: async (limit: number) => set({ limit: limit }),
 })
 
-export const useTicketStore = create<HistoryState>()(
+export const useHistoryStore = create<HistoryState>()(
   devtools(persist(storeApi, { name: 'history-storage' }))
 )

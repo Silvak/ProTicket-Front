@@ -1,9 +1,8 @@
 import type { TicketProp } from '@/contracts'
-import { useTicketStore } from '@/store'
+import { useAuthStore, useProjectStore, useTicketStore } from '@/store'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { IoTicketOutline } from 'react-icons/io5'
 import { LuUser2 } from 'react-icons/lu'
-//import { FaRegEdit } from "react-icons/fa";
 import { MdOutlineDashboard } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -15,7 +14,17 @@ type TabletRow = {
 
 export const TicketRow = ({ ticket }: TabletRow) => {
   const navigate = useNavigate()
+  const getProjects = useProjectStore((state) => state.getProjects)
+  const getTicket = useTicketStore((state) => state.getTicket)
   const deleteTicket = useTicketStore((state) => state.deleteTicket)
+  const user = useAuthStore((state) => state.user)
+  const role = user?.role || ''
+
+  const handleDetails = () => {
+    getProjects(ticket.project.id)
+    getTicket(ticket.id)
+    navigate(`/admin/ticket-detail/${ticket.id}`)
+  }
 
   const handleDelete = async () => {
     try {
@@ -92,33 +101,35 @@ export const TicketRow = ({ ticket }: TabletRow) => {
         <div className="flex items-center justify-end gap-2 col-span-1 lg:col-span-1 mt-6 lg:mt-0">
           <button
             type="button"
-            onClick={() => navigate(`ticket/${ticket.id}`)}
+            onClick={handleDetails}
             className="flex justify-center items-center h-[42px] min-w-[42px] w-full lg:w-min border rounded-md hover:bg-gray-300"
           >
             <MdOutlineDashboard />
           </button>
 
-          <CustomModal
-            header={<h2>Confirmar Eliminación</h2>}
-            buttonText=""
-            buttonType="delete"
-            buttonIcon={<AiOutlineDelete />}
-          >
-            <p>
-              ¿Estás seguro de que deseas eliminar el ticket:
-              <span className="font-semibold ml-1">{ticket.number}</span> de
-              <span className="font-semibold ml-1">{ticket.ownerData.name}</span>?
-            </p>
-            <div className="flex justify-end gap-4 mt-4">
-              <button
-                type="button"
-                onClick={handleDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-              >
-                Confirmar
-              </button>
-            </div>
-          </CustomModal>
+          {(role[0] === 'USER_ROLE' || role[0] === 'RESELLER_ROLE') && (
+            <CustomModal
+              header={<h2>Confirmar Eliminación</h2>}
+              buttonText=""
+              buttonType="delete"
+              buttonIcon={<AiOutlineDelete />}
+            >
+              <p>
+                ¿Estás seguro de que deseas eliminar el ticket:
+                <span className="font-semibold ml-1">{ticket.number}</span> de
+                <span className="font-semibold ml-1">{ticket.ownerData.name}</span>?
+              </p>
+              <div className="flex justify-end gap-4 mt-4">
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </CustomModal>
+          )}
         </div>
       </div>
     </>

@@ -1,0 +1,164 @@
+import type { TicketProp } from '@/contracts'
+import { useHistoryStore, useTicketStore } from '@/store'
+import { useState } from 'react'
+import { toast } from 'react-toastify'
+//import { UserSelect } from "./userSelect";
+
+export const CreateHistoryForm = () => {
+  const [formData, setFormData] = useState({
+    note: '',
+    date: '',
+    dolarAmount: '',
+    amount: '',
+    badge: 'VES',
+    paymentType: 'TRANSFER',
+    ref: '',
+  })
+
+  const selectedTicket = useTicketStore((state) => state.selectedTicket as TicketProp)
+  const createHistory = useHistoryStore((state) => state.createHistory)
+
+  // logic
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    const historyData = {
+      note: formData.note,
+      date: formData.date,
+      dolarAmount: formData.dolarAmount,
+      amount: formData.amount,
+      badge: formData.badge,
+      paymentType: formData.paymentType,
+      ref: formData.ref,
+      ticket: selectedTicket.id,
+      seller: selectedTicket.seller.id,
+    }
+
+    try {
+      await createHistory(historyData)
+      toast.success('Abono registrado exitosamente')
+      // clean form
+      setFormData({
+        note: '',
+        date: '',
+        dolarAmount: '',
+        amount: '',
+        badge: 'VES',
+        paymentType: 'TRANSFER',
+        ref: '',
+      })
+    } catch (_error) {
+      toast.error('Error al intentar intentar guardar abono!')
+    }
+  }
+
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium">Nota</label>
+          <input
+            type="text"
+            name="note"
+            value={formData.note}
+            onChange={handleChange}
+            className="w-full mt-1 p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium">Fecha</label>
+          <input
+            type="date"
+            name="date"
+            value={formData.date}
+            onChange={handleChange}
+            className="w-full mt-1 p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium">Monto en dolares</label>
+          <input
+            type="number"
+            name="dolarAmount"
+            value={+formData.dolarAmount}
+            onChange={handleChange}
+            className="w-full mt-1 p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+
+        <div className="mb-4 flex justify-between w-full gap-1">
+          <div className="w-full">
+            <label className="block text-sm font-medium">Monto</label>
+            <input
+              type="number"
+              name="amount"
+              value={+formData.amount}
+              onChange={handleChange}
+              className="w-full mt-1 p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+
+          <div className="w-full">
+            <label className="block text-sm font-medium">Tipo</label>
+            <select
+              name="badge"
+              value={formData.badge}
+              onChange={handleChange}
+              className="w-full mt-1 p-2 border border-gray-300 rounded"
+              required
+            >
+              <option value="VES">VES</option>
+              <option value="USD">USD</option>
+              <option value="COP">COP</option>
+            </select>
+          </div>
+
+          <div className="w-full">
+            <label className="block text-sm font-medium">Tipo de Pago</label>
+            <select
+              name="paymentType"
+              value={formData.paymentType}
+              onChange={handleChange}
+              className="w-full mt-1 p-2 border border-gray-300 rounded"
+              required
+            >
+              <option value="CASH">CASH</option>
+              <option value="TRANSFER">TRANSFER</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium">Referencia</label>
+          <input
+            type="text"
+            name="ref"
+            value={formData.ref}
+            onChange={handleChange}
+            className="w-full mt-1 p-2 border border-gray-300 rounded"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full py-2 px-4 bg-blue-600 text-white rounded mt-4"
+        >
+          Registrar Abono
+        </button>
+      </form>
+    </>
+  )
+}

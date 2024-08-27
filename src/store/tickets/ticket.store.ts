@@ -21,6 +21,7 @@ export interface TicketState {
   createTicket: (ticketData: TicketCreate) => Promise<void>
   updateTicket: (ticketData: TicketUpdate) => Promise<void>
   deleteTicket: (ticketId: string, projectId: string) => Promise<void>
+  cleanTickets: () => void
 
   setPage: (page: number) => void
   setLimit: (limit: number) => void
@@ -82,6 +83,8 @@ const storeApi: StateCreator<TicketState> = (set, get) => ({
       throw 'Delete error'
     }
   },
+
+  cleanTickets: () => set({ data: {} }),
 
   setPage: async (page: number) => set({ page: page }),
   setLimit: async (limit: number) => set({ limit: limit }),

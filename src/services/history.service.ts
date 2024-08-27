@@ -73,7 +73,7 @@ export const createHistory = async (history: HistoryCreate) => {
     }).toString()
 
     const response = await tesloApi.post('/history', data, { headers })
-
+    console.log(response.data)
     return response.data
   } catch (error) {
     if (error instanceof AxiosError) {

@@ -1,38 +1,37 @@
-import type { TicketTabletProp } from '@/contracts'
-import { useTicketStore } from '@/store/tickets/ticket.store'
+import type { HistoryTabletProp } from '@/contracts'
+import { useHistoryStore } from '@/store'
 import { useEffect, useState } from 'react'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
-import { ErrorBox } from '../common/errorBox'
 import { Loading } from '../common/loading'
-import { CreateTicketModal } from '../modal/createTicket.modal'
-import { TicketRow } from './ticketRow'
+import { CreateHistoryModal } from '../modal/createHistory.modal'
+import { HistoryRow } from './historyRow'
 
-export const TicketsTablet = ({ projectId = '' }) => {
+export const HistoryTablet = ({ ticketId = '' }) => {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-  const { limit, page, tickets, total } = useTicketStore(
-    (state) => state.data as TicketTabletProp
+  const { limit, page, history, total } = useHistoryStore(
+    (state) => state.data as HistoryTabletProp
   )
   const numberPages = Math.ceil(total / limit)
-  const actualPage = useTicketStore((state) => state.page)
-  const actualLimit = useTicketStore((state) => state.limit)
-  const setPage = useTicketStore((state) => state.setPage)
-  const setLimit = useTicketStore((state) => state.setLimit)
-  const getTickets = useTicketStore((state) => state.getTickets)
+  const actualPage = useHistoryStore((state) => state.page)
+  const actualLimit = useHistoryStore((state) => state.limit)
+  const setPage = useHistoryStore((state) => state.setPage)
+  const setLimit = useHistoryStore((state) => state.setLimit)
+  const getHistories = useHistoryStore((state) => state.getHistories)
 
   useEffect(() => {
-    if (projectId) {
-      getTickets(projectId).then(() => setLoading(false))
+    if (ticketId) {
+      getHistories(ticketId).then(() => setLoading(false))
       setPage(1)
     }
-    projectId
-  }, [projectId, getTickets, setPage])
+    ticketId
+  }, [ticketId, getHistories, setPage])
 
   useEffect(() => {
-    if (projectId) getTickets(projectId)
+    if (ticketId) getHistories(ticketId)
     actualPage
     actualLimit
-  }, [actualPage, actualLimit, projectId, getTickets])
+  }, [actualPage, actualLimit, ticketId, getHistories])
 
   const handlePrevius = () => {
     if (page > 1) setPage(page - 1)
@@ -41,13 +40,11 @@ export const TicketsTablet = ({ projectId = '' }) => {
     if (page < numberPages) setPage(page + 1)
   }
 
-  const filteredTicket = tickets?.filter((ticket) =>
-    ticket.ownerData.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredHistory = history?.filter((historyElement) =>
+    historyElement.note.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   if (loading) return <Loading />
-  if (!tickets || !tickets)
-    return <ErrorBox title={'Error'} message={'No se han encontrado tickets.'} />
   return (
     <>
       {/* filter & actions */}
@@ -62,27 +59,28 @@ export const TicketsTablet = ({ projectId = '' }) => {
       </div>
 
       <div className="bg-white border border-gray-300 rounded-md h-[52px] p-2 col-span-1 sm:col-span-2 md:col-span-1 xl:col-span-2">
-        <CreateTicketModal />
+        {/*<CreateTicketModal /> */}
+        <CreateHistoryModal />
       </div>
 
       {/* TABLET */}
       <div className="bg-white border border-gray-300  overflow-hidden rounded-md col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
-        {tickets.length > 0 ? (
+        {history.length > 0 ? (
           <>
             {/* head */}
             <div className="hidden lg:grid grid-cols-7 border-b p-4 text-sm text-gray-400">
-              <p className="col-span-2">Propietario</p>
-              <p className=" text-center">Numero</p>
-              <p>Abonado</p>
-              <p className=" text-center">Vendido por</p>
-              <p className="text-center">Estado</p>
+              <p className="col-span-2">Nota</p>
+              <p className=" text-center">Pago</p>
+              <p className=" text-center">Typo</p>
+              <p className=" text-center">Monto Dolar</p>
+              <p className="text-center">Cobrado por</p>
               <p className="text-right">Acciones</p>
             </div>
 
             {/* rows */}
             <div>
-              {filteredTicket.map((ticket) => (
-                <TicketRow key={ticket.id} ticket={ticket} />
+              {filteredHistory.map((historyElement) => (
+                <HistoryRow key={historyElement.id} history={historyElement} />
               ))}
             </div>
 

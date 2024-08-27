@@ -16,9 +16,10 @@ export const UserButton = () => {
       <button
         type="button"
         onClick={handleClic}
-        className="flex justify-between items-center gap-4 md:pl-8 pl-2  pr-2 h-[52px] bg-gray-200 rounded-full"
+        className="flex justify-between items-center gap-4 md:pl-6 pl-2  pr-2 h-[52px] bg-gray-200 rounded-full"
       >
-        <span className="hidden md:flex">{user?.name || 'user'}</span>
+        <span className="hidden md:flex font-semibold">{user?.name || 'user'}</span>
+
         <div className=" flex justify-center items-center w-[40px] h-[40px] bg-slate-900 rounded-full text-white ">
           <LuUser2 />
         </div>
@@ -26,6 +27,12 @@ export const UserButton = () => {
 
       {isOpen && (
         <div className="absolute flex flex-col items-start gap-2 top-[68px] right-0 bg-white border w-[200px] p-2 rounded-md shadow-lg z-[100]">
+          <button
+            type="button"
+            className="w-full h-[42px] hover:bg-gray-200 text-left px-2 rounded-md"
+          >
+            {user?.role !== null && <span className="text-sm">{user?.role}</span>}
+          </button>
           <button
             type="button"
             className="w-full h-[42px] hover:bg-gray-200 text-left px-2 rounded-md"

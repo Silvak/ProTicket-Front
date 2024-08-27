@@ -1,34 +1,19 @@
-import { LayoutGrid } from '@/components'
+import { ErrorBox, HistoryTablet, LayoutGrid } from '@/components'
 import { CustomModal } from '@/components'
 import { UpdateTicketForm } from '@/components/form/updateTicket.form'
 import type { TicketProp } from '@/contracts'
-import { /*useProjectStore,*/ useProjectStore, useTicketStore } from '@/store'
-import { useEffect, useState } from 'react'
+import { useProjectStore, useTicketStore } from '@/store'
 import { FaLongArrowAltRight, FaSave } from 'react-icons/fa'
 import { LuUser2 } from 'react-icons/lu'
 import { useParams } from 'react-router-dom'
 
 export const DetailTicketPage = () => {
   const { ticketId } = useParams<{ ticketId: string }>()
-  const [loading, setLoading] = useState(true)
-
-  //const project = useProjectStore((state) => state.selectedProject)
-  const selectedTicket = useTicketStore((state) => state.selectedTicket as TicketProp)
   const selectedProject = useProjectStore((state) => state.selectedProject)
-  const getTicket = useTicketStore((state) => state.getTicket)
+  const selectedTicket = useTicketStore((state) => state.selectedTicket as TicketProp)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (ticketId !== undefined) {
-        await getTicket(ticketId)
-        setLoading(false)
-      }
-    }
-    fetchData()
-  }, [ticketId, getTicket])
-
-  if (loading) return <div>Loading...</div>
-  if (!selectedTicket || !selectedTicket) return <div>Error: No ticket found</div>
+  if (!selectedTicket || !selectedTicket)
+    return <ErrorBox title={'Error'} message={'No se ha logrado obtener la data.'} />
   return (
     <LayoutGrid>
       <div className="bg-white border border-gray-300 rounded-md p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
@@ -150,7 +135,7 @@ export const DetailTicketPage = () => {
         </div>
       </div>
 
-      {/* ticket view */}
+      <HistoryTablet ticketId={ticketId} />
     </LayoutGrid>
   )
 }

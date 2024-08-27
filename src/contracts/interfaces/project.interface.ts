@@ -27,7 +27,7 @@ export interface Owner {
 }
 
 export interface ProjectProp {
-  id?: string
+  id: string
   name: string
   date: {
     start: string

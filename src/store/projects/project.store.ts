@@ -23,6 +23,7 @@ export interface ProjectState {
   createProject: (projectData: ProjectProp) => Promise<void>
   updateProject: (projectData: ProjectProp) => Promise<void>
   deleteProject: (projectID: string) => Promise<void>
+  cleanSelectedProject: () => void
   setPage: (page: number) => void
   setLimit: (limit: number) => void
 }
@@ -89,7 +90,7 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
       throw 'Delete error'
     }
   },
-
+  cleanSelectedProject: () => set({ selectedProject: null }),
   setPage: async (page: number) => set({ page: page }),
   setLimit: async (limit: number) => set({ limit: limit }),
 })

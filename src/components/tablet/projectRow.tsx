@@ -16,8 +16,14 @@ export const ProjectRow = ({
   owner,
 }: ProjectList) => {
   const navigate = useNavigate()
+  const getProjects = useProjectStore((state) => state.getProjects)
   const deleteProject = useProjectStore((state) => state.deleteProject)
   const ownerName = typeof owner === 'string' ? owner : owner.name
+
+  const handleDetails = () => {
+    getProjects(id)
+    navigate(`/admin/project-detail/${id}`)
+  }
 
   const handleDelete = async () => {
     try {
@@ -85,20 +91,11 @@ export const ProjectRow = ({
         <div className="flex items-center justify-end gap-2 col-span-1 lg:col-span-1 mt-6 lg:mt-0">
           <button
             type="button"
-            onClick={() => navigate(`details/${id}`)}
+            onClick={handleDetails}
             className="flex justify-center items-center h-[42px] min-w-[42px] w-full lg:w-min border rounded-md hover:bg-gray-300"
           >
             <MdOutlineDashboard />
           </button>
-          {/*
-          <button
-            type="button"
-            onClick={() => deleteProject(id)}
-            className="flex justify-center items-center h-[42px] min-w-[42px] w-full lg:w-min border rounded-md hover:bg-gray-300"
-          >
-            <AiOutlineDelete />
-          </button>
-          */}
 
           <CustomModal
             header={<h2>Confirmar Eliminación</h2>}

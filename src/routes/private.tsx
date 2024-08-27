@@ -28,11 +28,11 @@ export const privateRoutes = [
         element: <ProjectsPage />,
       },
       {
-        path: 'projects/details/:projectId',
+        path: 'project-detail/:projectId',
         element: <DetailProjectsPage />,
       },
       {
-        path: 'projects/details/:projectId/ticket/:ticketId',
+        path: 'ticket-detail/:ticketId',
         element: <DetailTicketPage />,
       },
 
@@ -52,7 +52,24 @@ export const privateRoutes = [
     path: '/user',
     element: <DashboardUserPage />,
     allowedRoles: ['USER_ROLE'],
-    children: [],
+    children: [
+      {
+        path: 'overview',
+        element: <OverviewPage />,
+      },
+      {
+        path: 'projects',
+        element: <ProjectsPage />,
+      },
+      {
+        path: 'projects/details/:projectId',
+        element: <DetailProjectsPage />,
+      },
+      {
+        path: 'projects/details/:projectId/ticket/:ticketId',
+        element: <DetailTicketPage />,
+      },
+    ],
   },
 
   {
