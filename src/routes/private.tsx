@@ -1,6 +1,6 @@
 import {
   DashboardAdminPage,
-  DashboardPage,
+  DashboardResellerPage,
   DashboardUserPage,
   DetailProjectsPage,
   DetailTicketPage,
@@ -53,20 +53,23 @@ export const privateRoutes = [
     element: <DashboardUserPage />,
     allowedRoles: ['USER_ROLE'],
     children: [
+      //Overview
       {
         path: 'overview',
         element: <OverviewPage />,
       },
+
+      // projects
       {
         path: 'projects',
         element: <ProjectsPage />,
       },
       {
-        path: 'projects/details/:projectId',
+        path: 'project-detail/:projectId',
         element: <DetailProjectsPage />,
       },
       {
-        path: 'projects/details/:projectId/ticket/:ticketId',
+        path: 'ticket-detail/:ticketId',
         element: <DetailTicketPage />,
       },
     ],
@@ -74,8 +77,28 @@ export const privateRoutes = [
 
   {
     path: '/reseller',
-    element: <DashboardPage />,
+    element: <DashboardResellerPage />,
     allowedRoles: ['RESELLER_ROLE'],
-    children: [],
+    children: [
+      //Overview
+      {
+        path: 'overview',
+        element: <OverviewPage />,
+      },
+
+      // projects
+      {
+        path: 'projects',
+        element: <ProjectsPage />,
+      },
+      {
+        path: 'project-detail/:projectId',
+        element: <DetailProjectsPage />,
+      },
+      {
+        path: 'ticket-detail/:ticketId',
+        element: <DetailTicketPage />,
+      },
+    ],
   },
 ]

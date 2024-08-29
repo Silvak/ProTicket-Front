@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 
 export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
   const isLoggedIn = useAuthStore((state) => state.status) === 'authorized'
-  const user = useAuthStore((state) => state.user) // Obtén todo el estado de autenticación
+  const user = useAuthStore((state) => state.user)
   const userRole = user?.role || []
 
   const { pathname } = useLocation()

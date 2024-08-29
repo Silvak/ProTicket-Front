@@ -1,8 +1,10 @@
+import { useUserRole } from '@/hooks/useUserRole'
 import { useAuthStore } from '@/store'
 import { useState } from 'react'
 import { LuUser2 } from 'react-icons/lu'
 
 export const UserButton = () => {
+  const userRole = useUserRole()
   const [isOpen, setIsOpen] = useState(false)
   const logoutUser = useAuthStore((state) => state.logoutUser)
   const user = useAuthStore((state) => state.user)
@@ -29,9 +31,9 @@ export const UserButton = () => {
         <div className="absolute flex flex-col items-start gap-2 top-[68px] right-0 bg-white border w-[200px] p-2 rounded-md shadow-lg z-[100]">
           <button
             type="button"
-            className="w-full h-[42px] hover:bg-gray-200 text-left px-2 rounded-md"
+            className="w-full h-[42px] hover:bg-gray-200 text-left px-2 rounded-md capitalize"
           >
-            {user?.role !== null && <span className="text-sm">{user?.role}</span>}
+            {userRole}
           </button>
           <button
             type="button"

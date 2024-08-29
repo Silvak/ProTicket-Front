@@ -1,11 +1,13 @@
 import { useAuthStore } from '@/store'
-import type { FormEvent } from 'react'
+import { type FormEvent, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 export const LoginPage = () => {
   const navigate = useNavigate()
   const loginUser = useAuthStore((state) => state.loginUser)
+  const user = useAuthStore((state) => state.user)
+  const status = useAuthStore((state) => state.status)
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -18,7 +20,6 @@ export const LoginPage = () => {
 
     try {
       await loginUser(username.value, password.value)
-      navigate('/admin/overview')
       toast.success('Autenticación exitosa')
     } catch (_error) {
       toast.error('No se pudo autenticar')
@@ -28,6 +29,20 @@ export const LoginPage = () => {
     //password.value = "";
     //remember.checked = false;
   }
+
+  useEffect(() => {
+    if (status === 'authorized' && user) {
+      if (user?.role?.includes('ADMIN_ROLE')) {
+        navigate('/admin/overview')
+      } else if (user?.role?.includes('USER_ROLE')) {
+        navigate('/user/overview')
+      } else if (user?.role?.includes('RESELLER_ROLE')) {
+        navigate('/reseller/overview')
+      } else {
+        navigate('/') // default path
+      }
+    }
+  }, [status, user, navigate])
 
   return (
     <div className="relative grid place-content-center bg-gray-200 h-[100vh] w-[100vw]">
@@ -43,7 +58,7 @@ export const LoginPage = () => {
             <input
               type="email"
               name="username"
-              autoComplete="off"
+              autoComplete="on"
               className="w-full border rounded-md h-[42px] px-2"
             />
           </label>
@@ -53,7 +68,7 @@ export const LoginPage = () => {
             <input
               type="password"
               name="password"
-              autoComplete="off"
+              autoComplete="on"
               className="w-full border rounded-md h-[42px] px-2"
             />
           </label>

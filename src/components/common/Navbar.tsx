@@ -1,11 +1,15 @@
-import { useSidebarStore } from '@/store'
+import { useAuthStore, useSidebarStore } from '@/store'
 import { CgMenuGridO } from 'react-icons/cg'
+import { useNavigate } from 'react-router-dom'
 import { NotificationButton } from './notificationButton'
 import { UserButton } from './userButton'
 
 export const Navbar = () => {
+  const navigate = useNavigate()
   const isOpen = useSidebarStore((state) => state.isOpen)
   const setOpen = useSidebarStore((state) => state.setOpen)
+  const status = useAuthStore((state) => state.status)
+
   return (
     <header className="fixed flex w-full h-[70px] bg-white border-b border-gray-300 z-[100]">
       {/* menu button */}
@@ -14,13 +18,15 @@ export const Navbar = () => {
           isOpen ? 'w-[320px]' : 'min-w-[70px]'
         }  duration-150 ease-in-out`}
       >
-        <button
-          onClick={setOpen}
-          type="button"
-          className="flex justify-center items-center min-w-[52px] h-[52px] w-[52px] text-[38px] text-gray-500 rounded-md"
-        >
-          <CgMenuGridO />
-        </button>
+        {status === 'authorized' && (
+          <button
+            onClick={setOpen}
+            type="button"
+            className="flex justify-center items-center min-w-[52px] h-[52px] w-[52px] text-[38px] text-gray-500 rounded-md"
+          >
+            <CgMenuGridO />
+          </button>
+        )}
 
         <a href="/admin/overview" className="ml-2 text-xl">
           <span className="font-bold text-gray-400">PRO</span>
@@ -29,11 +35,24 @@ export const Navbar = () => {
       </div>
 
       <div className="flex justify-end items-center gap-2 md:gap-4 w-[calc(100vw-70px)] pr-4 ">
-        {/* notification */}
-        <NotificationButton />
+        {/* user button && notification*/}
 
-        {/* user button */}
-        <UserButton />
+        {status === 'unauthorized' && (
+          <button
+            type="button"
+            onClick={() => navigate('/login')}
+            className="py-2 px-4 bg-slate-900 rounded-md text-white"
+          >
+            Login
+          </button>
+        )}
+
+        {status === 'authorized' && (
+          <>
+            <NotificationButton />
+            <UserButton />
+          </>
+        )}
       </div>
     </header>
   )

@@ -1,4 +1,5 @@
 import type { TicketProp } from '@/contracts'
+import { useUserRole } from '@/hooks/useUserRole'
 import { useAuthStore, useProjectStore, useTicketStore } from '@/store'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { IoTicketOutline } from 'react-icons/io5'
@@ -13,6 +14,7 @@ type TabletRow = {
 }
 
 export const TicketRow = ({ ticket }: TabletRow) => {
+  const rolePath = useUserRole()
   const navigate = useNavigate()
   const getProjects = useProjectStore((state) => state.getProjects)
   const getTicket = useTicketStore((state) => state.getTicket)
@@ -23,7 +25,7 @@ export const TicketRow = ({ ticket }: TabletRow) => {
   const handleDetails = () => {
     getProjects(ticket.project.id)
     getTicket(ticket.id)
-    navigate(`/admin/ticket-detail/${ticket.id}`)
+    navigate(`/${rolePath}/ticket-detail/${ticket.id}`)
   }
 
   const handleDelete = async () => {

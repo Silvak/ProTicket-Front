@@ -1,4 +1,5 @@
 import type { ProjectList } from '@/contracts'
+import { useUserRole } from '@/hooks/useUserRole'
 import { useProjectStore } from '@/store'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { LuUser2 } from 'react-icons/lu'
@@ -15,6 +16,7 @@ export const ProjectRow = ({
   state,
   owner,
 }: ProjectList) => {
+  const rolePath = useUserRole()
   const navigate = useNavigate()
   const getProjects = useProjectStore((state) => state.getProjects)
   const deleteProject = useProjectStore((state) => state.deleteProject)
@@ -22,7 +24,7 @@ export const ProjectRow = ({
 
   const handleDetails = () => {
     getProjects(id)
-    navigate(`/admin/project-detail/${id}`)
+    navigate(`/${rolePath}/project-detail/${id}`)
   }
 
   const handleDelete = async () => {

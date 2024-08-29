@@ -1,5 +1,5 @@
 import type { TicketProp } from '@/contracts'
-import { useHistoryStore, useTicketStore } from '@/store'
+import { useAuthStore, useHistoryStore, useTicketStore } from '@/store'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 //import { UserSelect } from "./userSelect";
@@ -15,6 +15,7 @@ export const CreateHistoryForm = () => {
     ref: '',
   })
 
+  const user = useAuthStore((state) => state.user)
   const selectedTicket = useTicketStore((state) => state.selectedTicket as TicketProp)
   const createHistory = useHistoryStore((state) => state.createHistory)
 
@@ -38,7 +39,7 @@ export const CreateHistoryForm = () => {
       paymentType: formData.paymentType,
       ref: formData.ref,
       ticket: selectedTicket.id,
-      seller: selectedTicket.seller.id,
+      seller: user?.id || '',
     }
 
     try {
