@@ -2,12 +2,14 @@ import { useUserRole } from '@/hooks/useUserRole'
 import { useAuthStore } from '@/store'
 import { useState } from 'react'
 import { LuUser2 } from 'react-icons/lu'
+import { useNavigate } from 'react-router-dom'
 
 export const UserButton = () => {
   const userRole = useUserRole()
   const [isOpen, setIsOpen] = useState(false)
   const logoutUser = useAuthStore((state) => state.logoutUser)
   const user = useAuthStore((state) => state.user)
+  const navigate = useNavigate()
 
   const handleClic = () => {
     setIsOpen(!isOpen)
@@ -31,9 +33,10 @@ export const UserButton = () => {
         <div className="absolute flex flex-col items-start gap-2 top-[68px] right-0 bg-white border w-[200px] p-2 rounded-md shadow-lg z-[100]">
           <button
             type="button"
+            onClick={() => navigate(`/${userRole}/overview`)}
             className="w-full h-[42px] hover:bg-gray-200 text-left px-2 rounded-md capitalize"
           >
-            {userRole}
+            {userRole} Dasboard
           </button>
           <button
             type="button"

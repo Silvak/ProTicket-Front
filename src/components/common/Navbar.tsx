@@ -28,7 +28,7 @@ export const Navbar = () => {
           </button>
         )}
 
-        <a href="/admin/overview" className="ml-2 text-xl">
+        <a href="/" className="ml-2 text-xl">
           <span className="font-bold text-gray-400">PRO</span>
           <span className="font-bold">TICKET</span>
         </a>

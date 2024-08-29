@@ -21,6 +21,7 @@ export const ProjectRow = ({
   const getProjects = useProjectStore((state) => state.getProjects)
   const deleteProject = useProjectStore((state) => state.deleteProject)
   const ownerName = typeof owner === 'string' ? owner : owner.name
+  const roleUser = useUserRole()
 
   const handleDetails = () => {
     getProjects(id)
@@ -99,23 +100,25 @@ export const ProjectRow = ({
             <MdOutlineDashboard />
           </button>
 
-          <CustomModal
-            header={<h2>Confirmar Eliminación</h2>}
-            buttonText=""
-            buttonType="delete"
-            buttonIcon={<AiOutlineDelete />}
-          >
-            <p>¿Estás seguro de que deseas eliminar el proyecto "{name}"?</p>
-            <div className="flex justify-end gap-4 mt-4">
-              <button
-                type="button"
-                onClick={handleDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-              >
-                Confirmar
-              </button>
-            </div>
-          </CustomModal>
+          {roleUser === 'admin' && (
+            <CustomModal
+              header={<h2>Confirmar Eliminación</h2>}
+              buttonText=""
+              buttonType="delete"
+              buttonIcon={<AiOutlineDelete />}
+            >
+              <p>¿Estás seguro de que deseas eliminar el proyecto "{name}"?</p>
+              <div className="flex justify-end gap-4 mt-4">
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </CustomModal>
+          )}
         </div>
       </div>
     </>

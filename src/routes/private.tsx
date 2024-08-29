@@ -7,6 +7,9 @@ import {
   DetailUserPage,
   OverviewPage,
   ProjectsPage,
+  UserDetailProjectsPage,
+  UserOverviewPage,
+  UserProjectsPage,
   UsersPage,
 } from '@/pages'
 
@@ -56,21 +59,31 @@ export const privateRoutes = [
       //Overview
       {
         path: 'overview',
-        element: <OverviewPage />,
+        element: <UserOverviewPage />,
       },
 
       // projects
       {
         path: 'projects',
-        element: <ProjectsPage />,
+        element: <UserProjectsPage />,
       },
       {
         path: 'project-detail/:projectId',
-        element: <DetailProjectsPage />,
+        element: <UserDetailProjectsPage />,
       },
       {
         path: 'ticket-detail/:ticketId',
         element: <DetailTicketPage />,
+      },
+
+      // users
+      {
+        path: 'resellers',
+        element: <UsersPage />,
+      },
+      {
+        path: 'resellers/details/:id',
+        element: <DetailUserPage />,
       },
     ],
   },
@@ -81,10 +94,12 @@ export const privateRoutes = [
     allowedRoles: ['RESELLER_ROLE'],
     children: [
       //Overview
+      /*
       {
-        path: 'overview',
+        path: "overview",
         element: <OverviewPage />,
       },
+      */
 
       // projects
       {
