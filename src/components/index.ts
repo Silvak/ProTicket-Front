@@ -8,6 +8,7 @@ export * from './tablet/usersTablet'
 export * from './tablet/userRow'
 export * from './tablet/historyRow'
 export * from './tablet/historyTablet'
+export * from './cards/customCard'
 
 //
 export * from './cards/raffleDisplay'
