@@ -1,122 +1,126 @@
-import { CustomCard, LayoutGrid } from '@/components'
-import type { ProjectResponse, UserResponse } from '@/contracts'
-import { useAuthStore, useProjectStore, useUserStore } from '@/store'
+import { CustomCard, LayoutGrid, ProjectSelector } from '@/components'
+import { useUserRole } from '@/hooks/useUserRole'
+import { useAuthStore, useProjectStore } from '@/store'
 import { useEffect } from 'react'
 import { AiOutlineFlag } from 'react-icons/ai'
-import { FiUsers } from 'react-icons/fi'
-import { IoTicketOutline } from 'react-icons/io5'
 import { LuCheckCheck } from 'react-icons/lu'
 import { LuClock4 } from 'react-icons/lu'
 import { MdOutlineSavings } from 'react-icons/md'
+import { useNavigate } from 'react-router-dom'
 
-function createArray(length: number, interval: number) {
-  const adjustedLength = Math.ceil(length / interval) // Calcula el número de intervalos necesarios
-  return Array.from({ length: adjustedLength }, (_, index) => {
-    const start = index * interval + 1
-    const end = Math.min(start + interval - 1, length) // Asegura que el 'end' no exceda 'length'
-    return {
-      number: interval === 1 ? `${start}` : `${start}-${end}`,
-      state: undefined,
-      ticketId: '',
-    }
-  })
+interface ProjectStatusPro {
+  collected: number
+  goal: number
+  pending: number
+  sold: number
+  grid: {
+    number: string
+    ticket: string
+    status: string
+  }[]
 }
+
 export const UserOverviewPage = () => {
+  const navigate = useNavigate()
+  const rolePath = useUserRole()
   const user = useAuthStore((state) => state.user)
-  const projects = useProjectStore((state) => state.data) as ProjectResponse
-  const getProjects = useProjectStore((state) => state.getProjects)
-  const users = useUserStore((state) => state.data as UserResponse)
-  const getUser = useUserStore((state) => state.getUser)
-  const array = createArray(1000, 2)
+  const status = useProjectStore((state) => state.status as ProjectStatusPro)
+  const selectProject = useProjectStore((state) => state.selectedProject)
+  const getStatus = useProjectStore((state) => state.getStatus)
 
   useEffect(() => {
-    getProjects()
-    getUser()
-  }, [getProjects, getUser])
+    getStatus(selectProject?.id || '')
+  }, [getStatus, selectProject])
+
+  const handleTicketClick = (ticketId: string) => {
+    if (ticketId) {
+      navigate(`/${rolePath}/ticket-detail/${ticketId}`)
+    } else {
+      console.log('No ticket ID')
+    }
+  }
 
   return (
     <LayoutGrid>
-      <div className="flex flex-col  rounded-xl p-0 mb-6 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
-        <p className="text-sm">
-          ¡Bienvenido <span className="font-semibold">{user?.name}</span>!
+      <div className="flex flex-col rounded-xl p-0 col-span-1 sm:col-span-2 md:col-span-3 xl:col-span-6">
+        <p className="">
+          ¡Bienvenid@ <span className="font-semibold">{user?.name}</span>!
         </p>
 
-        <h1 className="text-2xl font-semibold">Estadisticas</h1>
+        <h1 className="text-2xl font-semibold">Estadísticas</h1>
       </div>
 
-      <CustomCard
-        className={''}
-        title={'Total Rifas'}
-        icon={<IoTicketOutline />}
-        textInfo={[(projects.total || 0).toString(), 'rifas']}
-      />
+      <div className="flex lg:justify-end  items-center h-full  rounded-xl p-0 col-span-1 sm:col-span-2 md:col-span-3 xl:col-span-6">
+        <ProjectSelector />
+      </div>
 
+      {/*
       <CustomCard
-        className={''}
-        title={'Revendedores'}
+        className={""}
+        title={"Miembros"}
         icon={<FiUsers />}
-        textInfo={[(users.total || 0).toString(), 'reseller']}
+        textInfo={["0", "reseller"]}
       />
+      */}
 
       <CustomCard
         className={''}
-        title={'Tickets Pendientes'}
+        title={'Pendientes'}
         icon={<LuClock4 />}
-        textInfo={['45/100', 'unidades']}
+        textInfo={[(status?.pending || 0).toString(), 'tickets']}
       />
 
       <CustomCard
         className={''}
-        title={'Tickets Vendidos'}
+        title={'Vendidos'}
         icon={<LuCheckCheck />}
-        textInfo={['12', 'unidades']}
+        textInfo={[`${status?.sold || 0}/${status.grid.length}`, 'tickets']}
       />
 
       <CustomCard
         className={''}
         title={'Total Recaudado'}
         icon={<MdOutlineSavings />}
-        textInfo={['365', '$']}
+        textInfo={[(status?.collected || 0).toString(), '$']}
       />
 
       <CustomCard
         className={''}
         title={'Meta Recaudación'}
         icon={<AiOutlineFlag />}
-        textInfo={['4500', '$']}
+        textInfo={[(status?.goal || 0).toString(), '$']}
       />
 
       <div className="flex flex-col  rounded-xl p-0 mt-6 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
-        <h1 className="text-2xl font-semibold">Vista Rápida de Rifa</h1>
+        <h1 className="text-2xl font-semibold text-gray-500">
+          Tabla de: <span className="text-gray-900">{selectProject?.name}</span>
+        </h1>
       </div>
 
       <div className="flex flex-col bg-white rounded-xl p-4 col-span-1 sm:col-span-2 md:col-span-6  xl:col-span-12 min-h-[120px]">
-        <div className="flex justify-between items-center mb-2">
-          <h3 className="text-lg font-semibold">Rifa 1</h3>
-
-          <div>
-            Modo de visualización
-            <select name="" id="" className="px-4 py-1 border rounded-md">
-              <option value="">Opción 1</option>
-              <option value="">Opción 2</option>
-              <option value="">Opción 3</option>
-            </select>
-          </div>
-        </div>
-
-        {/* grid */}
-
-        <div className="flex flex-wrap gap-2 justify-center mt-5 max-h-[500px] overflow-y-scroll">
-          {array.map((item) => (
-            <div
-              key={item.number}
-              className="flex flex-col justify-center items-center h-[68px] w-[68px] border rounded-md overflow-hidden bg-gray-50 cursor-pointer text-sm"
-            >
-              {item.number.split('-').map((num) => (
-                <p key={num}>{num}</p>
-              ))}
+        <div className="flex flex-wrap gap-3 justify-between  max-h-[500px] overflow-y-scroll">
+          {status.grid.length > 0 ? (
+            status.grid.map((item) => (
+              <button
+                key={item.number}
+                type="button"
+                onClick={() => handleTicketClick(item.ticket)}
+                className={`
+                ${item.status === 'PAID' && 'bg-green-200'} 
+                ${item.status === 'UNPAID' && 'bg-orange-200'}
+                ${item.status === 'PAID' && 'bg-green-800'}
+                flex flex-col justify-center items-center h-[68px] w-[68px] border rounded-md overflow-hidden bg-gray-50 cursor-pointer text-sm`}
+              >
+                {item.number.split('-').map((num) => (
+                  <p key={num}>{num}</p>
+                ))}
+              </button>
+            ))
+          ) : (
+            <div className="flex justify-center items-center w-full h-[120px]">
+              No hay tickets
             </div>
-          ))}
+          )}
         </div>
       </div>
     </LayoutGrid>

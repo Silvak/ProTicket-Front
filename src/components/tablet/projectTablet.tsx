@@ -1,5 +1,5 @@
 import type { ProjectTabletProp } from '@/contracts'
-import { useProjectStore } from '@/store'
+import { useAuthStore, useProjectStore } from '@/store'
 import { useEffect, useState } from 'react'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import { Loading } from '../common/loading'
@@ -9,6 +9,7 @@ import { ProjectRow } from './projectRow'
 export const ProjectTablet = () => {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const user = useAuthStore((state) => state.user)
   const { limit, page, projects, total } = useProjectStore(
     (state) => state.data as ProjectTabletProp
   )
@@ -17,13 +18,13 @@ export const ProjectTablet = () => {
   const actualLimit = useProjectStore((state) => state.limit)
   const setPage = useProjectStore((state) => state.setPage)
   const setLimit = useProjectStore((state) => state.setLimit)
-  const getProjects = useProjectStore((state) => state.getProjects)
+  const getRelatedProjects = useProjectStore((state) => state.getRelatedProjects)
 
   useEffect(() => {
-    getProjects().then(() => setLoading(false))
+    getRelatedProjects(user?.id || '').then(() => setLoading(false))
     actualPage
     actualLimit
-  }, [actualPage, actualLimit, getProjects])
+  }, [user, actualPage, actualLimit, getRelatedProjects])
 
   const handlePrevius = () => {
     if (page > 1) setPage(page - 1)
@@ -37,8 +38,9 @@ export const ProjectTablet = () => {
     project.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
+  //console.log(projects);
+
   if (loading) return <Loading />
-  if (projects.length === 0) return <div>No se encontraron proyectos</div>
   return (
     <>
       <div className="bg-white border border-gray-300 rounded-md  p-2 col-span-1 sm:col-span-2 md:col-span-5 xl:col-span-10">
@@ -68,17 +70,21 @@ export const ProjectTablet = () => {
 
         {/* body */}
         <div>
-          {filteredProjects.map((project) => (
-            <ProjectRow
-              key={project.id}
-              id={project.id}
-              name={project.name}
-              priceTicket={project.priceTicket}
-              totalTickets={project.totalTickets}
-              state={project.state}
-              owner={project.owner}
-            />
-          ))}
+          {projects.length > 0 ? (
+            filteredProjects.map((project) => (
+              <ProjectRow
+                key={project.id}
+                id={project.id}
+                name={project.name}
+                priceTicket={project.priceTicket}
+                totalTickets={project.totalTickets}
+                state={project.state}
+                owner={project.owner}
+              />
+            ))
+          ) : (
+            <div>No se encontraron proyectos</div>
+          )}
         </div>
 
         {/* pagination */}

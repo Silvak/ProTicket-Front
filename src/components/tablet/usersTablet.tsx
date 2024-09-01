@@ -1,22 +1,29 @@
 import type { UserTabletProp } from '@/contracts'
-import { useUserStore } from '@/store'
-import { useEffect } from 'react'
+import { useAuthStore, useUserStore } from '@/store'
+import { useEffect, useState } from 'react'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
+import { Loading } from '../common/loading'
 import { UserRow } from './userRow'
 
-export const UsersTablet = ({ limit, page, users, total }: UserTabletProp) => {
+export const UsersTablet = () => {
+  const [loading, setLoading] = useState(true)
+  const user = useAuthStore((state) => state.user)
+  const { limit, page, users, total } = useUserStore(
+    (state) => state.data as UserTabletProp
+  )
   const numberPages = Math.ceil(total / limit)
   const actualPage = useUserStore((state) => state.page)
   const actualLimit = useUserStore((state) => state.limit)
   const setPage = useUserStore((state) => state.setPage)
   const setLimit = useUserStore((state) => state.setLimit)
+
   const getUsers = useUserStore((state) => state.getUser)
 
   useEffect(() => {
-    getUsers()
+    getUsers(user?.id || '').then(() => setLoading(false))
     actualPage
     actualLimit
-  }, [actualPage, actualLimit, getUsers])
+  }, [actualPage, actualLimit, getUsers, user])
 
   const handlePrevius = () => {
     if (page > 1) setPage(page - 1)
@@ -25,7 +32,7 @@ export const UsersTablet = ({ limit, page, users, total }: UserTabletProp) => {
     if (page < numberPages) setPage(page + 1)
   }
 
-  //if (projects.length == 0) return <div> No hay proyectos</div>;
+  if (loading) return <Loading />
   return (
     <div className="bg-white border border-gray-300  overflow-hidden rounded-md col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
       {/* head */}
@@ -38,16 +45,20 @@ export const UsersTablet = ({ limit, page, users, total }: UserTabletProp) => {
 
       {/* body */}
       <div>
-        {users.map((user) => (
-          <UserRow
-            key={user.id}
-            id={user.id}
-            name={user.name}
-            email={user.email}
-            role={user.role}
-            state={user.state}
-          />
-        ))}
+        {users.length > 0 ? (
+          users.map((user) => (
+            <UserRow
+              key={user.id}
+              id={user.id}
+              name={user.name}
+              email={user.email}
+              role={user.role}
+              state={user.state}
+            />
+          ))
+        ) : (
+          <p>No hay usuarios</p>
+        )}
       </div>
 
       {/* pagination */}

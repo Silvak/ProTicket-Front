@@ -3,8 +3,10 @@ import {
   createProject,
   deleteProject,
   getProjectById,
+  getProjectStatus,
   getProjects,
   getRelatedProjectTickets,
+  getRelatedProjects,
   updateProject,
 } from '@/services/project.service'
 import type { StateCreator } from 'zustand'
@@ -17,8 +19,11 @@ export interface ProjectState {
   tickets: object
   page: number
   limit: number
+  status: object
 
   getProjects: (projectId?: string) => Promise<void>
+  getStatus: (projectId: string) => Promise<void>
+  getRelatedProjects: (projectId: string) => Promise<void>
   getRelatedTickets: (projectId: string) => Promise<void>
   createProject: (projectData: ProjectProp) => Promise<void>
   updateProject: (projectData: ProjectProp) => Promise<void>
@@ -34,6 +39,7 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
   tickets: {},
   page: 1,
   limit: 5,
+  status: {},
 
   getProjects: async (projectId?: string) => {
     if (projectId !== undefined) {
@@ -46,6 +52,24 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
       } catch (_error) {
         set({ data: {} })
       }
+    }
+  },
+
+  getStatus: async (projectId: string) => {
+    try {
+      const data = await getProjectStatus(projectId)
+      set({ status: data })
+    } catch (_error) {
+      set({ status: {} })
+    }
+  },
+
+  getRelatedProjects: async (projectId: string) => {
+    try {
+      const data = await getRelatedProjects(projectId, get().page, get().limit)
+      set({ data: data })
+    } catch (_error) {
+      set({ data: {} })
     }
   },
 

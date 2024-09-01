@@ -52,6 +52,60 @@ export const getProjectById = async (projectId: string) => {
   }
 }
 
+//----------------------------------------------------- STATUS ---------------------------------------------------------
+export const getProjectStatus = async (projectId: string) => {
+  try {
+    const token = useAuthStore.getState().token
+    if (!token) {
+      throw new Error('UnAuthorized')
+    }
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    }
+    const response = await tesloApi.get(`/projects/status/${projectId}`, {
+      headers,
+    })
+    return response.data
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data)
+      throw new Error(error.response?.data)
+    }
+    throw new Error('Failed to get project by ID')
+  }
+}
+
+//----------------------------------------------------- REALTED PROJECTS ---------------------------------------------------------
+export const getRelatedProjects = async (
+  projectId: string,
+  page: number,
+  limit: number
+) => {
+  try {
+    const token = useAuthStore.getState().token
+    if (!token) {
+      throw new Error('UnAuthorized')
+    }
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    }
+    const response = await tesloApi.get(`/projects/related/${projectId}`, {
+      headers,
+      params: {
+        page: page,
+        limit: limit,
+      },
+    })
+    return response.data
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data)
+      throw new Error(error.response?.data)
+    }
+    throw new Error('Failed to get project by ID')
+  }
+}
+
 //----------------------------------------------------- REALTED ID ---------------------------------------------------------
 export const getRelatedProjectTickets = async (
   projectId: string,

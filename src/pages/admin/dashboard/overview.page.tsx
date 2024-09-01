@@ -1,6 +1,6 @@
 import { LayoutGrid } from '@/components'
 import type { ProjectResponse, UserResponse } from '@/contracts'
-import { useProjectStore, useUserStore } from '@/store'
+import { useAuthStore, useProjectStore, useUserStore } from '@/store'
 import { useEffect } from 'react'
 import { FiUsers } from 'react-icons/fi'
 import { IoTicketOutline } from 'react-icons/io5'
@@ -11,11 +11,12 @@ export const OverviewPage = () => {
 
   const users = useUserStore((state) => state.data as UserResponse)
   const getUser = useUserStore((state) => state.getUser)
+  const user = useAuthStore((state) => state.user)
 
   useEffect(() => {
     getProjects()
-    getUser()
-  }, [getProjects, getUser])
+    getUser(user?.id || '')
+  }, [getProjects, getUser, user])
 
   return (
     <LayoutGrid>

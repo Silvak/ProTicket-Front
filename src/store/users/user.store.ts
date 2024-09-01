@@ -9,7 +9,7 @@ export interface UserState {
   page: number
   limit: number
 
-  getUser: () => Promise<void>
+  getUser: (userId: string) => Promise<void>
   setPage: (page: number) => void
   setLimit: (limit: number) => void
 }
@@ -19,9 +19,9 @@ const storeApi: StateCreator<UserState> = (set, get) => ({
   page: 1,
   limit: 3,
 
-  getUser: async () => {
+  getUser: async (userId: string) => {
     try {
-      const data = await getUsers(get().page, get().limit)
+      const data = await getUsers(userId, get().page, get().limit)
       set({ data: data })
     } catch (_error) {
       set({ data: {} })

@@ -1,6 +1,6 @@
 import type { User } from '@/contracts'
 import type { UserResponse } from '@/contracts'
-import { useUserStore } from '@/store'
+import { useAuthStore, useUserStore } from '@/store'
 import { useEffect, useMemo, useState } from 'react'
 
 export const UserSelect: React.FC<{ onSelect: (userId: string) => void }> = ({
@@ -9,6 +9,7 @@ export const UserSelect: React.FC<{ onSelect: (userId: string) => void }> = ({
   const [searchTerm, setSearchTerm] = useState('')
   const userData = useUserStore((state) => state.data)
   const getUsers = useUserStore((state) => state.getUser)
+  const user = useAuthStore((state) => state.user)
 
   const validUserData = Array.isArray((userData as UserResponse).users)
     ? (userData as UserResponse).users
@@ -31,8 +32,8 @@ export const UserSelect: React.FC<{ onSelect: (userId: string) => void }> = ({
   }
 
   useEffect(() => {
-    getUsers()
-  }, [getUsers])
+    getUsers(user?.id || '')
+  }, [getUsers, user])
 
   return (
     <div className="user-select-component">

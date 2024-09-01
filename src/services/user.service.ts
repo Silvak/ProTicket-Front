@@ -1,22 +1,26 @@
 import { tesloApi } from '@/api/teslo'
-import type { UserResponse } from '@/contracts'
+//import type { UserResponse } from "@/contracts";
 import { useAuthStore } from '@/store'
 
-export const getUsers = async (page: number, limit: number): Promise<UserResponse> => {
+export const getUsers = async (userId: string, page: number, limit: number) => {
   try {
     const token = useAuthStore.getState().token
     if (!token) {
       throw new Error('UnAuthorized')
     }
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    }
 
-    const { data } = await tesloApi.get('/users', {
+    const response = await tesloApi.get(`/users/related/${userId}`, {
+      headers,
       params: {
         page: page,
         limit: limit,
       },
     })
 
-    return data
+    return response.data
   } catch (error) {
     console.log(error)
     throw new Error('UnAuthorized')

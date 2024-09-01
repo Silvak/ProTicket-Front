@@ -7,7 +7,7 @@ import { devtools, persist } from 'zustand/middleware'
 export interface AuthState {
   status: AuthStatus
   token?: string
-  user?: User | null
+  user: User | undefined
 
   loginUser: (email: string, password: string) => Promise<void>
   checkAuthStatus: () => Promise<void>
