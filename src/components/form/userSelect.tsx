@@ -50,7 +50,7 @@ export const UserSelect: React.FC<{
       <select onChange={handleSelectChange} className="border p-2 w-full rounded">
         <option value="">Seleccione un usuario</option>
         {filteredUsers.map((user: User) => (
-          <option key={user.id} value={user.id}>
+          <option key={user.id} value={user.id} className="">
             {user.name} - {user.email}
           </option>
         ))}

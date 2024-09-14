@@ -63,7 +63,7 @@ export const CustomModal: React.FC<CustomModalProps> = ({
 
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-          <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-lg">
+          <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-lg max-h-[80%]  overflow-x-hidden ">
             <div className="p-4 border-b border-gray-200">
               <div className="flex justify-between items-center">
                 <div>{header}</div>

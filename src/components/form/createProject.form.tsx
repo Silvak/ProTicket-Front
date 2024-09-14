@@ -3,23 +3,26 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { UserSelect } from '../form/userSelect'
 
-export const CreateProjectForm = () => {
+interface CreateProjectFormProps {
+  modalAutoClose: () => void
+}
+
+export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) => {
   const [formData, setFormData] = useState({
     name: '',
-    startDate: '',
-    endDate: '',
+    startDate: new Date().toISOString().split('T')[0],
+    endDate: new Date().toISOString().split('T')[0],
     image: '',
-    priceTicket: '',
-    totalTickets: '',
+    priceTicket: '0',
+    totalTickets: '100',
     perTicket: '1',
     qrPosition: 'bl',
-    numberPosition: 'bl',
+    numberPosition: 'tl',
     state: 'ACTIVE',
   })
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
   const createProject = useProjectStore((state) => state.createProject)
 
-  // logic
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
@@ -59,20 +62,22 @@ export const CreateProjectForm = () => {
     try {
       await createProject(projectData)
       toast.success('Proyecto creado exitosamente')
+
       // clean form
       setFormData({
         name: '',
+        startDate: new Date().toISOString().split('T')[0],
+        endDate: new Date().toISOString().split('T')[0],
         image: '',
-        startDate: '',
-        endDate: '',
-        priceTicket: '',
-        totalTickets: '',
+        priceTicket: '0',
+        totalTickets: '100',
         perTicket: '1',
         qrPosition: 'bl',
-        numberPosition: 'bl',
+        numberPosition: 'tl',
         state: 'ACTIVE',
       })
       setSelectedUser(null)
+      modalAutoClose()
     } catch (_error) {
       toast.error('Error al crear el proyecto')
     }
@@ -86,6 +91,7 @@ export const CreateProjectForm = () => {
           <input
             type="text"
             name="name"
+            placeholder="Nombre de la  Rifa"
             value={formData.name}
             onChange={handleChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
@@ -98,6 +104,7 @@ export const CreateProjectForm = () => {
           <input
             type="text"
             name="image"
+            placeholder="URL de la imagen"
             value={formData.image}
             onChange={handleChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
@@ -131,17 +138,34 @@ export const CreateProjectForm = () => {
           </div>
         </div>
 
-        <div className="flex justify-between gap-4 w-full">
+        <div className="flex justify-between gap-3 w-full">
           <div className="mb-4 w-full">
-            <label className="block text-sm font-medium">Precio por Ticket</label>
+            <label className="block text-sm font-medium">Precio Ticket $</label>
             <input
               type="number"
               name="priceTicket"
+              placeholder="Precio Ticket"
               value={formData.priceTicket}
               onChange={handleChange}
               className="w-full mt-1 p-2 border border-gray-300 rounded"
+              min="0"
               required
             />
+          </div>
+
+          <div className="w-full">
+            <label className="block text-sm font-medium">Tickets por Rifa</label>
+            <select
+              name="perTicket"
+              value={formData.perTicket}
+              onChange={handleChange}
+              className="w-full mt-1 p-2 border border-gray-300 rounded"
+            >
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
           </div>
 
           <div className="mb-4 w-full">
@@ -149,32 +173,18 @@ export const CreateProjectForm = () => {
             <input
               type="number"
               name="totalTickets"
+              placeholder="Numero de Tickets"
               value={formData.totalTickets}
               onChange={handleChange}
               className="w-full mt-1 p-2 border border-gray-300 rounded"
+              min="0"
               required
             />
           </div>
         </div>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium">Tickets por Rifa</label>
-          <select
-            name="perTicket"
-            value={formData.perTicket}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border border-gray-300 rounded"
-          >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <h2 className="text-xl font-semibold mb-4">Seleccionar Usuario</h2>
+        <div className="mb-4 mt-2">
+          <h2 className="text-md font-semibold mb-1">Seleccionar Usuario</h2>
           <UserSelect onSelect={handleUserSelect} />
           {selectedUser && <p>Usuario seleccionado: {selectedUser}</p>}
         </div>
