@@ -23,9 +23,10 @@ const storeApi: StateCreator<AuthState> = (set) => ({
     try {
       const { token, user } = await login(email, password)
       set({ status: 'authorized', token, user: { ...user } })
-    } catch (_error) {
+    } catch (error) {
       set({ status: 'unauthorized', token: undefined, user: undefined })
-      throw 'Unauthorized'
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
   checkAuthStatus: async () => {

@@ -13,7 +13,6 @@ export const UpdateProjectMembersForm = ({ project }: UpdateProjectFormProps) =>
   const [formData, setFormData] = useState({
     members: project.members || [],
   })
-  console.log(project)
 
   const updateProjectMembers = useProjectStore((state) => state.updateProjectMember)
 

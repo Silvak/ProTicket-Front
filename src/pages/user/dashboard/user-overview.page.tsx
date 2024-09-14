@@ -116,16 +116,16 @@ export const UserOverviewPage = () => {
                   statusColor = 'bg-yellow-300'
                   break
                 case 'PAID':
-                  statusColor = 'bg-green-500'
+                  statusColor = '#4ADE80'
                   break
                 case 'UNPAID':
-                  statusColor = 'bg-orange-400'
+                  statusColor = '#FB923C'
                   break
                 case 'RESERVED':
-                  statusColor = 'bg-blue-400'
+                  statusColor = '#60A5FA'
                   break
                 case 'CANCELLED':
-                  statusColor = 'bg-red-300'
+                  statusColor = '#8E232A'
                   break
                 default:
                   statusColor = ''
@@ -135,6 +135,7 @@ export const UserOverviewPage = () => {
                 <button
                   key={item.number}
                   type="button"
+                  style={{ backgroundColor: statusColor }}
                   onClick={() => handleTicketClick(item.ticket, item.number)}
                   className={`
                 ${statusColor}

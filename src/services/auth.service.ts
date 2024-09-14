@@ -16,12 +16,10 @@ export const login = async (email: string, password: string): Promise<LoginRespo
     return data
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
+      const errorMessage = error.response?.data?.error || 'Error al autenticar'
+      throw new Error(errorMessage)
     }
-
-    console.log(error)
-    throw new Error('Unable to login')
+    throw new Error('Error desconocido al autenticar')
   }
 }
 
@@ -30,7 +28,10 @@ export const checkStatus = async (): Promise<LoginResponse> => {
     const { data } = await tesloApi.get<LoginResponse>('/auth/check-status')
     return data
   } catch (error) {
-    console.log(error)
-    throw new Error('UnAuthorized')
+    if (error instanceof AxiosError) {
+      const errorMessage = error.response?.data?.error || 'No autorizado'
+      throw new Error(errorMessage)
+    }
+    throw new Error('Error desconocido al tratar de obtener el estado de la sesión')
   }
 }
