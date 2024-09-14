@@ -1,5 +1,5 @@
 import { tesloApi } from '@/api/teslo'
-import type { ProjectProp, ProjectResponse } from '@/contracts'
+import type { ProjectMemberProp, ProjectProp, ProjectResponse } from '@/contracts'
 import { useAuthStore } from '@/store'
 import { AxiosError } from 'axios'
 
@@ -90,6 +90,36 @@ export const getRelatedProjects = async (
       Authorization: `Bearer ${token}`,
     }
     const response = await tesloApi.get(`/projects/related/${projectId}`, {
+      headers,
+      params: {
+        page: page,
+        limit: limit,
+      },
+    })
+    return response.data
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data)
+      throw new Error(error.response?.data)
+    }
+    throw new Error('Failed to get project by ID')
+  }
+}
+
+export const getRelatedProjectReseller = async (
+  projectId: string,
+  page: number,
+  limit: number
+) => {
+  try {
+    const token = useAuthStore.getState().token
+    if (!token) {
+      throw new Error('UnAuthorized')
+    }
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    }
+    const response = await tesloApi.get(`/projects/related/reseller/${projectId}`, {
       headers,
       params: {
         page: page,
@@ -209,6 +239,41 @@ export const updateProject = async (projectData: ProjectProp) => {
     const { data: updatedProject } = await tesloApi.put('/projects', data, {
       headers,
     })
+    return updatedProject
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data)
+      throw new Error(error.response?.data)
+    }
+    throw new Error('Failed to update project')
+  }
+}
+
+export const updateProjectMember = async (projectData: ProjectMemberProp) => {
+  console.log(projectData)
+  try {
+    const token = useAuthStore.getState().token
+    if (!token) {
+      throw new Error('UnAuthorized')
+    }
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }
+
+    // Convertimos el array 'members' a una cadena JSON
+    const formData = new URLSearchParams()
+    formData.append('id', projectData.id as string)
+    formData.append('members', JSON.stringify(projectData.members))
+
+    console.log(formData.toString())
+
+    const response = await tesloApi.put('/projects/members', formData.toString(), {
+      headers,
+    })
+
+    const updatedProject = response.data
     return updatedProject
   } catch (error) {
     if (error instanceof AxiosError) {

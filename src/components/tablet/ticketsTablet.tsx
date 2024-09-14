@@ -1,13 +1,19 @@
 import type { TicketTabletProp } from '@/contracts'
 import { useTicketStore } from '@/store/tickets/ticket.store'
 import { useEffect, useState } from 'react'
+import { FaPlus } from 'react-icons/fa'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
+import { useLocation } from 'react-router-dom'
 import { ErrorBox } from '../common/errorBox'
 import { Loading } from '../common/loading'
-import { CreateTicketModal } from '../modal/createTicket.modal'
+import { CreateTicketForm } from '../form/createTicket.form'
+import { CustomModal } from '../modal/customModal'
 import { TicketRow } from './ticketRow'
 
 export const TicketsTablet = ({ projectId = '' }) => {
+  const location = useLocation()
+  const ticketNumber = new URLSearchParams(location.search).get('number')
+  const [autoOpen, setAutoOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const { limit, page, tickets, total } = useTicketStore(
@@ -20,6 +26,12 @@ export const TicketsTablet = ({ projectId = '' }) => {
   const setLimit = useTicketStore((state) => state.setLimit)
   const getTickets = useTicketStore((state) => state.getTickets)
 
+  //modal
+  useEffect(() => {
+    if (ticketNumber) setAutoOpen(true)
+  }, [ticketNumber])
+
+  // get tickets
   useEffect(() => {
     if (projectId) {
       getTickets(projectId).then(() => setLoading(false))
@@ -45,28 +57,39 @@ export const TicketsTablet = ({ projectId = '' }) => {
     ticket.ownerData.name.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
+  // render
   if (loading) return <Loading />
   if (!tickets || !tickets)
     return <ErrorBox title={'Error'} message={'No se han encontrado tickets.'} />
   return (
     <>
       {/* filter & actions */}
-      <div className="bg-white border border-gray-300 rounded-md  p-2 col-span-1 sm:col-span-2 md:col-span-5 xl:col-span-10">
+      <div className="bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 md:col-span-4 xl:col-span-9">
         <input
           type="text"
-          placeholder="Buscar proyectos..."
+          placeholder="Buscar tickets..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full h-full p-2"
+          className="w-full h-full p-2 outline-none"
         />
       </div>
 
-      <div className="bg-white border border-gray-300 rounded-md h-[52px] p-2 col-span-1 sm:col-span-2 md:col-span-1 xl:col-span-2">
-        <CreateTicketModal />
+      <div className="bg-white rounded-xl p-0 overflow-hidden col-span-1 sm:col-span-2 md:col-span-2 xl:col-span-3">
+        <div className="h-full min-h-[52px]">
+          <CustomModal
+            header={<h2 className="text-xl font-semibold">Añádir Nuevo Ticket</h2>}
+            buttonText="Nuevo Ticket"
+            buttonType="create"
+            buttonIcon={<FaPlus />}
+            autoOpen={autoOpen}
+          >
+            <CreateTicketForm ticketNumber={ticketNumber?.toString()} />
+          </CustomModal>
+        </div>
       </div>
 
       {/* TABLET */}
-      <div className="bg-white border border-gray-300  overflow-hidden rounded-md col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
+      <div className="bg-white overflow-hidden rounded-xl col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
         {tickets.length > 0 ? (
           <>
             {/* head */}
@@ -81,9 +104,15 @@ export const TicketsTablet = ({ projectId = '' }) => {
 
             {/* rows */}
             <div>
-              {filteredTicket.map((ticket) => (
-                <TicketRow key={ticket.id} ticket={ticket} />
-              ))}
+              {tickets.length > 0 ? (
+                filteredTicket.map((ticket) => (
+                  <TicketRow key={ticket.id} ticket={ticket} />
+                ))
+              ) : (
+                <div className="flex justify-center items-center w-full h-24 text-gray-500">
+                  No se encontraron tickets
+                </div>
+              )}
             </div>
 
             {/* pagination */}

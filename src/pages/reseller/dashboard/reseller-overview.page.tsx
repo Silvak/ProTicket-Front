@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom'
 interface ProjectStatusProp {
   collected: number
   goal: number
-  reserved: number
   pending: number
   sold: number
   grid: {
@@ -21,26 +20,25 @@ interface ProjectStatusProp {
   }[]
 }
 
-export const UserOverviewPage = () => {
+export const ResellerOverviewPage = () => {
   const navigate = useNavigate()
   const rolePath = useUserRole()
   const user = useAuthStore((state) => state.user)
-  //stores
-  const selectProject = useProjectStore((state) => state.selectedProject)
   const status = useProjectStore((state) => state.status as ProjectStatusProp)
+  const selectProject = useProjectStore((state) => state.selectedProject)
   const getStatus = useProjectStore((state) => state.getStatus)
 
   useEffect(() => {
     if (selectProject?.id) {
       getStatus(selectProject.id)
     }
-  }, [selectProject, getStatus])
+  }, [getStatus, selectProject])
 
   const handleTicketClick = (ticketId: string, number: string) => {
     if (ticketId) {
-      navigate(`/${rolePath}/ticket/detail/${ticketId}`)
+      navigate(`/${rolePath}/ticket-detail/${ticketId}`)
     } else {
-      navigate(`/${rolePath}/project/detail/${selectProject?.id}?number=${number}`)
+      navigate(`/${rolePath}/project-detail/${selectProject?.id}?number=${number}`)
     }
   }
 
@@ -50,6 +48,7 @@ export const UserOverviewPage = () => {
         <p className="">
           ¡Bienvenid@ <span className="font-semibold">{user?.name}</span>!
         </p>
+
         <h1 className="text-2xl font-semibold">Estadísticas</h1>
       </div>
 
@@ -58,31 +57,17 @@ export const UserOverviewPage = () => {
       </div>
 
       <CustomCard
-        className={'border-l-8 border-blue-400'}
-        title={'Reservados'}
-        icon={<LuClock4 />}
-        textInfo={[(status?.reserved || 0).toString(), 'tickets']}
-      />
-
-      <CustomCard
-        className={'border-l-8 border-orange-400'}
+        className={''}
         title={'Pendientes'}
         icon={<LuClock4 />}
         textInfo={[(status?.pending || 0).toString(), 'tickets']}
       />
 
       <CustomCard
-        className={'border-l-8 border-green-400'}
-        title={'Vendidos/Pagados'}
+        className={''}
+        title={'Vendidos'}
         icon={<LuCheckCheck />}
         textInfo={[`${status?.sold || 0}/${status?.grid?.length || 0}`, 'tickets']}
-      />
-
-      <CustomCard
-        className={'hidden sm:flex'}
-        title={'Precio del Ticket'}
-        icon={<LuCheckCheck />}
-        textInfo={[`${selectProject?.raffleConfig.priceTicket || 0}`, '$']}
       />
 
       <CustomCard
@@ -106,48 +91,24 @@ export const UserOverviewPage = () => {
       </div>
 
       <div className="flex flex-col bg-white rounded-xl py-3 px-2 col-span-1 sm:col-span-2 md:col-span-6  xl:col-span-12 min-h-[120px]">
-        <div className="flex flex-wrap gap-1 p-3 justify-start max-h-[500px] overflow-y-scroll">
+        <div className="flex flex-wrap gap-3 p-3 justify-between  max-h-[500px] overflow-y-scroll">
           {status?.grid && status.grid.length > 0 ? (
-            status.grid.map((item) => {
-              let statusColor = ''
-
-              switch (item.status) {
-                case 'WINNER':
-                  statusColor = 'bg-yellow-300'
-                  break
-                case 'PAID':
-                  statusColor = 'bg-green-500'
-                  break
-                case 'UNPAID':
-                  statusColor = 'bg-orange-400'
-                  break
-                case 'RESERVED':
-                  statusColor = 'bg-blue-400'
-                  break
-                case 'CANCELLED':
-                  statusColor = 'bg-red-300'
-                  break
-                default:
-                  statusColor = ''
-              }
-
-              return (
-                <button
-                  key={item.number}
-                  type="button"
-                  onClick={() => handleTicketClick(item.ticket, item.number)}
-                  className={`
-                ${statusColor}
-                 flex flex-col justify-around items-center min-h-[68px] w-[68px] border rounded-md overflow-hidden bg-gray-50 cursor-pointer text-sm`}
-                >
-                  {item.number.split('-').map((num) => (
-                    <p key={num} className="text-[14px]">
-                      {num}
-                    </p>
-                  ))}
-                </button>
-              )
-            })
+            status.grid.map((item) => (
+              <button
+                key={item.number}
+                type="button"
+                onClick={() => handleTicketClick(item.ticket, item.number)}
+                className={`
+                ${item.status === 'CANCELLED' && 'bg-red-300'} 
+                ${item.status === 'UNPAID' && 'bg-orange-200'}
+                ${item.status === 'PAID' && 'bg-[#8BD14C]'}
+                flex flex-col justify-center items-center h-[68px] w-[68px] border rounded-md overflow-hidden bg-gray-50 cursor-pointer text-sm`}
+              >
+                {item.number.split('-').map((num) => (
+                  <p key={num}>{num}</p>
+                ))}
+              </button>
+            ))
           ) : (
             <div className="flex justify-center items-center w-full h-[120px]">
               No hay tickets

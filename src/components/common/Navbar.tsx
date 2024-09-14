@@ -37,7 +37,12 @@ export const Navbar = () => {
       <div className="flex justify-end items-center gap-2 md:gap-4 w-[calc(100vw-70px)] pr-4 ">
         {/* user button && notification*/}
 
-        {status === 'unauthorized' && (
+        {status === 'authorized' ? (
+          <>
+            <NotificationButton />
+            <UserButton />
+          </>
+        ) : (
           <button
             type="button"
             onClick={() => navigate('/login')}
@@ -45,13 +50,6 @@ export const Navbar = () => {
           >
             Login
           </button>
-        )}
-
-        {status === 'authorized' && (
-          <>
-            <NotificationButton />
-            <UserButton />
-          </>
         )}
       </div>
     </header>

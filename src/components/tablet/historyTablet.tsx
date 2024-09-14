@@ -48,23 +48,25 @@ export const HistoryTablet = ({ ticketId = '' }) => {
   return (
     <>
       {/* filter & actions */}
-      <div className="bg-white border border-gray-300 rounded-md  p-2 col-span-1 sm:col-span-2 md:col-span-5 xl:col-span-10">
+      <div className="bg-white rounded-xl p-2 col-span-1 sm:col-span-2 md:col-span-4 xl:col-span-9">
         <input
           type="text"
-          placeholder="Buscar proyectos..."
+          placeholder="Buscar pagos..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full h-full p-2"
         />
       </div>
 
-      <div className="bg-white border border-gray-300 rounded-md h-[52px] p-2 col-span-1 sm:col-span-2 md:col-span-1 xl:col-span-2">
+      <div className="bg-white rounded-xl h-[52px] overflow-hidden col-span-1 sm:col-span-2 md:col-span-2 xl:col-span-3">
         {/*<CreateTicketModal /> */}
-        <CreateHistoryModal />
+        <div className="h-full min-h-[52px]">
+          <CreateHistoryModal />
+        </div>
       </div>
 
       {/* TABLET */}
-      <div className="bg-white border border-gray-300  overflow-hidden rounded-md col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
+      <div className="bg-white rounded-xl  overflow-hidden col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
         {history.length > 0 ? (
           <>
             {/* head */}

@@ -5,8 +5,8 @@ import { CustomModal } from './customModal'
 export const CreateTicketModal = () => {
   return (
     <CustomModal
-      header={<h2 className="text-xl font-semibold">Crear Ticket</h2>}
-      buttonText="Crear"
+      header={<h2 className="text-xl font-semibold">Añádir Nuevo Ticket</h2>}
+      buttonText="Nuevo Ticket"
       buttonType="create"
       buttonIcon={<FaPlus />}
     >

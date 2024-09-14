@@ -208,9 +208,9 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
 
         <button
           type="submit"
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded mt-4"
+          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4"
         >
-          Actualizar Proyecto
+          Actualizar Rifa
         </button>
       </form>
     </>

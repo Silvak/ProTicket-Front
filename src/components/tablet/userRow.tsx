@@ -1,8 +1,6 @@
-import { useProjectStore } from '@/store'
-
+import { useUserRole } from '@/hooks/useUserRole'
+import { useAuthStore, useUserStore } from '@/store'
 import { AiOutlineDelete } from 'react-icons/ai'
-//import { FaRegEdit } from "react-icons/fa";
-//import { LuUser2 } from 'react-icons/lu'
 import { MdOutlineDashboard } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -10,22 +8,33 @@ import { CustomModal } from '../modal/customModal'
 
 interface UserRowProp {
   id: string
+  img: string
   name: string
   email: string
   role: string[]
   state: string[]
 }
 
-export const UserRow = ({ id, name, email, role, state }: UserRowProp) => {
+export const UserRow = ({ id, img, name, email, role, state }: UserRowProp) => {
   const navigate = useNavigate()
-  const deleteProject = useProjectStore((state) => state.deleteProject)
+  const deleteUser = useUserStore((state) => state.deleteUser)
+  const creatorId = useAuthStore((state) => state.user?.id)
+  const userRole = useUserRole()
 
   const handleDelete = async () => {
     try {
-      await deleteProject(id)
+      await deleteUser(creatorId || '', id)
       toast.success('Proyecto eliminado exitosamente.')
     } catch (_error) {
       toast.error('Hubo un error al eliminar el proyecto.')
+    }
+  }
+
+  const handleDetails = () => {
+    if (userRole === 'admin') {
+      navigate(`/${userRole}/user/detail/${id}`)
+    } else {
+      navigate(`/${userRole}/reseller/detail/${id}`)
     }
   }
 
@@ -36,7 +45,7 @@ export const UserRow = ({ id, name, email, role, state }: UserRowProp) => {
         <div className="flex gap-2 col-span-1 lg:col-span-2 overflow-hidden">
           <div className="h-[64px] w-[64px]  bg-gray-200 rounded-md overflow-hidden">
             <img
-              src="https://www.tarjetasinnovadoras.com/wp-content/uploads/2023/11/BOLETAS-RIFA-4x0-F4.webp"
+              src={img || '/assets/img/placeholder.png'}
               alt=""
               className="w-full h-full object-cover"
             />
@@ -50,8 +59,14 @@ export const UserRow = ({ id, name, email, role, state }: UserRowProp) => {
 
         {/* tickets */}
         <div className="flex items-center">
-          <label className="flex lg:hidden mr-2">Total Tickets:</label>
-          <div className="px-2 py-1 text-white bg-slate-900 rounded-md">{role}</div>
+          <label className="flex lg:hidden mr-2">Rol:</label>
+          <div className="px-2 py-1 text-white bg-slate-900 rounded-full">
+            {role.map((r) => (
+              <p key={r} className="text-sm font-semibold">
+                {r}
+              </p>
+            ))}
+          </div>
         </div>
 
         {/* state */}
@@ -66,39 +81,36 @@ export const UserRow = ({ id, name, email, role, state }: UserRowProp) => {
         <div className="flex items-center justify-end gap-2 col-span-1 lg:col-span-1 mt-6 lg:mt-0">
           <button
             type="button"
-            onClick={() => navigate(`details/${id}`)}
+            onClick={handleDetails}
             className="flex justify-center items-center h-[42px] min-w-[42px] w-full lg:w-min border rounded-md hover:bg-gray-300"
           >
             <MdOutlineDashboard />
           </button>
 
-          {/*
-          <button
-            type="button"
-            onClick={() => deleteProject(id)}
-            className="flex justify-center items-center h-[42px] min-w-[42px] w-full lg:w-min border rounded-md hover:bg-gray-300"
-          >
-            <AiOutlineDelete />
-          </button>
-          */}
-
-          <CustomModal
-            header={<h2>Confirmar Eliminación</h2>}
-            buttonText=""
-            buttonType="delete"
-            buttonIcon={<AiOutlineDelete />}
-          >
-            <p>¿Estás seguro de que deseas eliminar el proyecto "{name}"?</p>
-            <div className="flex justify-end gap-4 mt-4">
-              <button
-                type="button"
-                onClick={handleDelete}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          <div>
+            {userRole === 'admin' && (
+              <CustomModal
+                header={<h2>Confirmar Eliminación</h2>}
+                buttonText=""
+                buttonType="delete"
+                buttonIcon={<AiOutlineDelete />}
               >
-                Confirmar
-              </button>
-            </div>
-          </CustomModal>
+                <p>
+                  ¿Estás seguro de que deseas eliminar el usuario: <strong>{name}</strong>
+                  ?
+                </p>
+                <div className="flex justify-end gap-4 mt-4">
+                  <button
+                    type="button"
+                    onClick={handleDelete}
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                  >
+                    Confirmar
+                  </button>
+                </div>
+              </CustomModal>
+            )}
+          </div>
         </div>
       </div>
     </>

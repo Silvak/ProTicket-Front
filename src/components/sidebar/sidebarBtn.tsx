@@ -1,15 +1,21 @@
 import type { SidebarBtn } from '@/contracts'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 export const SidebarButton = ({ isOpen, icon, text, url, submenu }: SidebarBtn) => {
   const navigate = useNavigate()
+  const location = useLocation().pathname.split('/')
   const [menuIsOpen, setMenuOpen] = useState(false)
+  const [currentLocation, setCurrentLocation] = useState(location[2])
 
   const handleOpen = () => {
     setMenuOpen(!menuIsOpen)
   }
+
+  useEffect(() => {
+    setCurrentLocation(location[2])
+  }, [location])
 
   return (
     <>
@@ -18,9 +24,11 @@ export const SidebarButton = ({ isOpen, icon, text, url, submenu }: SidebarBtn) 
         onKeyUp={() => ''}
         onKeyDown={() => navigate(url)}
         onClick={() => navigate(url)}
-        className={` bg-gray-300 ${
-          url !== '' && 'hover:bg-indigo-300 cursor-pointer'
-        } relative flex items-center w-full h-[52px]  rounded-md pl-[5px] overflow-hidden cursor-default `}
+        className={`bg-gray-300 ${
+          url !== '' && 'hover:bg-slate-900 hover:text-white cursor-pointer'
+        }
+        ${currentLocation === url.split('/')[0] && 'bg-slate-900 text-white'}
+        relative flex items-center w-full h-[52px]  rounded-md pl-[5px] overflow-hidden cursor-default `}
       >
         <div className="flex justify-center items-center min-w-[42px] h-[42px] rounded-md">
           <span className="text-xl">{icon}</span>

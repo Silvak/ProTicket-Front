@@ -3,9 +3,9 @@ import type { UserResponse } from '@/contracts'
 import { useAuthStore, useUserStore } from '@/store'
 import { useEffect, useMemo, useState } from 'react'
 
-export const UserSelect: React.FC<{ onSelect: (userId: string) => void }> = ({
-  onSelect,
-}) => {
+export const UserSelect: React.FC<{
+  onSelect: (userId: string, userName: string) => void
+}> = ({ onSelect }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const userData = useUserStore((state) => state.data)
   const getUsers = useUserStore((state) => state.getUser)
@@ -28,7 +28,10 @@ export const UserSelect: React.FC<{ onSelect: (userId: string) => void }> = ({
   }
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onSelect(e.target.value)
+    const selectedUser = filteredUsers.find((user) => user.id === e.target.value)
+    if (selectedUser) {
+      onSelect(selectedUser.id || '', selectedUser.name || '') // Pasar id y nombre
+    }
   }
 
   useEffect(() => {

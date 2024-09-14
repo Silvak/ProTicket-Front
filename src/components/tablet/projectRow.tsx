@@ -11,6 +11,7 @@ import { CustomModal } from '../modal/customModal'
 export const ProjectRow = ({
   id,
   name,
+  image,
   priceTicket,
   totalTickets,
   state,
@@ -25,7 +26,7 @@ export const ProjectRow = ({
 
   const handleDetails = () => {
     getProjects(id)
-    navigate(`/${rolePath}/project-detail/${id}`)
+    navigate(`/${rolePath}/project/detail/${id}`)
   }
 
   const handleDelete = async () => {
@@ -41,16 +42,22 @@ export const ProjectRow = ({
     <>
       <div className="grid  grid-cols-1 lg:grid-cols-7 border-b p-4 gap-y-2 xl:gap-0">
         {/* project info */}
-        <div className="flex gap-2 col-span-1 lg:col-span-2 overflow-hidden">
-          <div className="h-[64px] w-[64px]  bg-gray-200 rounded-md overflow-hidden">
+        <div className="flex flex-col lg:flex-row gap-2 col-span-1 lg:col-span-2 overflow-hidden">
+          <div className="h-[160px] lg:h-[64px] lg:w-[64px] min-w-[64px]  bg-gray-200 rounded-md overflow-hidden">
             <img
-              src="https://www.tarjetasinnovadoras.com/wp-content/uploads/2023/11/BOLETAS-RIFA-4x0-F4.webp"
+              src={
+                image
+                  ? image
+                  : 'https://plus.unsplash.com/premium_photo-1683134676662-645988a8074e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Zm9uZG8lMjBkZSUyMGNvbG9yZXN8ZW58MHx8MHx8fDA%3D'
+              }
               alt=""
               className="w-full h-full object-cover"
             />
           </div>
           <div>
-            <h2 className="font-semibold">{name}</h2>
+            <h2 className="font-semibold text-lg lg:text-[16px]">
+              {name.length > 20 ? `${name.slice(0, 20)}...` : name}
+            </h2>
             <p className="text-sm text-gray-400">ID: {id}</p>
           </div>
         </div>
@@ -78,12 +85,14 @@ export const ProjectRow = ({
             <div className="bg-slate-700 h-[32px] w-[32px] rounded-full text-white flex justify-center items-center">
               <LuUser2 />
             </div>
-            <p className="min-w">{ownerName}</p>
+            <p className="min-w text-nowrap">
+              {ownerName.length > 12 ? `${ownerName.slice(0, 12)}...` : ownerName}
+            </p>
           </div>
         </div>
 
         {/* state */}
-        <div className="flex items-center">
+        <div className="flex items-center justify-start lg:justify-center">
           <label className="flex lg:hidden mr-2">Estado:</label>
           <div className="bg-green-700/50 px-4 p-1 rounded-full">
             <p className="text-sm font-bold">{state}</p>
@@ -100,25 +109,29 @@ export const ProjectRow = ({
             <MdOutlineDashboard />
           </button>
 
-          {roleUser === 'admin' && (
-            <CustomModal
-              header={<h2>Confirmar Eliminación</h2>}
-              buttonText=""
-              buttonType="delete"
-              buttonIcon={<AiOutlineDelete />}
-            >
-              <p>¿Estás seguro de que deseas eliminar el proyecto "{name}"?</p>
-              <div className="flex justify-end gap-4 mt-4">
-                <button
-                  type="button"
-                  onClick={handleDelete}
-                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                >
-                  Confirmar
-                </button>
-              </div>
-            </CustomModal>
-          )}
+          <div>
+            {roleUser === 'admin' && (
+              <CustomModal
+                header={<h2>Confirmar Eliminación</h2>}
+                buttonText=""
+                buttonType="delete"
+                buttonIcon={<AiOutlineDelete />}
+              >
+                <p>
+                  ¿Estás seguro de que deseas eliminar la rifa: <strong>{name}</strong>?
+                </p>
+                <div className="flex justify-end gap-4 mt-4">
+                  <button
+                    type="button"
+                    onClick={handleDelete}
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                  >
+                    Confirmar
+                  </button>
+                </div>
+              </CustomModal>
+            )}
+          </div>
         </div>
       </div>
     </>

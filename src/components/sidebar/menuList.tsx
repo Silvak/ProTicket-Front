@@ -13,13 +13,13 @@ export const adminMenu = [
   {
     icon: <LuTicket />,
     text: 'Proyectos',
-    url: 'projects',
+    url: 'project/list',
     submenu: [],
   },
   {
     icon: <PiUsersBold />,
     text: 'Usuarios',
-    url: 'users',
+    url: 'user/list',
     submenu: [
       /* { icon: <IoIosSearch />, text: "Buscar", url: "users/search" },*/
     ],
@@ -37,13 +37,13 @@ export const userMenu = [
   {
     icon: <LuTicket />,
     text: 'Rifas',
-    url: 'projects',
+    url: 'project/list',
     submenu: [],
   },
   {
     icon: <PiUsersBold />,
     text: 'Vendedores',
-    url: 'resellers',
+    url: 'reseller/list',
     submenu: [
       /* { icon: <IoIosSearch />, text: "Buscar", url: "users/search" },*/
     ],
@@ -61,7 +61,7 @@ export const resellerMenu = [
   {
     icon: <LuTicket />,
     text: 'Rifas',
-    url: 'projects',
+    url: 'project/list',
     submenu: [],
   },
 ]

@@ -5,8 +5,8 @@ import { CustomModal } from './customModal'
 export const CreateProjectModal = () => {
   return (
     <CustomModal
-      header={<h2 className="text-xl font-semibold">Crear Rifa</h2>}
-      buttonText="Crear"
+      header={<h2 className="text-xl font-semibold">Crear Nueva Rifa</h2>}
+      buttonText="Nueva Rifa"
       buttonType="create"
       buttonIcon={<FaPlus />}
     >

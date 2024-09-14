@@ -1,11 +1,22 @@
 import { useAuthStore, useProjectStore, useTicketStore } from '@/store'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-//import { UserSelect } from "./userSelect";
 
-export const CreateTicketForm = () => {
+interface ProjectStatusProp {
+  collected: number
+  goal: number
+  pending: number
+  sold: number
+  grid: {
+    number: string
+    ticket: string
+    status: string
+  }[]
+}
+
+export const CreateTicketForm = ({ ticketNumber = '' }) => {
   const [formData, setFormData] = useState({
-    number: '',
+    number: ticketNumber !== '' ? ticketNumber : '',
     name: '',
     dni: '',
     phone1: '',
@@ -13,18 +24,36 @@ export const CreateTicketForm = () => {
     address: '',
     other: '',
   })
-  //const [selectedUser, setSelectedUser] = useState<string | null>(null);
+
+  const [searchTerm, setSearchTerm] = useState('')
+  const getStatus = useProjectStore((state) => state.getStatus)
+  const status = useProjectStore((state) => state.status as ProjectStatusProp)
   const userId = useAuthStore((state) => state.user?.id)
   const selectedProjectId = useProjectStore((state) => state.selectedProject?.id)
   const createTicket = useTicketStore((state) => state.createTicket)
 
-  // logic
+  useEffect(() => {
+    if (selectedProjectId) {
+      getStatus(selectedProjectId)
+    }
+  }, [getStatus, selectedProjectId])
+
+  // handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     })
   }
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value)
+  }
+
+  // Filtrar los números disponibles en base al término de búsqueda
+  const filteredNumbers = status?.grid
+    ? status.grid.filter((item) => item.number.includes(searchTerm))
+    : []
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -46,6 +75,7 @@ export const CreateTicketForm = () => {
     try {
       await createTicket(ticketData)
       toast.success('Ticket creado exitosamente')
+
       // clean form
       setFormData({
         number: '',
@@ -56,7 +86,6 @@ export const CreateTicketForm = () => {
         address: '',
         other: '',
       })
-      //setSelectedUser(null);
     } catch (_error) {
       toast.error('Error al crear el ticket!')
     }
@@ -69,12 +98,25 @@ export const CreateTicketForm = () => {
           <label className="block text-sm font-medium">Numero</label>
           <input
             type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="w-full mt-1 p-2 border border-gray-300 rounded"
+            placeholder="Buscar número"
+          />
+          <select
             name="number"
             value={formData.number}
             onChange={handleChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required
-          />
+          >
+            <option value="">Selecciona un número</option>
+            {filteredNumbers.map((item) => (
+              <option key={item.number} value={item.number}>
+                {item.number} - {item.status}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="mb-4">
@@ -96,7 +138,7 @@ export const CreateTicketForm = () => {
             name="dni"
             value={formData.dni}
             onChange={handleChange}
-            placeholder="cedula de identidad"
+            placeholder="Cédula de identidad"
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required
           />
@@ -104,7 +146,7 @@ export const CreateTicketForm = () => {
 
         <div className="flex gap-4 justify-between mb-4">
           <div className="w-full">
-            <label className="block text-sm font-medium">Telefono 1</label>
+            <label className="block text-sm font-medium">Teléfono 1</label>
             <input
               type="text"
               name="phone1"
@@ -116,7 +158,7 @@ export const CreateTicketForm = () => {
           </div>
 
           <div className="w-full">
-            <label className="block text-sm font-medium">Telefono 2</label>
+            <label className="block text-sm font-medium">Teléfono 2</label>
             <input
               type="text"
               name="phone2"
@@ -128,7 +170,7 @@ export const CreateTicketForm = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium">Direccion</label>
+          <label className="block text-sm font-medium">Dirección</label>
           <input
             type="text"
             name="address"
@@ -150,19 +192,11 @@ export const CreateTicketForm = () => {
           />
         </div>
 
-        {/*
-        <div className="mb-4">
-          <h2 className="text-xl font-semibold mb-4">Seleccionar Usuario</h2>
-          <UserSelect onSelect={handleUserSelect} />
-          {selectedUser && <p>Usuario seleccionado: {selectedUser}</p>}
-        </div>
-        */}
-
         <button
           type="submit"
           className="w-full py-2 px-4 bg-blue-600 text-white rounded mt-4"
         >
-          Crear Proyecto
+          Agregar Ticket
         </button>
       </form>
     </>

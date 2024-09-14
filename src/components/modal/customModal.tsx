@@ -1,5 +1,5 @@
 import type React from 'react'
-import { type ReactNode, useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
 
 interface CustomModalProps {
@@ -8,6 +8,8 @@ interface CustomModalProps {
   buttonText: string
   buttonType: 'create' | 'delete' | 'update'
   buttonIcon?: ReactNode
+  autoOpen?: boolean
+  autoClose?: boolean
 }
 
 export const CustomModal: React.FC<CustomModalProps> = ({
@@ -16,15 +18,34 @@ export const CustomModal: React.FC<CustomModalProps> = ({
   buttonText,
   buttonType,
   buttonIcon,
+  autoOpen = false,
+  autoClose = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const openModal = () => setIsOpen(true)
-  const closeModal = () => setIsOpen(false)
+  const openModal = () => {
+    setIsOpen(true)
+  }
 
-  // buttons styles
+  const closeModal = () => {
+    setIsOpen(false)
+  }
+
+  useEffect(() => {
+    if (autoOpen) {
+      openModal()
+    }
+  }, [autoOpen, openModal])
+
+  useEffect(() => {
+    if (autoClose) {
+      closeModal()
+    }
+  }, [autoClose, closeModal])
+
+  // Estilos de botones según el tipo
   const buttonStyles = {
-    create: 'bg-green-500 hover:bg-green-600',
+    create: 'bg-green-500 hover:bg-green-600 w-full',
     delete: 'bg-red-500 hover:bg-red-600',
     update: 'bg-yellow-500 hover:bg-yellow-600',
   }
@@ -34,9 +55,9 @@ export const CustomModal: React.FC<CustomModalProps> = ({
       <button
         type="button"
         onClick={openModal}
-        className={`flex items-center justify-center gap-2  text-white rounded px-3  h-full max-h-[40px]   sm:w-full lg:w-min  ${buttonStyles[buttonType]}`}
+        className={`flex items-center justify-center gap-2 text-white rounded-md px-3 min-h-[40px] h-full w-full ${buttonStyles[buttonType]}`}
       >
-        {buttonIcon && <span className="">{buttonIcon}</span>}
+        {buttonIcon && <span>{buttonIcon}</span>}
         {buttonText}
       </button>
 

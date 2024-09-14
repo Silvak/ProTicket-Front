@@ -1,4 +1,5 @@
 import {
+  CreateTicketPage,
   DashboardAdminPage,
   DashboardResellerPage,
   DashboardUserPage,
@@ -7,6 +8,9 @@ import {
   DetailUserPage,
   OverviewPage,
   ProjectsPage,
+  ResellerDetailProjectsPage,
+  ResellerOverviewPage,
+  ResellerProjectsPage,
   UserDetailProjectsPage,
   UserOverviewPage,
   UserProjectsPage,
@@ -27,25 +31,29 @@ export const privateRoutes = [
 
       // projects
       {
-        path: 'projects',
+        path: 'project/list',
         element: <ProjectsPage />,
       },
       {
-        path: 'project-detail/:projectId',
+        path: 'project/detail/:projectId?',
         element: <DetailProjectsPage />,
       },
       {
-        path: 'ticket-detail/:ticketId',
+        path: 'ticket/detail/:ticketId',
         element: <DetailTicketPage />,
+      },
+      {
+        path: 'ticket/create/:ticketNumber',
+        element: <CreateTicketPage />,
       },
 
       // users
       {
-        path: 'users',
+        path: 'user/list',
         element: <UsersPage />,
       },
       {
-        path: 'users/details/:id',
+        path: 'user/detail/:userId',
         element: <DetailUserPage />,
       },
     ],
@@ -64,25 +72,29 @@ export const privateRoutes = [
 
       // projects
       {
-        path: 'projects',
+        path: 'project/list',
         element: <UserProjectsPage />,
       },
       {
-        path: 'project-detail/:projectId',
+        path: 'project/detail/:projectId',
         element: <UserDetailProjectsPage />,
       },
       {
-        path: 'ticket-detail/:ticketId',
+        path: 'ticket/detail/:ticketId',
         element: <DetailTicketPage />,
+      },
+      {
+        path: 'ticket/create/:ticketNumber',
+        element: <CreateTicketPage />,
       },
 
       // users
       {
-        path: 'resellers',
+        path: 'reseller/list',
         element: <UsersPage />,
       },
       {
-        path: 'resellers/details/:id',
+        path: 'reseller/detail/:userId',
         element: <DetailUserPage />,
       },
     ],
@@ -94,25 +106,27 @@ export const privateRoutes = [
     allowedRoles: ['RESELLER_ROLE'],
     children: [
       //Overview
-      /*
       {
-        path: "overview",
-        element: <OverviewPage />,
+        path: 'overview',
+        element: <ResellerOverviewPage />,
       },
-      */
 
       // projects
       {
-        path: 'projects',
-        element: <ProjectsPage />,
+        path: 'project/list',
+        element: <ResellerProjectsPage />,
       },
       {
-        path: 'project-detail/:projectId',
-        element: <DetailProjectsPage />,
+        path: 'project/detail/:projectId',
+        element: <ResellerDetailProjectsPage />,
       },
       {
-        path: 'ticket-detail/:ticketId',
+        path: 'ticket/detail/:ticketId',
         element: <DetailTicketPage />,
+      },
+      {
+        path: 'ticket/create/:ticketNumber',
+        element: <CreateTicketPage />,
       },
     ],
   },

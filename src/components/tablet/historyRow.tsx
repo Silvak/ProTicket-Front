@@ -66,27 +66,59 @@ export const HistoryRow = ({ history }: TabletRow) => {
             <div className="bg-slate-700 h-[32px] w-[32px] rounded-full text-white flex justify-center items-center">
               <LuUser2 />
             </div>
-            <p className="min-w">{history.seller.name}</p>
+            <p className="min-w text-nowrap">{history.seller.name}</p>
           </div>
         </div>
 
         {/* actions */}
         <div className="flex items-center justify-end gap-2 col-span-1 lg:col-span-1 mt-6 lg:mt-0">
-          <CustomModal
-            header={<h2>Actualizar Abono</h2>}
-            buttonText=""
-            buttonType="update"
-            buttonIcon={<MdOutlineDashboard />}
-          >
-            <p>
-              ¿Estás seguro de que deseas eliminar el ticket:
-              <span className="font-semibold ml-1">{history.id}</span> de
-              <span className="font-semibold ml-1">{history.id}</span>?
-            </p>
-          </CustomModal>
+          <div className="flex h-[40px] w-full lg:w-[40px]">
+            <CustomModal
+              header={<h2>Detalles de Pago</h2>}
+              buttonText=""
+              buttonType="update"
+              buttonIcon={<MdOutlineDashboard />}
+            >
+              <p className="text-sm">
+                <strong>ID: </strong>
+                <span className="">{history.id}</span>
+              </p>
+              <p>
+                <strong>Nota: </strong>
+                <span className="">{history.note}</span>
+              </p>
+              <p>
+                <strong>Monto Total en dolares: </strong>
+                <span className="">{history.dolarAmount}$</span>
+              </p>
+
+              <div className="flex flex-col gap-1 border-y py-4 my-4">
+                <h3 className=" font-bold">Pago Realizado</h3>
+
+                <p>
+                  <strong className="text-gray-600 font-semibold">
+                    Pagado/Abonado:{' '}
+                  </strong>
+                  <span className="">
+                    {history.amount} {history.badge}
+                  </span>
+                </p>
+                <p>
+                  <strong className="text-gray-600 font-semibold">Tipo de pago: </strong>
+                  <span className="bg-black rounded-full px-4 py-1 text-white">
+                    {history.paymentType === 'CASH' ? 'Efectivo' : 'Transferencia'}
+                  </span>
+                </p>
+              </div>
+              <p className="">
+                <strong>N Referencia Bancaria: </strong>
+                <span className="">{history.ref}</span>
+              </p>
+            </CustomModal>
+          </div>
 
           {(role[0] === 'USER_ROLE' || role[0] === 'RESELLER_ROLE') && (
-            <>
+            <div className="flex h-[40px] w-full lg:w-[40px]">
               <CustomModal
                 header={<h2>Confirmar Eliminación</h2>}
                 buttonText=""
@@ -94,9 +126,8 @@ export const HistoryRow = ({ history }: TabletRow) => {
                 buttonIcon={<AiOutlineDelete />}
               >
                 <p>
-                  ¿Estás seguro de que deseas eliminar el ticket:
-                  <span className="font-semibold ml-1">{history.id}</span> de
-                  <span className="font-semibold ml-1">{history.id}</span>?
+                  ¿Estás seguro de que deseas eliminar el pago:
+                  <span className="font-semibold ml-1">{history.note}</span>?
                 </p>
                 <div className="flex justify-end gap-4 mt-4">
                   <button
@@ -108,7 +139,7 @@ export const HistoryRow = ({ history }: TabletRow) => {
                   </button>
                 </div>
               </CustomModal>
-            </>
+            </div>
           )}
         </div>
       </div>

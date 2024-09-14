@@ -1,6 +1,6 @@
 import { LayoutGrid, ProjectTablet } from '@/components'
 
-export const UserProjectsPage = () => {
+export const ResellerProjectsPage = () => {
   return (
     <LayoutGrid>
       <div className="flex flex-col rounded-xl p-0 col-span-1 sm:col-span-2 md:col-span-3 xl:col-span-6">

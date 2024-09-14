@@ -21,6 +21,7 @@ export * from './modal/customModal'
 export * from './modal/createProject.modal'
 export * from './modal/createTicket.modal'
 export * from './modal/createHistory.modal'
+export * from './modal/createUser.modal'
 
 //forms
 export * from './form/createTicket.form'

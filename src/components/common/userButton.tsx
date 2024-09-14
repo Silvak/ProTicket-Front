@@ -1,5 +1,11 @@
 import { useUserRole } from '@/hooks/useUserRole'
-import { useAuthStore } from '@/store'
+import {
+  useAuthStore,
+  useHistoryStore,
+  useProjectStore,
+  useTicketStore,
+  useUserStore,
+} from '@/store'
 import { useState } from 'react'
 import { LuUser2 } from 'react-icons/lu'
 import { useNavigate } from 'react-router-dom'
@@ -7,12 +13,26 @@ import { useNavigate } from 'react-router-dom'
 export const UserButton = () => {
   const userRole = useUserRole()
   const [isOpen, setIsOpen] = useState(false)
-  const logoutUser = useAuthStore((state) => state.logoutUser)
   const user = useAuthStore((state) => state.user)
   const navigate = useNavigate()
 
+  const logoutUser = useAuthStore((state) => state.logoutUser)
+  const cleanHistoryData = useHistoryStore((state) => state.cleanHistoryData)
+  const cleanTicketsData = useTicketStore((state) => state.cleanTicketsData)
+  const cleanProjectData = useProjectStore((state) => state.cleanProjectData)
+  const cleanUserData = useUserStore((state) => state.cleanUserData)
+
   const handleClic = () => {
     setIsOpen(!isOpen)
+  }
+
+  const handleLogout = () => {
+    cleanHistoryData()
+    cleanTicketsData()
+    cleanProjectData()
+    cleanUserData()
+    logoutUser()
+    navigate('/')
   }
 
   return (
@@ -46,7 +66,7 @@ export const UserButton = () => {
           </button>
           <button
             type="button"
-            onClick={() => logoutUser()}
+            onClick={handleLogout}
             className="w-full h-[42px] bg-red-600/20 hover:bg-gray-200 text-left px-2 rounded-md"
           >
             Logout

@@ -5,8 +5,8 @@ import { CustomModal } from './customModal'
 export const CreateHistoryModal = () => {
   return (
     <CustomModal
-      header={<h2 className="text-xl font-semibold">Abonar</h2>}
-      buttonText="Crear"
+      header={<h2 className="text-xl font-semibold">Abonar Pago</h2>}
+      buttonText="Abonar"
       buttonType="create"
       buttonIcon={<FaPlus />}
     >

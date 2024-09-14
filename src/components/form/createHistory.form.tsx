@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 export const CreateHistoryForm = () => {
   const [formData, setFormData] = useState({
     note: '',
-    date: '',
+    date: new Date().toISOString().split('T')[0],
     dolarAmount: '',
     amount: '',
     badge: 'VES',
@@ -155,9 +155,9 @@ export const CreateHistoryForm = () => {
 
         <button
           type="submit"
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded mt-4"
+          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4"
         >
-          Registrar Abono
+          Registrar
         </button>
       </form>
     </>

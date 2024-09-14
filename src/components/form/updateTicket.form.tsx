@@ -163,15 +163,17 @@ export const UpdateTicketForm = ({ ticket }: UpdateTicketFormProps) => {
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required
           >
+            <option value="WINNER">Ganador</option>
             <option value="PAID">Pagado</option>
             <option value="UNPAID">Pendiente</option>
+            <option value="RESERVED">Reservado</option>
             <option value="CANCELLED">Cancelado</option>
           </select>
         </div>
 
         <button
           type="submit"
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded mt-4"
+          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4"
         >
           Actualizar Ticket
         </button>

@@ -4,6 +4,7 @@ export interface ProjectList {
   priceTicket: number
   totalTickets: number
   state: string[]
+  image: string
   owner: Owner | string
 }
 
@@ -45,6 +46,7 @@ export interface ProjectProp {
     numberPosition: string
   }
   state: string[]
+  members?: { id: string; name: string; state: string[] }[]
 }
 
 export interface ProjectTabletProp {
@@ -54,4 +56,26 @@ export interface ProjectTabletProp {
   //prev: string | null;
   projects: ProjectList[]
   total: number
+}
+
+// --------------------------- RESPONSE --------------------------
+export interface UserCreate {
+  name: string
+  email: string
+  phone: string
+  password: string
+  img: string
+  creatorId: string
+}
+
+export interface ResellerCreate {
+  name: string
+  email: string
+  password: string
+  creatorId: string
+}
+
+export interface ProjectMemberProp {
+  id: string
+  members: string[]
 }

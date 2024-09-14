@@ -1,27 +1,41 @@
-import { ErrorBox, HistoryTablet, LayoutGrid } from '@/components'
+import { ErrorBox, HistoryTablet, LayoutGrid, Loading } from '@/components'
 import { CustomModal } from '@/components'
 import { UpdateTicketForm } from '@/components/form/updateTicket.form'
 import type { TicketProp } from '@/contracts'
-import { useProjectStore, useTicketStore } from '@/store'
+import type { HistoryTabletProp } from '@/contracts'
+import { useHistoryStore, useProjectStore, useTicketStore } from '@/store'
+import { useEffect, useState } from 'react'
 import { FaLongArrowAltRight, FaSave } from 'react-icons/fa'
 import { LuUser2 } from 'react-icons/lu'
 import { useParams } from 'react-router-dom'
 
 export const DetailTicketPage = () => {
   const { ticketId } = useParams<{ ticketId: string }>()
+  const [loading, setLoading] = useState(true)
   const selectedProject = useProjectStore((state) => state.selectedProject)
   const selectedTicket = useTicketStore((state) => state.selectedTicket as TicketProp)
+  const { history } = useHistoryStore((state) => state.data as HistoryTabletProp)
+  const getTicket = useTicketStore((state) => state.getTicket)
 
+  const received = history?.reduce((acc, item) => acc + (+item.dolarAmount || 0), 0) || 0
+
+  useEffect(() => {
+    if (ticketId) {
+      getTicket(ticketId).finally(() => setLoading(false))
+    }
+  }, [ticketId, getTicket])
+
+  if (loading) return <Loading />
   if (!selectedTicket || !selectedTicket)
     return <ErrorBox title={'Error'} message={'No se ha logrado obtener la data.'} />
   return (
     <LayoutGrid>
-      <div className="bg-white border border-gray-300 rounded-md p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
-        <h1 className="text-xl font-bold">DETALLES DEL TICKET</h1>
+      <div className="flex flex-col rounded-xl p-0 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
+        <h1 className="text-2xl font-semibold">Detalles del Ticket</h1>
       </div>
 
       {/* info / update */}
-      <div className="bg-white border border-gray-300 rounded-md  p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-4">
+      <div className="bg-white rounded-xl p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-4">
         <div className="flex justify-between items-center">
           <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
             <h4 className="whitespace-nowrap">Info</h4>
@@ -29,7 +43,7 @@ export const DetailTicketPage = () => {
 
           <div className="h-[38px]">
             <CustomModal
-              header={<h2 className="text-xl font-semibold">Actualizar Ticket</h2>}
+              header={<h2 className="text-xl font-semibold">Detalles Ticket</h2>}
               buttonText="Actualizar"
               buttonType="update"
               buttonIcon={<FaSave />}
@@ -66,13 +80,16 @@ export const DetailTicketPage = () => {
             <div className="bg-slate-700 h-[32px] w-[32px] rounded-full text-white flex justify-center items-center">
               <LuUser2 />
             </div>
-            <p className="min-w">{selectedTicket.seller.name}</p>
+            {/* Add a check to ensure seller and seller.name exist */}
+            <p className="min-w text-nowrap">
+              {selectedTicket.seller?.name ?? 'Sin vendedor'}
+            </p>
           </div>
         </div>
       </div>
 
       {/* payments state */}
-      <div className="flex flex-col justify-between bg-white border border-gray-300 rounded-md p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-4">
+      <div className="flex flex-col justify-between bg-white rounded-xl p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-4">
         <div className="flex justify-between items-center">
           <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
             <h4 className="whitespace-nowrap">Pagos</h4>
@@ -106,16 +123,18 @@ export const DetailTicketPage = () => {
           </p>
 
           <p>Abonado</p>
-          <p className="text-right font-semibold text-gray-500">- 5$</p>
+          <p className="text-right font-semibold text-gray-500">- {received}$</p>
         </div>
 
         <div className="grid grid-cols-2 w-full border-t  bg-gray-200 rounded-md p-2 mt-6 font-semibold">
           <p>Deuda</p>
-          <p className="text-right ">15$</p>
+          <p className="text-right ">
+            {((selectedProject?.raffleConfig.priceTicket || 0) - received).toFixed(2)}$
+          </p>
         </div>
       </div>
 
-      <div className="bg-white border border-gray-300 rounded-md  p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-4">
+      <div className="bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-4">
         <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
           <h4 className="whitespace-nowrap">Fecha limite</h4>
         </div>
@@ -129,10 +148,8 @@ export const DetailTicketPage = () => {
         </p>
       </div>
 
-      <div className="bg-white border border-gray-300 rounded-md  p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
-        <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
-          <h4 className="whitespace-nowrap">Historial de pagos</h4>
-        </div>
+      <div className="mt-6 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
+        <h2 className="text-2xl font-semibold">Historial de pagos</h2>
       </div>
 
       <HistoryTablet ticketId={ticketId} />

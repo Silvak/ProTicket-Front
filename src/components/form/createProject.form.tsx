@@ -8,6 +8,7 @@ export const CreateProjectForm = () => {
     name: '',
     startDate: '',
     endDate: '',
+    image: '',
     priceTicket: '',
     totalTickets: '',
     perTicket: '1',
@@ -42,7 +43,7 @@ export const CreateProjectForm = () => {
         end: formData.endDate,
       },
       raffleConfig: {
-        img: '',
+        img: formData.image,
         priceTicket: Number(formData.priceTicket),
         totalTickets: Number(formData.totalTickets),
         perTicket: Number(formData.perTicket),
@@ -61,6 +62,7 @@ export const CreateProjectForm = () => {
       // clean form
       setFormData({
         name: '',
+        image: '',
         startDate: '',
         endDate: '',
         priceTicket: '',
@@ -85,6 +87,18 @@ export const CreateProjectForm = () => {
             type="text"
             name="name"
             value={formData.name}
+            onChange={handleChange}
+            className="w-full mt-1 p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium">Imagen</label>
+          <input
+            type="text"
+            name="image"
+            value={formData.image}
             onChange={handleChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required
@@ -199,9 +213,9 @@ export const CreateProjectForm = () => {
 
         <button
           type="submit"
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded mt-4"
+          className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg mt-4"
         >
-          Crear Proyecto
+          Crear Rifa
         </button>
       </form>
     </>

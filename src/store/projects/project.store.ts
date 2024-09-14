@@ -1,13 +1,15 @@
-import type { ProjectProp } from '@/contracts'
+import type { ProjectMemberProp, ProjectProp } from '@/contracts'
 import {
   createProject,
   deleteProject,
   getProjectById,
   getProjectStatus,
   getProjects,
+  getRelatedProjectReseller,
   getRelatedProjectTickets,
   getRelatedProjects,
   updateProject,
+  updateProjectMember,
 } from '@/services/project.service'
 import type { StateCreator } from 'zustand'
 import { create } from 'zustand'
@@ -24,13 +26,16 @@ export interface ProjectState {
   getProjects: (projectId?: string) => Promise<void>
   getStatus: (projectId: string) => Promise<void>
   getRelatedProjects: (projectId: string) => Promise<void>
+  getRelatedProjectReseller: (projectId: string) => Promise<void>
   getRelatedTickets: (projectId: string) => Promise<void>
   createProject: (projectData: ProjectProp) => Promise<void>
   updateProject: (projectData: ProjectProp) => Promise<void>
+  updateProjectMember: (projectData: ProjectMemberProp) => Promise<void>
   deleteProject: (projectID: string) => Promise<void>
   cleanSelectedProject: () => void
   setPage: (page: number) => void
   setLimit: (limit: number) => void
+  cleanProjectData: () => void
 }
 
 const storeApi: StateCreator<ProjectState> = (set, get) => ({
@@ -73,6 +78,15 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
     }
   },
 
+  getRelatedProjectReseller: async (projectId: string) => {
+    try {
+      const data = await getRelatedProjectReseller(projectId, get().page, get().limit)
+      set({ data: data })
+    } catch (_error) {
+      set({ data: {} })
+    }
+  },
+
   getRelatedTickets: async (projectId: string) => {
     try {
       const data = await getRelatedProjectTickets(projectId, get().page, get().limit)
@@ -104,6 +118,17 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
     }
   },
 
+  updateProjectMember: async (projectData) => {
+    try {
+      const res = await updateProjectMember(projectData)
+      if (res) {
+        await get().getProjects(projectData.id)
+      }
+    } catch (_error) {
+      throw 'Update member error'
+    }
+  },
+
   deleteProject: async (projectID: string) => {
     try {
       const res = await deleteProject(projectID)
@@ -117,6 +142,8 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
   cleanSelectedProject: () => set({ selectedProject: null }),
   setPage: async (page: number) => set({ page: page }),
   setLimit: async (limit: number) => set({ limit: limit }),
+
+  cleanProjectData: () => set({ data: {}, selectedProject: null, tickets: {} }),
 })
 
 export const useProjectStore = create<ProjectState>()(

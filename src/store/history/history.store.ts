@@ -24,6 +24,7 @@ export interface HistoryState {
 
   setPage: (page: number) => void
   setLimit: (limit: number) => void
+  cleanHistoryData: () => void
 }
 
 const storeApi: StateCreator<HistoryState> = (set, get) => ({
@@ -85,6 +86,8 @@ const storeApi: StateCreator<HistoryState> = (set, get) => ({
 
   setPage: async (page: number) => set({ page: page }),
   setLimit: async (limit: number) => set({ limit: limit }),
+
+  cleanHistoryData: () => set({ data: {}, selectedHistory: {} }),
 })
 
 export const useHistoryStore = create<HistoryState>()(

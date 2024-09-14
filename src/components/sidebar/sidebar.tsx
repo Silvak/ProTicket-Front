@@ -36,7 +36,7 @@ export const Sidebar = () => {
         isOpen ? 'w-[320px]' : 'w-[0px] md:w-[70px]'
       } h-[calc(100vh-70px)] z-[1000] mt-[70px] bg-white border-r border-gray-300 border-l duration-150 ease-in-out overflow-hidden`}
     >
-      <div className="flex flex-col gap-2 w-full h-full px-2 py-4 ">
+      <div className="flex flex-col gap-1 w-full h-full px-2 py-4">
         {menu.map((element) => (
           <SidebarButton
             key={element.text}
