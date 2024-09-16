@@ -1,9 +1,10 @@
 import type { TicketTabletProp } from '@/contracts'
+import { useModalAutoClose, useUserRole } from '@/hooks'
 import { useTicketStore } from '@/store/tickets/ticket.store'
 import { useEffect, useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { ErrorBox } from '../common/errorBox'
 import { Loading } from '../common/loading'
 import { CreateTicketForm } from '../form/createTicket.form'
@@ -12,8 +13,11 @@ import { TicketRow } from './ticketRow'
 
 export const TicketsTablet = ({ projectId = '' }) => {
   const location = useLocation()
+  const navigate = useNavigate()
+  const userRole = useUserRole()
   const ticketNumber = new URLSearchParams(location.search).get('number')
   const [autoOpen, setAutoOpen] = useState(false)
+  const { isOpen, modalAutoClose } = useModalAutoClose()
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const { limit, page, tickets, total } = useTicketStore(
@@ -28,12 +32,16 @@ export const TicketsTablet = ({ projectId = '' }) => {
 
   //modal
   useEffect(() => {
-    if (ticketNumber) setAutoOpen(true)
+    if (ticketNumber) {
+      setAutoOpen(true)
+    }
 
-    setTimeout(() => {
+    if (isOpen) {
       setAutoOpen(false)
-    }, 500)
-  }, [ticketNumber])
+      modalAutoClose()
+      navigate(`/${userRole}/overview`)
+    }
+  }, [ticketNumber, isOpen, modalAutoClose, navigate, userRole])
 
   // get tickets
   useEffect(() => {
@@ -86,8 +94,12 @@ export const TicketsTablet = ({ projectId = '' }) => {
             buttonType="create"
             buttonIcon={<FaPlus />}
             autoOpen={autoOpen}
+            autoClose={isOpen}
           >
-            <CreateTicketForm ticketNumber={ticketNumber?.toString()} />
+            <CreateTicketForm
+              ticketNumber={ticketNumber?.toString()}
+              modalAutoClose={modalAutoClose}
+            />
           </CustomModal>
         </div>
       </div>

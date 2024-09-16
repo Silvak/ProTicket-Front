@@ -14,9 +14,17 @@ interface ProjectStatusProp {
   }[]
 }
 
-export const CreateTicketForm = ({ ticketNumber = '' }) => {
+interface CreateTicketFormProps {
+  ticketNumber?: string
+  modalAutoClose: () => void
+}
+
+export const CreateTicketForm = ({
+  ticketNumber,
+  modalAutoClose,
+}: CreateTicketFormProps) => {
   const [formData, setFormData] = useState({
-    number: ticketNumber !== '' ? ticketNumber : '',
+    number: ticketNumber !== '' ? ticketNumber : ('' as string),
     name: '',
     dni: '',
     phone1: '',
@@ -59,7 +67,7 @@ export const CreateTicketForm = ({ ticketNumber = '' }) => {
     e.preventDefault()
 
     const ticketData = {
-      number: formData.number,
+      number: formData.number || '',
       project: selectedProjectId || '',
       seller: userId || '',
       ownerData: {
@@ -86,6 +94,7 @@ export const CreateTicketForm = ({ ticketNumber = '' }) => {
         address: '',
         other: '',
       })
+      modalAutoClose()
     } catch (_error) {
       toast.error('Error al crear el ticket!')
     }

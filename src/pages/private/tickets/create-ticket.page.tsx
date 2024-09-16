@@ -1,4 +1,5 @@
 import { CreateTicketForm, LayoutGrid } from '@/components'
+import { useModalAutoClose } from '@/hooks'
 import { useParams } from 'react-router-dom'
 
 export const CreateTicketPage = () => {
@@ -6,6 +7,7 @@ export const CreateTicketPage = () => {
     ticketId: string
     ticketNumber: string
   }>()
+  const { modalAutoClose } = useModalAutoClose()
 
   return (
     <LayoutGrid>
@@ -15,7 +17,7 @@ export const CreateTicketPage = () => {
 
       {/* info / update */}
       <div className="bg-white rounded-xl p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-6">
-        <CreateTicketForm ticketNumber={ticketNumber} />
+        <CreateTicketForm ticketNumber={ticketNumber} modalAutoClose={modalAutoClose} />
       </div>
     </LayoutGrid>
   )
