@@ -29,6 +29,10 @@ export const TicketsTablet = ({ projectId = '' }) => {
   //modal
   useEffect(() => {
     if (ticketNumber) setAutoOpen(true)
+
+    setTimeout(() => {
+      setAutoOpen(false)
+    }, 500)
   }, [ticketNumber])
 
   // get tickets
