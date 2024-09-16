@@ -17,6 +17,14 @@ export const UserDetailProjectsPage = () => {
 
       {/* Project summary */}
       <div className=" flex flex-col gap-1 bg-white  rounded-xl p-4 col-span-1 mb-6 sm:col-span-2 md:col-span-3 xl:col-span-6">
+        <div className="w-full bg-gray-100 h-[120px] rounded-md overflow-hidden">
+          <img
+            src={selectedProject.raffleConfig.img}
+            alt={selectedProject.name}
+            className="w-full h-full object-cover"
+          />
+        </div>
+
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold mb-2">Resumen de la rifa</h3>
 

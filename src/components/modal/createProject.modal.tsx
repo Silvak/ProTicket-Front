@@ -1,20 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useModalAutoClose } from '@/hooks'
 import { FaPlus } from 'react-icons/fa'
 import { CreateProjectForm } from '../form/createProject.form'
 import { CustomModal } from './customModal'
 
 export const CreateProjectModal = () => {
-  const [isOpen, setIsOpen] = useState(false)
-
-  const modalAutoClose = () => {
-    setIsOpen(true)
-  }
-
-  useEffect(() => {
-    if (isOpen) {
-      setIsOpen(false)
-    }
-  }, [isOpen])
+  const { isOpen, modalAutoClose } = useModalAutoClose()
 
   return (
     <CustomModal

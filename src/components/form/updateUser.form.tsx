@@ -69,6 +69,17 @@ export const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
         </div>
 
         <div className="mb-4">
+          <label className="block text-sm font-medium">Imagen</label>
+          <input
+            type="text"
+            name="img"
+            value={formData.img}
+            onChange={handleChange}
+            className="w-full mt-1 p-2 border border-gray-300 rounded"
+          />
+        </div>
+
+        <div className="mb-4">
           <label className="block text-sm font-medium">Teléfono</label>
           <input
             type="text"
@@ -77,17 +88,6 @@ export const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
             onChange={handleChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium">Imagen</label>
-          <input
-            type="text"
-            name="img"
-            value={formData.img}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border border-gray-300 rounded"
           />
         </div>
 

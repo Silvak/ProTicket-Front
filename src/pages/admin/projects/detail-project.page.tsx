@@ -25,10 +25,7 @@ export const DetailProjectsPage = () => {
           qr="https://example.com/qr-code.png"
           numberPosition={selectedProject?.raffleConfig?.numberPosition}
           qrPosition={selectedProject?.raffleConfig?.qrPosition}
-          img={
-            selectedProject?.raffleConfig?.img ||
-            'https://plus.unsplash.com/premium_photo-1683134676662-645988a8074e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Zm9uZG8lMjBkZSUyMGNvbG9yZXN8ZW58MHx8MHx8fDA%3D'
-          }
+          img={selectedProject?.raffleConfig?.img}
         />
       </div>
 

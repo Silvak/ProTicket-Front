@@ -102,8 +102,9 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
       if (res) {
         await get().getProjects()
       }
-    } catch (_error) {
-      throw 'Create Error'
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 

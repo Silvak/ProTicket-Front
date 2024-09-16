@@ -192,7 +192,7 @@ export const createProject = async (projectData: ProjectProp) => {
       'raffleConfig[perTicket]': projectData.raffleConfig.perTicket.toString(),
       'raffleConfig[qrPosition]': projectData.raffleConfig.qrPosition,
       'raffleConfig[numberPosition]': projectData.raffleConfig.numberPosition,
-      owner: projectData.owner.id as string, // Cambia esto
+      owner: projectData.owner.id as string,
       state: projectData.state.join(','),
     }).toString()
 
@@ -201,10 +201,10 @@ export const createProject = async (projectData: ProjectProp) => {
     return data
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
+      const errorMessage = error.response?.data?.error || 'Error al crear rifa'
+      throw new Error(errorMessage)
     }
-    throw new Error('Failed to create project')
+    throw new Error('Fallo al crear rifa')
   }
 }
 
@@ -226,7 +226,7 @@ export const updateProject = async (projectData: ProjectProp) => {
       name: projectData.name,
       'date[start]': projectData.date.start,
       'date[end]': projectData.date.end,
-      'raffleConfig[img]': projectData.raffleConfig.img || '',
+      'raffleConfig[img]': projectData.raffleConfig.img,
       'raffleConfig[priceTicket]': projectData.raffleConfig.priceTicket.toString(),
       'raffleConfig[totalTickets]': projectData.raffleConfig.totalTickets.toString(),
       'raffleConfig[perTicket]': projectData.raffleConfig.perTicket.toString(),

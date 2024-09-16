@@ -13,6 +13,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
     name: project.name || '',
     startDate: project.date?.start || '',
     endDate: project.date?.end || '',
+    image: project.raffleConfig?.img || '',
     priceTicket: project.raffleConfig?.priceTicket || '',
     totalTickets: project.raffleConfig?.totalTickets || '',
     perTicket: project.raffleConfig?.perTicket || '1',
@@ -20,6 +21,8 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
     numberPosition: project.raffleConfig?.numberPosition || 'bl',
     state: project.state?.[0] || 'ACTIVE',
   })
+
+  console.log('Project:', project)
 
   const [selectedUser, setSelectedUser] = useState<string | null>(
     project.owner.id || null
@@ -31,6 +34,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
       name: project.name || '',
       startDate: project.date?.start.toString() || '',
       endDate: project.date?.end.toString() || '',
+      image: project.raffleConfig?.img || '',
       priceTicket: project.raffleConfig?.priceTicket || '',
       totalTickets: project.raffleConfig?.totalTickets || '',
       perTicket: project.raffleConfig?.perTicket || '1',
@@ -64,7 +68,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
         end: formData.endDate,
       },
       raffleConfig: {
-        img: project.raffleConfig.img || '',
+        img: formData.image,
         priceTicket: Number(formData.priceTicket),
         totalTickets: Number(formData.totalTickets),
         perTicket: Number(formData.perTicket),
@@ -94,6 +98,18 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
             type="text"
             name="name"
             value={formData.name}
+            onChange={handleChange}
+            className="w-full mt-1 p-2 border border-gray-300 rounded"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium">Imagen Rifa</label>
+          <input
+            type="text"
+            name="image"
+            value={formData.image}
             onChange={handleChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required

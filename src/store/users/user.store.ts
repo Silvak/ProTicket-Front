@@ -4,6 +4,7 @@ import {
   createReseller,
   createUser,
   deleteUser,
+  deleteUserReseller,
   getUserById,
   getUsers,
   updateUser,
@@ -24,6 +25,7 @@ export interface UserState {
   createReseller: (userData: ResellerCreate) => Promise<void>
   updateUser: (userData: UserUpdate) => Promise<void>
   deleteUser: (creatorId: string, userId: string) => Promise<void>
+  deleteUserReseller: (creatorId: string, userId: string) => Promise<void>
   setPage: (page: number) => void
   setLimit: (limit: number) => void
   cleanUserData: () => void
@@ -77,7 +79,7 @@ const storeApi: StateCreator<UserState> = (set, get) => ({
     try {
       const res = await updateUser(userData)
       if (res) {
-        await get().getUser(res.creatorId)
+        await get().getUserById(userData.id)
       }
     } catch (_error) {
       console.log(_error)
@@ -87,6 +89,17 @@ const storeApi: StateCreator<UserState> = (set, get) => ({
   deleteUser: async (creatorId: string, userId: string) => {
     try {
       const res = await deleteUser(userId)
+      if (res) {
+        await get().getUser(creatorId)
+      }
+    } catch (_error) {
+      throw 'Delete error'
+    }
+  },
+
+  deleteUserReseller: async (creatorId: string, userId: string) => {
+    try {
+      const res = await deleteUserReseller(userId)
       if (res) {
         await get().getUser(creatorId)
       }

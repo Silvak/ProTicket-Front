@@ -18,12 +18,23 @@ interface UserRowProp {
 export const UserRow = ({ id, img, name, email, role, state }: UserRowProp) => {
   const navigate = useNavigate()
   const deleteUser = useUserStore((state) => state.deleteUser)
+  const deleteUserReseller = useUserStore((state) => state.deleteUserReseller)
+
   const creatorId = useAuthStore((state) => state.user?.id)
   const userRole = useUserRole()
 
   const handleDelete = async () => {
     try {
       await deleteUser(creatorId || '', id)
+      toast.success('Proyecto eliminado exitosamente.')
+    } catch (_error) {
+      toast.error('Hubo un error al eliminar el proyecto.')
+    }
+  }
+
+  const handleDeleteReseller = async () => {
+    try {
+      await deleteUserReseller(creatorId || '', id)
       toast.success('Proyecto eliminado exitosamente.')
     } catch (_error) {
       toast.error('Hubo un error al eliminar el proyecto.')
@@ -45,7 +56,7 @@ export const UserRow = ({ id, img, name, email, role, state }: UserRowProp) => {
         <div className="flex gap-2 col-span-1 lg:col-span-2 overflow-hidden">
           <div className="h-[64px] w-[64px]  bg-gray-200 rounded-md overflow-hidden">
             <img
-              src={img || '/assets/img/placeholder.png'}
+              src={img || 'https://via.placeholder.com/150'}
               alt=""
               className="w-full h-full object-cover"
             />
@@ -103,6 +114,31 @@ export const UserRow = ({ id, img, name, email, role, state }: UserRowProp) => {
                   <button
                     type="button"
                     onClick={handleDelete}
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                  >
+                    Confirmar
+                  </button>
+                </div>
+              </CustomModal>
+            )}
+          </div>
+
+          <div>
+            {userRole === 'user' && (
+              <CustomModal
+                header={<h2>Confirmar Eliminación</h2>}
+                buttonText=""
+                buttonType="delete"
+                buttonIcon={<AiOutlineDelete />}
+              >
+                <p>
+                  ¿Estás seguro de que deseas eliminar el usuario: <strong>{name}</strong>
+                  ?
+                </p>
+                <div className="flex justify-end gap-4 mt-4">
+                  <button
+                    type="button"
+                    onClick={handleDeleteReseller}
                     className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                   >
                     Confirmar

@@ -193,3 +193,28 @@ export const deleteUser = async (userId: string) => {
     throw new Error('Failed to delete project')
   }
 }
+
+export const deleteUserReseller = async (userId: string) => {
+  try {
+    const token = useAuthStore.getState().token
+    if (!token) {
+      throw new Error('UnAuthorized')
+    }
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }
+    const data = new URLSearchParams({ id: userId }).toString()
+    const response = await tesloApi.delete('/users/reseller', {
+      headers,
+      data,
+    })
+    return response.data
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.data)
+      throw new Error(error.response?.data)
+    }
+    throw new Error('Failed to delete project')
+  }
+}

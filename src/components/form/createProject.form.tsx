@@ -32,7 +32,7 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
 
   const handleUserSelect = (userId: string) => {
     setSelectedUser(userId)
-    console.log('Selected User ID:', userId)
+    //console.log('Selected User ID:', userId)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -78,8 +78,10 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
       })
       setSelectedUser(null)
       modalAutoClose()
-    } catch (_error) {
-      toast.error('Error al crear el proyecto')
+    } catch (error) {
+      const errorMessage =
+        typeof error === 'string' ? error : 'Error al intentar crear la rifa'
+      toast.error(errorMessage)
     }
   }
 
@@ -186,7 +188,11 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
         <div className="mb-4 mt-2">
           <h2 className="text-md font-semibold mb-1">Seleccionar Usuario</h2>
           <UserSelect onSelect={handleUserSelect} />
-          {selectedUser && <p>Usuario seleccionado: {selectedUser}</p>}
+          {selectedUser && (
+            <p className="text-sm border text-gray-500 rounded-md px-3 mt-1">
+              Usuario ID: {selectedUser}
+            </p>
+          )}
         </div>
 
         <div className="flex justify-between gap-4 w-full">

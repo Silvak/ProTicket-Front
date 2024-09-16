@@ -25,16 +25,15 @@ export const UserOverviewPage = () => {
   const navigate = useNavigate()
   const rolePath = useUserRole()
   const user = useAuthStore((state) => state.user)
-  //stores
-  const selectProject = useProjectStore((state) => state.selectedProject)
   const status = useProjectStore((state) => state.status as ProjectStatusProp)
+  const selectProject = useProjectStore((state) => state.selectedProject)
   const getStatus = useProjectStore((state) => state.getStatus)
 
   useEffect(() => {
     if (selectProject?.id) {
       getStatus(selectProject.id)
     }
-  }, [selectProject, getStatus])
+  }, [getStatus, selectProject])
 
   const handleTicketClick = (ticketId: string, number: string) => {
     if (ticketId) {
