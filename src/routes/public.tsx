@@ -1,4 +1,4 @@
-import { HomePage, LoginPage, UnauthorizedPage } from '@/pages'
+import { BuyerTicketPage, HomePage, LoginPage, UnauthorizedPage } from '@/pages'
 
 export const publicRoutes = [
   {
@@ -8,6 +8,10 @@ export const publicRoutes = [
   {
     path: '/login',
     element: <LoginPage />,
+  },
+  {
+    path: '/your-ticket/:ticketId',
+    element: <BuyerTicketPage />,
   },
   {
     path: '/unauthorized',

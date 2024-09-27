@@ -1,4 +1,5 @@
 import type { SidebarBtn } from '@/contracts'
+import { useSidebarStore } from '@/store'
 import { useEffect, useState } from 'react'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -8,9 +9,20 @@ export const SidebarButton = ({ isOpen, icon, text, url, submenu }: SidebarBtn) 
   const location = useLocation().pathname.split('/')
   const [menuIsOpen, setMenuOpen] = useState(false)
   const [currentLocation, setCurrentLocation] = useState(location[2])
+  const setClose = useSidebarStore((state) => state.setClose)
 
   const handleOpen = () => {
     setMenuOpen(!menuIsOpen)
+  }
+
+  const handleBtnClick = () => {
+    if (url !== '') {
+      //movile responsive
+      if (window.innerWidth < 768) {
+        setClose()
+      }
+      navigate(url)
+    }
   }
 
   useEffect(() => {
@@ -22,8 +34,8 @@ export const SidebarButton = ({ isOpen, icon, text, url, submenu }: SidebarBtn) 
       {/* main button */}
       <div
         onKeyUp={() => ''}
-        onKeyDown={() => navigate(url)}
-        onClick={() => navigate(url)}
+        onKeyDown={() => handleBtnClick()}
+        onClick={() => handleBtnClick()}
         className={`bg-gray-300 ${
           url !== '' && 'hover:bg-slate-900 hover:text-white cursor-pointer'
         }

@@ -16,7 +16,7 @@ export interface TicketState {
   limit: number
   selectedTicket: object
 
-  getTicket: (ticketId: string) => Promise<void>
+  getTicket: (ticketId: string, isPublic?: boolean) => Promise<void>
   getTickets: (projectId: string) => Promise<void>
   createTicket: (ticketData: TicketCreate) => Promise<void>
   updateTicket: (ticketData: TicketUpdate) => Promise<void>
@@ -33,9 +33,9 @@ const storeApi: StateCreator<TicketState> = (set, get) => ({
   page: 1,
   limit: 5,
 
-  getTicket: async (ticketId) => {
+  getTicket: async (ticketId, isPublic = false) => {
     try {
-      const data = await getTicketById(ticketId)
+      const data = await getTicketById(ticketId, isPublic)
       set({ selectedTicket: data })
     } catch (_error) {
       set({ data: {} })

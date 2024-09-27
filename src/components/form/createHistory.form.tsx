@@ -4,7 +4,11 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 //import { UserSelect } from "./userSelect";
 
-export const CreateHistoryForm = () => {
+interface CreateHistoryFormProps {
+  modalAutoClose: () => void
+}
+
+export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) => {
   const [formData, setFormData] = useState({
     note: '',
     date: new Date().toISOString().split('T')[0],
@@ -55,6 +59,7 @@ export const CreateHistoryForm = () => {
         paymentType: 'TRANSFER',
         ref: '',
       })
+      modalAutoClose()
     } catch (_error) {
       toast.error('Error al intentar intentar guardar abono!')
     }

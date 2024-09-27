@@ -1,7 +1,7 @@
 import { CustomCard, LayoutGrid, ProjectSelector } from '@/components'
 import { useUserRole } from '@/hooks/useUserRole'
 import { useAuthStore, useProjectStore } from '@/store'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { AiOutlineFlag } from 'react-icons/ai'
 import { LuCheckCheck } from 'react-icons/lu'
 import { LuClock4 } from 'react-icons/lu'
@@ -18,12 +18,18 @@ interface ProjectStatusProp {
     number: string
     ticket: string
     status: string
+    ownerData: {
+      name: string
+      dni: string
+      phone1: string
+    }
   }[]
 }
 
 export const UserOverviewPage = () => {
   const navigate = useNavigate()
   const rolePath = useUserRole()
+  const [searchQuery, setSearchQuery] = useState('')
   const user = useAuthStore((state) => state.user)
   const status = useProjectStore((state) => state.status as ProjectStatusProp)
   const selectProject = useProjectStore((state) => state.selectedProject)
@@ -42,6 +48,14 @@ export const UserOverviewPage = () => {
       navigate(`/${rolePath}/project/detail/${selectProject?.id}?number=${number}`)
     }
   }
+
+  const filteredTickets = status.grid?.filter(
+    (ticket) =>
+      ticket.number.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ticket.ownerData?.dni.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ticket.ownerData?.phone1.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ticket.ownerData?.name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
 
   return (
     <LayoutGrid>
@@ -104,15 +118,27 @@ export const UserOverviewPage = () => {
         </h1>
       </div>
 
+      <div
+        className={`bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 ${'md:col-span-6 xl:col-span-12'}`}
+      >
+        <input
+          type="text"
+          placeholder="Buscar..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full h-full p-2 outline-none"
+        />
+      </div>
+
       <div className="flex flex-col bg-white rounded-xl py-3 px-2 col-span-1 sm:col-span-2 md:col-span-6  xl:col-span-12 min-h-[120px]">
         <div className="flex flex-wrap gap-1 p-3 justify-start max-h-[500px] overflow-y-scroll">
-          {status?.grid && status.grid.length > 0 ? (
-            status.grid.map((item) => {
+          {filteredTickets && filteredTickets.length > 0 ? (
+            filteredTickets.map((item) => {
               let statusColor = ''
 
               switch (item.status) {
                 case 'WINNER':
-                  statusColor = 'bg-yellow-300'
+                  statusColor = '#FDE047'
                   break
                 case 'PAID':
                   statusColor = '#4ADE80'

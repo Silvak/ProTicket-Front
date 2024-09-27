@@ -1,6 +1,7 @@
 // public
 export * from './auth/login.page'
 export * from './public/home.page'
+export * from './public/buyer-ticket.paget'
 
 //admin
 export * from './admin/dashboardAdmin.page'

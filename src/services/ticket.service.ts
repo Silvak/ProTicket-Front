@@ -24,7 +24,7 @@ export const getTickets = async (projectId: string, page: number, limit: number)
 }
 
 //----------------------------------------------------- BY ID ---------------------------------------------------------
-export const getTicketById = async (ticketId: string) => {
+export const getTicketById = async (ticketId: string, isPublic: boolean) => {
   try {
     const token = useAuthStore.getState().token
     if (!token) {
@@ -33,9 +33,13 @@ export const getTicketById = async (ticketId: string) => {
     const headers = {
       Authorization: `Bearer ${token}`,
     }
-    const response = await tesloApi.get(`/tickets/${ticketId}`, {
-      headers,
-    })
+    //${isPublic ? "/public/tickets/" : "/tickets/"}
+    const response = await tesloApi.get(
+      `${isPublic ? '/public/ticket/' : '/tickets/'}${ticketId}`,
+      {
+        headers: headers,
+      }
+    )
 
     return response.data
   } catch (error) {
