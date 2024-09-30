@@ -1,6 +1,8 @@
 import { useAuthStore, useProjectStore, useTicketStore } from '@/store'
 import { useEffect, useState } from 'react'
+import PhoneInput from 'react-phone-input-2'
 import { toast } from 'react-toastify'
+import 'react-phone-input-2/lib/style.css'
 
 interface ProjectStatusProp {
   collected: number
@@ -63,6 +65,13 @@ export const CreateTicketForm = ({
     ? status.grid.filter((item) => item.number.includes(searchTerm))
     : []
 
+  const handlePhoneChange = (value: string, name: string) => {
+    setFormData({
+      ...formData,
+      [name]: `+${value}`,
+    })
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -110,19 +119,37 @@ export const CreateTicketForm = ({
             value={searchTerm}
             onChange={handleSearchChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
-            placeholder="Buscar número"
+            placeholder="⌕ Buscar número"
           />
+
+          {/* Select Numbers */}
           <select
             name="number"
             value={formData.number}
             onChange={handleChange}
-            className="w-full mt-1 p-2 border border-gray-300 rounded"
+            className="font-mono w-full mt-1 p-2 border border-gray-300 rounded"
             required
           >
             <option value="">Selecciona un número</option>
             {filteredNumbers.map((item) => (
-              <option key={item.number} value={item.number}>
-                {item.number} - {item.status}
+              <option
+                key={item.number}
+                value={item.number}
+                className="font-mono"
+                disabled={
+                  item.status === 'RESERVED' ||
+                  item.status === 'UNPAID' ||
+                  item.status === 'PAID' ||
+                  item.status === 'WINNER'
+                }
+              >
+                🎫[{String(item.number).padEnd(10, '.')}]{' '}
+                {item.status === 'AVAILABLE' && '🚩 Disponible'}
+                {item.status === 'RESERVED' && '🔵 Reservado'}
+                {item.status === 'UNPAID' && '🟠 Pendiente'}
+                {item.status === 'PAID' && '🟢 Pagado'}
+                {item.status === 'WINNER' && '🏆 Ganador'}
+                {item.status === 'CANCELLED' && '❌ Cancelado'}
               </option>
             ))}
           </select>
@@ -136,44 +163,48 @@ export const CreateTicketForm = ({
             value={formData.name}
             onChange={handleChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
+            placeholder="Jhon Doe"
             required
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium">CI</label>
+          <label className="block text-sm font-medium">CI - DNI</label>
           <input
             type="text"
             name="dni"
             value={formData.dni}
             onChange={handleChange}
-            placeholder="Cédula de identidad"
+            placeholder="v-012345678"
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required
           />
         </div>
 
-        <div className="flex gap-4 justify-between mb-4">
-          <div className="w-full">
-            <label className="block text-sm font-medium">Teléfono 1</label>
-            <input
-              type="text"
-              name="phone1"
+        <div className="flex flex-col gap-4 justify-between mb-4 border rounded-md p-2">
+          <div className="">
+            <label className="block text-sm font-medium">Teléfonos</label>
+            <PhoneInput
+              country={'ve'}
               value={formData.phone1}
-              onChange={handleChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              required
+              onChange={(value) => handlePhoneChange(value, 'phone1')}
+              inputClass="phoneInput"
+              inputProps={{
+                name: 'phone1',
+                required: true,
+              }}
             />
           </div>
 
-          <div className="w-full">
-            <label className="block text-sm font-medium">Teléfono 2</label>
-            <input
-              type="text"
-              name="phone2"
+          <div className="">
+            <PhoneInput
+              country={'ve'}
               value={formData.phone2}
-              onChange={handleChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
+              onChange={(value) => handlePhoneChange(value, 'phone2')}
+              inputClass="phoneInput"
+              inputProps={{
+                name: 'phone2',
+              }}
             />
           </div>
         </div>
@@ -183,6 +214,7 @@ export const CreateTicketForm = ({
           <input
             type="text"
             name="address"
+            placeholder="Calle 123, Ciudad, Estado"
             value={formData.address}
             onChange={handleChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
@@ -195,17 +227,17 @@ export const CreateTicketForm = ({
           <input
             type="text"
             name="other"
+            placeholder="Referencias, notas, etc."
             value={formData.other}
             onChange={handleChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
           />
         </div>
-
         <button
           type="submit"
           className="w-full py-2 px-4 bg-blue-600 text-white rounded mt-4"
         >
-          Agregar Ticket
+          Registrar Ticket
         </button>
       </form>
     </>

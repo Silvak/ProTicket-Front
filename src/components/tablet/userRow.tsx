@@ -26,7 +26,7 @@ export const UserRow = ({ id, img, name, email, role, state }: UserRowProp) => {
   const handleDelete = async () => {
     try {
       await deleteUser(creatorId || '', id)
-      toast.success('Proyecto eliminado exitosamente.')
+      toast.success('Usuario eliminado exitosamente.')
     } catch (_error) {
       toast.error('Hubo un error al eliminar el proyecto.')
     }
@@ -35,7 +35,7 @@ export const UserRow = ({ id, img, name, email, role, state }: UserRowProp) => {
   const handleDeleteReseller = async () => {
     try {
       await deleteUserReseller(creatorId || '', id)
-      toast.success('Proyecto eliminado exitosamente.')
+      toast.success('Uusario eliminado exitosamente.')
     } catch (_error) {
       toast.error('Hubo un error al eliminar el proyecto.')
     }

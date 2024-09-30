@@ -86,7 +86,7 @@ export const UserOverviewPage = () => {
 
       <CustomCard
         className={'border-l-8 border-green-400'}
-        title={'Vendidos/Pagados'}
+        title={'Pagados'}
         icon={<LuCheckCheck />}
         textInfo={[`${status?.sold || 0}/${status?.grid?.length || 0}`, 'tickets']}
       />
@@ -123,7 +123,7 @@ export const UserOverviewPage = () => {
       >
         <input
           type="text"
-          placeholder="Buscar..."
+          placeholder="⌕ Buscar CI, Teléfono, Nombre o Número"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full h-full p-2 outline-none"

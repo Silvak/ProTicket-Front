@@ -86,7 +86,7 @@ export const ResellerOverviewPage = () => {
 
       <CustomCard
         className={'border-l-8 border-green-400'}
-        title={'Vendidos/Pagados'}
+        title={'Pagados'}
         icon={<LuCheckCheck />}
         textInfo={[`${status?.sold || 0}/${status?.grid?.length || 0}`, 'tickets']}
       />

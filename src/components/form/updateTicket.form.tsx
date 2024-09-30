@@ -1,7 +1,9 @@
 import type { TicketProp } from '@/contracts'
 import { useAuthStore, useProjectStore, useTicketStore } from '@/store'
 import { useState } from 'react'
+import PhoneInput from 'react-phone-input-2'
 import { toast } from 'react-toastify'
+import 'react-phone-input-2/lib/style.css'
 
 interface UpdateTicketFormProps {
   ticket: TicketProp
@@ -27,6 +29,13 @@ export const UpdateTicketForm = ({ ticket }: UpdateTicketFormProps) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
+    })
+  }
+
+  const handlePhoneChange = (value: string, name: string) => {
+    setFormData({
+      ...formData,
+      [name]: `+${value}`,
     })
   }
 
@@ -80,45 +89,49 @@ export const UpdateTicketForm = ({ ticket }: UpdateTicketFormProps) => {
             name="name"
             value={formData.name}
             onChange={handleChange}
+            placeholder="Jhon Doe"
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium">CI</label>
+          <label className="block text-sm font-medium">CI - DNI</label>
           <input
             type="text"
             name="dni"
             value={formData.dni}
             onChange={handleChange}
-            placeholder="cedula de identidad"
+            placeholder="v-012345678"
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required
           />
         </div>
 
-        <div className="flex gap-4 justify-between mb-4">
-          <div className="w-full">
-            <label className="block text-sm font-medium">Telefono 1</label>
-            <input
-              type="text"
-              name="phone1"
+        <div className="flex flex-col gap-4 justify-between mb-4 border rounded-md p-2">
+          <div className="">
+            <label className="block text-sm font-medium">Teléfonos</label>
+            <PhoneInput
+              country={'ve'}
               value={formData.phone1}
-              onChange={handleChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              required
+              onChange={(value) => handlePhoneChange(value, 'phone1')}
+              inputClass="phoneInput"
+              inputProps={{
+                name: 'phone1',
+                required: true,
+              }}
             />
           </div>
 
-          <div className="w-full">
-            <label className="block text-sm font-medium">Telefono 2</label>
-            <input
-              type="text"
-              name="phone2"
+          <div className="">
+            <PhoneInput
+              country={'ve'}
               value={formData.phone2}
-              onChange={handleChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
+              onChange={(value) => handlePhoneChange(value, 'phone2')}
+              inputClass="phoneInput"
+              inputProps={{
+                name: 'phone2',
+              }}
             />
           </div>
         </div>
@@ -128,6 +141,7 @@ export const UpdateTicketForm = ({ ticket }: UpdateTicketFormProps) => {
           <input
             type="text"
             name="address"
+            placeholder="Calle 123, Ciudad, Estado"
             value={formData.address}
             onChange={handleChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
@@ -140,6 +154,7 @@ export const UpdateTicketForm = ({ ticket }: UpdateTicketFormProps) => {
           <input
             type="text"
             name="other"
+            placeholder="Referencias, notas, etc."
             value={formData.other}
             onChange={handleChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
@@ -163,11 +178,11 @@ export const UpdateTicketForm = ({ ticket }: UpdateTicketFormProps) => {
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required
           >
-            <option value="WINNER">Ganador</option>
-            <option value="PAID">Pagado</option>
-            <option value="UNPAID">Pendiente</option>
-            <option value="RESERVED">Reservado</option>
-            <option value="CANCELLED">Cancelado</option>
+            <option value="WINNER">🏆 Ganador</option>
+            <option value="PAID">🟢 Pagado</option>
+            <option value="UNPAID">🟠 Pendiente</option>
+            <option value="RESERVED">🔵 Reservado</option>
+            <option value="CANCELLED">❌ Cancelado</option>
           </select>
         </div>
 
