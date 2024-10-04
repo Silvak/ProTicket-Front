@@ -1,7 +1,8 @@
 import { tesloApi } from '@/api/teslo'
-import type { TicketCreate, TicketUpdate } from '@/contracts'
+import type { TicketCreate, TicketProp, TicketUpdate } from '@/contracts'
 import { useAuthStore } from '@/store'
 import { AxiosError } from 'axios'
+import type { AxiosResponse } from 'axios'
 
 //----------------------------------------------------- GET LIST ---------------------------------------------------------
 export const getTickets = async (projectId: string, page: number, limit: number) => {
@@ -26,20 +27,23 @@ export const getTickets = async (projectId: string, page: number, limit: number)
 //----------------------------------------------------- BY ID ---------------------------------------------------------
 export const getTicketById = async (ticketId: string, isPublic: boolean) => {
   try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    }
-    //${isPublic ? "/public/tickets/" : "/tickets/"}
-    const response = await tesloApi.get(
-      `${isPublic ? '/public/ticket/' : '/tickets/'}${ticketId}`,
-      {
-        headers: headers,
+    let response: AxiosResponse<TicketProp>
+
+    if (isPublic) {
+      response = await tesloApi.get(`/public/ticket/${ticketId}`)
+    } else {
+      const token = useAuthStore.getState().token
+      if (!token) {
+        throw new Error('UnAuthorized')
       }
-    )
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      }
+
+      response = await tesloApi.get(`/tickets/${ticketId}`, {
+        headers: headers,
+      })
+    }
 
     return response.data
   } catch (error) {

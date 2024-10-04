@@ -6,6 +6,7 @@ import {
   DetailProjectsPage,
   DetailTicketPage,
   DetailUserPage,
+  NotificationPage,
   OverviewPage,
   ProjectsPage,
   ResellerDetailProjectsPage,
@@ -55,6 +56,12 @@ export const privateRoutes = [
       {
         path: 'user/detail/:userId',
         element: <DetailUserPage />,
+      },
+
+      // notifications
+      {
+        path: 'notification',
+        element: <NotificationPage />,
       },
     ],
   },

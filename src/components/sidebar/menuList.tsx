@@ -1,3 +1,4 @@
+import { AiOutlineNotification } from 'react-icons/ai'
 import { LuTicket } from 'react-icons/lu'
 import { PiUsersBold } from 'react-icons/pi'
 import { TbDeviceAnalytics } from 'react-icons/tb'
@@ -20,6 +21,14 @@ export const adminMenu = [
     icon: <PiUsersBold />,
     text: 'Usuarios',
     url: 'user/list',
+    submenu: [
+      /* { icon: <IoIosSearch />, text: "Buscar", url: "users/search" },*/
+    ],
+  },
+  {
+    icon: <AiOutlineNotification />,
+    text: 'Notificaciones',
+    url: 'notification',
     submenu: [
       /* { icon: <IoIosSearch />, text: "Buscar", url: "users/search" },*/
     ],

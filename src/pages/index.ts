@@ -8,6 +8,7 @@ export * from './admin/dashboardAdmin.page'
 export * from './admin/dashboard/overview.page'
 export * from './admin/projects/projects.page'
 export * from './admin/projects/detail-project.page'
+export * from './admin/notifications/notification.page'
 
 // user
 export * from './user/dashboardUser.page'

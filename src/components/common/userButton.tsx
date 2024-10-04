@@ -58,12 +58,7 @@ export const UserButton = () => {
           >
             {userRole} Dasboard
           </button>
-          <button
-            type="button"
-            className="w-full h-[42px] hover:bg-gray-200 text-left px-2 rounded-md"
-          >
-            Profile
-          </button>
+
           <button
             type="button"
             onClick={handleLogout}

@@ -19,9 +19,9 @@ export const useSocket = (): UseSocketResult => {
 
     newSocket.on('connect', () => {
       console.log(`Conectado con ID: ${newSocket.id}`)
-      newSocket.emit('exampleEvent', {
-        msg: 'Client from React was connected',
-      })
+      //newSocket.emit('exampleEvent', {
+      //  msg: 'Client from React was connected',
+      //})
     })
 
     newSocket.on('project-status', (data) => {
