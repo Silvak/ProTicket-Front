@@ -1,4 +1,5 @@
 import { CustomCard, LayoutGrid, ProjectSelector } from '@/components'
+import { useSocket } from '@/hooks'
 import { useUserRole } from '@/hooks/useUserRole'
 import { useAuthStore, useProjectStore } from '@/store'
 import { useEffect, useState } from 'react'
@@ -34,6 +35,25 @@ export const UserOverviewPage = () => {
   const status = useProjectStore((state) => state.status as ProjectStatusProp)
   const selectProject = useProjectStore((state) => state.selectedProject)
   const getStatus = useProjectStore((state) => state.getStatus)
+  const [projectStatus, setGProjectStatus] = useState<ProjectStatusProp>({
+    collected: 0,
+    goal: 0,
+    reserved: 0,
+    pending: 0,
+    sold: 0,
+    grid: [],
+  })
+
+  const { socket } = useSocket()
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('project-status', (data: ProjectStatusProp) => {
+        console.log(`Respuesta del servidor status: ${data}`)
+        setGProjectStatus(data)
+      })
+    }
+  }, [socket])
 
   useEffect(() => {
     if (selectProject?.id) {
@@ -49,7 +69,7 @@ export const UserOverviewPage = () => {
     }
   }
 
-  const filteredTickets = status.grid?.filter(
+  const filteredTickets = projectStatus.grid?.filter(
     (ticket) =>
       ticket.number.toLowerCase().includes(searchQuery.toLowerCase()) ||
       ticket.ownerData?.dni.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -74,21 +94,21 @@ export const UserOverviewPage = () => {
         className={'border-l-8 border-blue-400'}
         title={'Reservados'}
         icon={<LuClock4 />}
-        textInfo={[(status?.reserved || 0).toString(), 'tickets']}
+        textInfo={[(projectStatus?.reserved || 0).toString(), 'tickets']}
       />
 
       <CustomCard
         className={'border-l-8 border-orange-400'}
         title={'Pendientes'}
         icon={<LuClock4 />}
-        textInfo={[(status?.pending || 0).toString(), 'tickets']}
+        textInfo={[(projectStatus?.pending || 0).toString(), 'tickets']}
       />
 
       <CustomCard
         className={'border-l-8 border-green-400'}
         title={'Pagados'}
         icon={<LuCheckCheck />}
-        textInfo={[`${status?.sold || 0}/${status?.grid?.length || 0}`, 'tickets']}
+        textInfo={[`${projectStatus?.sold || 0}/${status?.grid?.length || 0}`, 'tickets']}
       />
 
       <CustomCard
@@ -102,14 +122,14 @@ export const UserOverviewPage = () => {
         className={''}
         title={'Total Recaudado'}
         icon={<MdOutlineSavings />}
-        textInfo={[(status?.collected || 0).toString(), '$']}
+        textInfo={[(projectStatus?.collected || 0).toString(), '$']}
       />
 
       <CustomCard
         className={''}
         title={'Meta Recaudación'}
         icon={<AiOutlineFlag />}
-        textInfo={[(status?.goal || 0).toString(), '$']}
+        textInfo={[(projectStatus?.goal || 0).toString(), '$']}
       />
 
       <div className="flex flex-col  rounded-xl p-0 mt-6 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">

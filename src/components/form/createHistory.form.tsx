@@ -12,8 +12,8 @@ export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) =>
   const [formData, setFormData] = useState({
     note: '',
     date: new Date().toISOString().split('T')[0],
-    dolarAmount: '',
-    amount: '',
+    dolarAmount: '0',
+    amount: '0',
     badge: 'VES',
     paymentType: 'TRANSFER',
     ref: '',
@@ -25,9 +25,19 @@ export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) =>
 
   // logic
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    let { name, value } = e.target
+
+    // Remove leading zeros for amount and dolarAmount fields
+    if (name === 'amount' || name === 'dolarAmount') {
+      // Prevent multiple leading zeros
+      if (value.startsWith('0') && value.length > 1 && !value.startsWith('0.')) {
+        value = value.replace(/^0+/, '')
+      }
+    }
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     })
   }
 
@@ -75,6 +85,7 @@ export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) =>
             name="note"
             value={formData.note}
             onChange={handleChange}
+            placeholder="Abono de 10$..."
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required
           />
@@ -93,11 +104,11 @@ export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) =>
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium">Monto en dolares</label>
+          <label className="block text-sm font-medium">Monto en dolares $</label>
           <input
             type="number"
             name="dolarAmount"
-            value={+formData.dolarAmount}
+            value={formData.dolarAmount}
             onChange={handleChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required
@@ -110,7 +121,7 @@ export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) =>
             <input
               type="number"
               name="amount"
-              value={+formData.amount}
+              value={formData.amount}
               onChange={handleChange}
               className="w-full mt-1 p-2 border border-gray-300 rounded"
               required
@@ -141,17 +152,18 @@ export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) =>
               className="w-full mt-1 p-2 border border-gray-300 rounded"
               required
             >
-              <option value="CASH">CASH</option>
-              <option value="TRANSFER">TRANSFER</option>
+              <option value="CASH">Efectivo</option>
+              <option value="TRANSFER">Transferencia</option>
             </select>
           </div>
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium">Referencia</label>
+          <label className="block text-sm font-medium">Nro. Referencia</label>
           <input
             type="text"
             name="ref"
+            placeholder="000012345678912"
             value={formData.ref}
             onChange={handleChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"

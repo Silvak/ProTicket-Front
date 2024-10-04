@@ -3,14 +3,27 @@ import { CustomModal } from '@/components'
 import { UpdateTicketForm } from '@/components/form/updateTicket.form'
 import type { TicketProp } from '@/contracts'
 import type { HistoryTabletProp } from '@/contracts'
+import { useModalAutoClose } from '@/hooks'
 import { useHistoryStore, useProjectStore, useTicketStore } from '@/store'
 import { useEffect, useState } from 'react'
-import { FaLongArrowAltRight, FaSave } from 'react-icons/fa'
+import { FaSave } from 'react-icons/fa'
 import { LuUser2 } from 'react-icons/lu'
 import { useParams } from 'react-router-dom'
 
+export const convertToDateFormat = (dateString: string) => {
+  const dateObject = new Date(dateString)
+
+  // get year, month, and day
+  const year = dateObject.getFullYear()
+  const month = String(dateObject.getMonth() + 1).padStart(2, '0') // months are zero-based
+  const day = String(dateObject.getDate()).padStart(2, '0')
+
+  return `${year}-${month}-${day}`
+}
+
 export const DetailTicketPage = () => {
   const { ticketId } = useParams<{ ticketId: string }>()
+  const { isOpen, modalAutoClose } = useModalAutoClose()
   const [loading, setLoading] = useState(true)
   const selectedProject = useProjectStore((state) => state.selectedProject)
   const selectedTicket = useTicketStore((state) => state.selectedTicket as TicketProp)
@@ -47,8 +60,14 @@ export const DetailTicketPage = () => {
               buttonText="Actualizar"
               buttonType="update"
               buttonIcon={<FaSave />}
+              autoClose={isOpen}
             >
-              {selectedTicket && <UpdateTicketForm ticket={selectedTicket} />}
+              {selectedTicket && (
+                <UpdateTicketForm
+                  ticket={selectedTicket}
+                  modalAutoClose={modalAutoClose}
+                />
+              )}
             </CustomModal>
           </div>
         </div>
@@ -96,6 +115,18 @@ export const DetailTicketPage = () => {
           </div>
 
           <div className="flex items-center justify-center">
+            {selectedTicket.state === 'WINNER' && (
+              <div className="bg-yellow-300/50 px-4 p-1 rounded-full">
+                <p className="text-sm font-bold">GANADOR</p>
+              </div>
+            )}
+
+            {selectedTicket.state === 'RESERVED' && (
+              <div className="bg-blue-300/50 px-4 p-1 rounded-full">
+                <p className="text-sm font-bold">RESERVADO</p>
+              </div>
+            )}
+
             {selectedTicket.state === 'PAID' && (
               <div className="bg-green-600/50 px-4 p-1 rounded-full">
                 <p className="text-sm font-bold">PAGADO</p>
@@ -140,11 +171,7 @@ export const DetailTicketPage = () => {
         </div>
 
         <p className="border py-1 px-2 bg-slate-100 rounded-sm mt-3">
-          {selectedTicket.date}{' '}
-          <span>
-            <FaLongArrowAltRight />
-          </span>{' '}
-          {selectedProject?.date.end}
+          📅{convertToDateFormat(selectedTicket.date)} ➤ 📅{selectedProject?.date.end}
         </p>
       </div>
 

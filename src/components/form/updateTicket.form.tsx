@@ -7,9 +7,10 @@ import 'react-phone-input-2/lib/style.css'
 
 interface UpdateTicketFormProps {
   ticket: TicketProp
+  modalAutoClose: () => void
 }
 
-export const UpdateTicketForm = ({ ticket }: UpdateTicketFormProps) => {
+export const UpdateTicketForm = ({ ticket, modalAutoClose }: UpdateTicketFormProps) => {
   const [formData, setFormData] = useState({
     number: ticket.number || '',
     name: ticket.ownerData.name || '',
@@ -61,6 +62,7 @@ export const UpdateTicketForm = ({ ticket }: UpdateTicketFormProps) => {
     try {
       await updateTicket(ticketData)
       toast.success('Ticket actualizado exitosamente')
+      modalAutoClose()
     } catch (_error) {
       toast.error('Error al actualizar el ticket')
     }
