@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import type { Socket } from "socket.io-client";
 
-const SOCKET_SERVER_URL = import.meta.env.VITE_BACKEND_URL;
+const SOCKET_SERVER_URL = import.meta.env.VITE_BACKEND_URL_WS as string;
 
 interface UseSocketResult {
   socket: Socket | null;
