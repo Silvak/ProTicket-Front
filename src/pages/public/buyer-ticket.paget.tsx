@@ -44,7 +44,7 @@ export const BuyerTicketPage = () => {
     getTicket(ticketId || '', true)
   }, [getTicket, ticketId])
 
-  if (!selectedTicket) return <Loading />
+  if (!selectedTicket || !selectedTicket.ownerData) return <Loading />
   return (
     <>
       <Navbar />

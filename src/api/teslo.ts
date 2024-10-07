@@ -6,7 +6,7 @@ const tesloApi = axios.create({
 })
 
 // Todo: interceptors
-// Leer el store de Zustand
+// read zutand store
 tesloApi.interceptors.request.use((config) => {
   const token = useAuthStore.getState().token
   //console.log({ token })
