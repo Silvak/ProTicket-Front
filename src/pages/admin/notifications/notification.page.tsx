@@ -1,8 +1,8 @@
+import { tesloApi } from '@/api/teslo'
 import { LayoutGrid } from '@/components'
 import { useAuthStore, useMessageStore, useSocket } from '@/store'
 import QRCode from 'qrcode.react'
 import { useEffect } from 'react'
-import { tesloApi } from '@/api/teslo'
 
 interface StatusRes {
   status: string

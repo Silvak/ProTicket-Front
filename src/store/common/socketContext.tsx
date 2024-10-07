@@ -1,6 +1,6 @@
-import type { Socket } from 'socket.io-client'
+import { closeSocket, initializeSocket } from '@/services/socket.service'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { initializeSocket, closeSocket } from '@/services/socket.service'
+import type { Socket } from 'socket.io-client'
 
 interface SocketContextType {
   socket: Socket | null
