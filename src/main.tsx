@@ -1,10 +1,13 @@
 import App from '@/App'
-import React from 'react'
+//import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
+import { SocketProvider } from './store'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  <SocketProvider>
     <App />
-  </React.StrictMode>
+  </SocketProvider>
 )
+
+/* <React.StrictMode> */

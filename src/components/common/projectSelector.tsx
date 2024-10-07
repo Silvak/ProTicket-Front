@@ -2,6 +2,7 @@ import type { ProjectTabletProp } from '@/contracts'
 import { useUserRole } from '@/hooks/useUserRole'
 import { useAuthStore, useProjectStore } from '@/store'
 import { useEffect, useState } from 'react'
+//import { useSocket } from '@/store'
 
 export const ProjectSelector = () => {
   const user = useAuthStore((state) => state.user)
@@ -14,6 +15,15 @@ export const ProjectSelector = () => {
   )
   const setSelectedProject = useProjectStore((state) => state.getProjects)
 
+  //const { socket } = useSocket()
+  /*
+  const _joinRoom = (projectId: string) => {
+    if (socket) {
+      socket.emit('joinProjectRoom', { projectId })
+      //console.log(`Evento JoinProject enviado: ${projectId}`)
+    }
+  }*/
+
   useEffect(() => {
     if (user?.id) {
       if (userRole === 'user') {
@@ -22,7 +32,7 @@ export const ProjectSelector = () => {
         getRelatedProjectReseller(user.id)
       }
     }
-  }, [getRelatedProjects, userRole, getRelatedProjectReseller, user?.id])
+  }, [userRole, user?.id, getRelatedProjects, getRelatedProjectReseller])
 
   useEffect(() => {
     if (data?.projects?.length && !selectedProjectId) {
@@ -36,6 +46,7 @@ export const ProjectSelector = () => {
     const projectId = event.target.value
     setSelectedProjectId(projectId)
     setSelectedProject(projectId)
+    //joinRoom(projectId)
   }
 
   return (

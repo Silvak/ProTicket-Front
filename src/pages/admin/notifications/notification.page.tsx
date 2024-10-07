@@ -1,14 +1,42 @@
 import { LayoutGrid } from '@/components'
-import { useSocket } from '@/hooks'
-import { useMessageStore } from '@/store'
+import { useAuthStore, useMessageStore, useSocket } from '@/store'
 import QRCode from 'qrcode.react'
 import { useEffect } from 'react'
+import { tesloApi } from '@/api/teslo'
+
+interface StatusRes {
+  status: string
+  qr: string
+}
 
 export const NotificationPage = () => {
   const setData = useMessageStore((state) => state.setData)
   const state = useMessageStore((state) => state.state)
   const qr = useMessageStore((state) => state.qr)
   const { socket } = useSocket()
+
+  const fetchData = async () => {
+    try {
+      const token = useAuthStore.getState().token
+      if (!token) {
+        throw new Error('UnAuthorized')
+      }
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      }
+      const response = await tesloApi.get<StatusRes>('/projects/ws', {
+        headers,
+      })
+
+      setData(response.data.status, response.data.qr)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
 
   useEffect(() => {
     if (socket) {

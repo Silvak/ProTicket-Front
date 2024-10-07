@@ -1,7 +1,6 @@
 import { CustomCard, LayoutGrid, ProjectSelector } from '@/components'
-import { useSocket } from '@/hooks'
 import { useUserRole } from '@/hooks/useUserRole'
-import { useAuthStore, useProjectStore } from '@/store'
+import { useAuthStore, useProjectStore, useSocket } from '@/store'
 import { useEffect, useState } from 'react'
 import { AiOutlineFlag } from 'react-icons/ai'
 import { LuCheckCheck } from 'react-icons/lu'
@@ -32,10 +31,12 @@ export const ResellerOverviewPage = () => {
   const rolePath = useUserRole()
   const [searchQuery, setSearchQuery] = useState('')
   const user = useAuthStore((state) => state.user)
-  const status = useProjectStore((state) => state.status as ProjectStatusProp)
+  const projectStatus = useProjectStore((state) => state.status as ProjectStatusProp)
   const selectProject = useProjectStore((state) => state.selectedProject)
   const getStatus = useProjectStore((state) => state.getStatus)
-  const [projectStatus, setGProjectStatus] = useState<ProjectStatusProp>({
+
+  const { socket } = useSocket() // Obtener el socket
+  const [_status, setProjectStatus] = useState<ProjectStatusProp>({
     collected: 0,
     goal: 0,
     reserved: 0,
@@ -44,14 +45,17 @@ export const ResellerOverviewPage = () => {
     grid: [],
   })
 
-  const { socket } = useSocket()
-
   useEffect(() => {
     if (socket) {
-      socket.on('project-status', (data: ProjectStatusProp) => {
-        console.log(`Respuesta del servidor status: ${data}`)
-        setGProjectStatus(data)
+      socket.on('project-status', (data) => {
+        setProjectStatus(data)
+        //console.log('user:', data)
       })
+
+      // cleanup
+      return () => {
+        socket.off('project-status')
+      }
     }
   }, [socket])
 
@@ -59,6 +63,16 @@ export const ResellerOverviewPage = () => {
     if (selectProject?.id) {
       getStatus(selectProject.id)
     }
+  }, [getStatus, selectProject])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (selectProject?.id) {
+        getStatus(selectProject.id)
+      }
+    }, 10000)
+
+    return () => clearInterval(interval)
   }, [getStatus, selectProject])
 
   const handleTicketClick = (ticketId: string, number: string) => {
@@ -108,7 +122,10 @@ export const ResellerOverviewPage = () => {
         className={'border-l-8 border-green-400'}
         title={'Pagados'}
         icon={<LuCheckCheck />}
-        textInfo={[`${projectStatus?.sold || 0}/${status?.grid?.length || 0}`, 'tickets']}
+        textInfo={[
+          `${projectStatus?.sold || 0}/${projectStatus?.grid?.length || 0}`,
+          'tickets',
+        ]}
       />
 
       <CustomCard
