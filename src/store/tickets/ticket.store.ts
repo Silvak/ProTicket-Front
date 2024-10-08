@@ -3,6 +3,7 @@ import {
   createTicket,
   deleteTicket,
   getTicketById,
+  getTicketByIdPublic,
   getTickets,
   updateTicket,
 } from '@/services/ticket.service'
@@ -33,10 +34,15 @@ const storeApi: StateCreator<TicketState> = (set, get) => ({
   page: 1,
   limit: 5,
 
-  getTicket: async (ticketId, _isPublic = false) => {
+  getTicket: async (ticketId, isPublic = false) => {
     try {
-      const data = await getTicketById(ticketId)
-      set({ selectedTicket: data })
+      if (isPublic) {
+        const data = await getTicketByIdPublic(ticketId)
+        set({ selectedTicket: data })
+      } else {
+        const data = await getTicketById(ticketId)
+        set({ selectedTicket: data })
+      }
     } catch (_error) {
       set({ data: {} })
     }
