@@ -23,7 +23,6 @@ export const RaffleDisplay: React.FC<RaffleDisplayProps> = ({
   number,
   qr,
   price,
-  numberPosition,
   qrPosition,
   img,
   orientation,
@@ -32,12 +31,16 @@ export const RaffleDisplay: React.FC<RaffleDisplayProps> = ({
 
   return (
     <div
-      className={`flex ${
-        orientation === 'portrait' ? 'flex-col' : 'flex-row'
-      } gap-4 w-full`}
+      className={`flex ${orientation === 'portrait' ? 'flex-col' : 'flex-row'} w-full`}
     >
       {/* Inputs section */}
-      <div className="flex flex-col gap-1 w-full border rounded-md p-2">
+      <div className="flex flex-col gap-1 w-full border p-2 rounded">
+        <div className="flex items-center gap-1 w-[360px]">
+          <label htmlFor="id" className="text-gray-600 text-sm font-semibold font-mono">
+            ID
+          </label>
+          <p className="text-sm font-mono">{id}</p>
+        </div>
         {fliedList.map((item) => (
           <div key={item} className="flex gap-1 items-baseline w-full">
             <input
@@ -51,28 +54,37 @@ export const RaffleDisplay: React.FC<RaffleDisplayProps> = ({
       </div>
 
       {/* Image and QR code section */}
-      <div className="relative grid border min-h-[300px] rounded-md overflow-hidden w-full">
+      <div className="relative grid border min-h-[340px] overflow-hidden w-full">
         <div className="absolute top-0 w-full h-full">
           <img src={img} alt="Raffle-picture" className="w-full h-full object-cover" />
         </div>
 
-        {/* Raffle Number */}
+        {/* Raffle Number
         <div
           className={`absolute z-20 rounded-md p-1 backdrop-blur-sm bg-white/60 ${positionStyles[numberPosition]}`}
         >
           <p className="text-lg font-bold">{number}</p>
         </div>
+        */}
 
         {/* QR Code */}
-        <div
-          className={`absolute z-10 bg-white border rounded-md p-4 w-[160px] ${positionStyles[qrPosition]}`}
-        >
-          <p className="w-full text-center mb-4">
-            <span>precio:</span> <span className="text-xl font-semibold">{price}</span>
-            <span>$</span>
-          </p>
-          <QRCode value={`${qr}/${id}`} size={126} />
-          <p className="text-[9px] text-gray-800 mt-1 text-center">id-{id}</p>
+        <div className={`absolute z-10 bg-white shadow-lg ${positionStyles[qrPosition]}`}>
+          <div className="py-1 bg-red-800 text-white">
+            <p className="w-full text-center">
+              <span className="text-xl font-bold">VALOR </span>
+              <span className="text-xl font-bold ">{price}$</span>
+            </p>
+          </div>
+
+          <div className="border-y py-1">
+            <p className="font-bold text-lg uppercase text-red-600 w-full text-center">
+              N° {number}
+            </p>
+          </div>
+
+          <div className="p-1">
+            <QRCode value={`${'http:localhost/your-ticket'}/${qr}`} size={106} />
+          </div>
         </div>
       </div>
     </div>
