@@ -7,7 +7,9 @@ import { useEffect, useState } from 'react'
 export const ProjectSelector = () => {
   const user = useAuthStore((state) => state.user)
   const userRole = useUserRole()
-  const [selectedProjectId, setSelectedProjectId] = useState<string>('')
+  const [selectedProjectId, setSelectedProjectId] = useState<string>(
+    localStorage.getItem('selectedProjectId') || ''
+  )
   const data = useProjectStore((state) => state.data as ProjectTabletProp)
   const getRelatedProjects = useProjectStore((state) => state.getRelatedProjects)
   const getRelatedProjectReseller = useProjectStore(
@@ -39,6 +41,7 @@ export const ProjectSelector = () => {
       const firstProjectId = data.projects[0].id
       setSelectedProjectId(firstProjectId)
       setSelectedProject(firstProjectId)
+      localStorage.setItem('selectedProjectId', firstProjectId)
     }
   }, [data.projects, selectedProjectId, setSelectedProject])
 
@@ -46,6 +49,7 @@ export const ProjectSelector = () => {
     const projectId = event.target.value
     setSelectedProjectId(projectId)
     setSelectedProject(projectId)
+    localStorage.setItem('selectedProjectId', projectId)
     //joinRoom(projectId)
   }
 
