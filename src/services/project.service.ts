@@ -119,7 +119,7 @@ export const updateProjectMember = async (projectData: ProjectMemberProp) => {
   })
 }
 
-//----------------------------------------------------- DELETE ---------------------------------------------------------
+//----------------------------------------------------- DELETE DATA ---------------------------------------------------------
 export const deleteProject = async (projectId: string) => {
   return apiRequest({
     url: '/projects',

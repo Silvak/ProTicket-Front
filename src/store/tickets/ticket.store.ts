@@ -33,9 +33,9 @@ const storeApi: StateCreator<TicketState> = (set, get) => ({
   page: 1,
   limit: 5,
 
-  getTicket: async (ticketId, isPublic = false) => {
+  getTicket: async (ticketId, _isPublic = false) => {
     try {
-      const data = await getTicketById(ticketId, isPublic)
+      const data = await getTicketById(ticketId)
       set({ selectedTicket: data })
     } catch (_error) {
       set({ data: {} })

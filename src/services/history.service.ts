@@ -1,66 +1,33 @@
-import { tesloApi } from '@/api/teslo'
+import { apiRequest } from '@/api/request'
 import type { HistoryCreate, HistoryUpdate } from '@/contracts'
-import { useAuthStore } from '@/store'
-import { AxiosError } from 'axios'
 
-//----------------------------------------------------- GET LIST ---------------------------------------------------------
-export const getHistory = async (ticketId: string, page: number, limit: number) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const response = await tesloApi.get(`/history/list/${ticketId}`, {
-      params: {
-        page: page,
-        limit: limit,
-      },
-    })
-    return response.data
-  } catch (error) {
-    console.log(error)
-    throw new Error('UnAuthorized')
-  }
+//----------------------------------------------------- GET DATA ---------------------------------------------------------
+export const getHistory = async (
+  ticketId: string,
+  page: number,
+  limit: number
+): Promise<object> => {
+  return apiRequest({
+    url: `/history/list/${ticketId}`,
+    method: 'get',
+    params: { page, limit },
+  })
 }
 
-//----------------------------------------------------- BY ID ---------------------------------------------------------
-export const getHistoryById = async (historyId: string) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    }
-    const response = await tesloApi.get(`/history/${historyId}`, {
-      headers,
-    })
-
-    return response.data
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
-    }
-    throw new Error('Failed to get project by ID')
-  }
+export const getHistoryById = async (historyId: string): Promise<object> => {
+  return apiRequest({
+    url: `/history/${historyId}`,
+    method: 'get',
+    params: {},
+  })
 }
 
-//----------------------------------------------------- CREATE ---------------------------------------------------------
-
+//----------------------------------------------------- CREATE DATA---------------------------------------------------------
 export const createHistory = async (history: HistoryCreate) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }
-
-    const data = new URLSearchParams({
+  return apiRequest({
+    url: '/history',
+    method: 'post',
+    data: new URLSearchParams({
       note: history.note,
       date: history.date,
       dolarAmount: history.dolarAmount,
@@ -70,35 +37,16 @@ export const createHistory = async (history: HistoryCreate) => {
       ref: history.ref,
       ticket: history.ticket,
       seller: history.seller,
-    }).toString()
-
-    const response = await tesloApi.post('/history', data, { headers })
-    console.log(response.data)
-    return response.data
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
-    }
-    throw new Error('Failed to create project')
-  }
+    }).toString(),
+  })
 }
 
-//----------------------------------------------------- UPDATE ---------------------------------------------------------
-
+//----------------------------------------------------- UPDATE DATA ---------------------------------------------------------
 export const updateHistory = async (history: HistoryUpdate) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }
-
-    const data = new URLSearchParams({
+  return apiRequest({
+    url: '/history',
+    method: 'put',
+    data: new URLSearchParams({
       id: history.id,
       note: history.note,
       date: history.date,
@@ -109,44 +57,16 @@ export const updateHistory = async (history: HistoryUpdate) => {
       ref: history.ref,
       ticket: history.ticket,
       seller: history.seller,
-    }).toString()
-
-    const response = await tesloApi.put('/history', data, {
-      headers,
-    })
-
-    return response.data
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
-    }
-    throw new Error('Failed to update project')
-  }
+    }).toString(),
+  })
 }
 
-//----------------------------------------------------- DELETE ---------------------------------------------------------
+//----------------------------------------------------- DELETE DATA ---------------------------------------------------------
+
 export const deleteHistory = async (historyId: string) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }
-    const data = new URLSearchParams({ id: historyId }).toString()
-    const response = await tesloApi.delete('/history', {
-      headers,
-      data,
-    })
-    return response.data
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
-    }
-    throw new Error('Failed to delete project')
-  }
+  return apiRequest({
+    url: '/history',
+    method: 'delete',
+    data: new URLSearchParams({ id: historyId }).toString(),
+  })
 }

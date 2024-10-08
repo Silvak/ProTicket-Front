@@ -1,220 +1,96 @@
-import { tesloApi } from '@/api/teslo'
+import { apiRequest } from '@/api/request'
 import type { ResellerCreate, UserCreate, UserUpdate } from '@/contracts'
-//import type { UserResponse } from "@/contracts";
-import { useAuthStore } from '@/store'
-import { AxiosError } from 'axios'
 
-export const getUsers = async (userId: string, page: number, limit: number) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    }
-
-    const response = await tesloApi.get(`/users/related/${userId}`, {
-      headers,
-      params: {
-        page: page,
-        limit: limit,
-      },
-    })
-
-    return response.data
-  } catch (error) {
-    console.log(error)
-    throw new Error('UnAuthorized')
-  }
+//----------------------------------------------------- GET DATA ---------------------------------------------------------
+export const getUsers = async (
+  userId: string,
+  page: number,
+  limit: number
+): Promise<object> => {
+  return apiRequest({
+    url: `/users/related/${userId}`,
+    method: 'get',
+    params: { page, limit },
+  })
 }
 
-export const getRelatedUsers = async (userId: string, page: number, limit: number) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    }
-
-    const response = await tesloApi.get(`/users/related/${userId}`, {
-      headers,
-      params: {
-        page: page,
-        limit: limit,
-      },
-    })
-
-    return response.data
-  } catch (error) {
-    console.log(error)
-    throw new Error('UnAuthorized')
-  }
+export const getRelatedUsers = async (
+  userId: string,
+  page: number,
+  limit: number
+): Promise<object> => {
+  return apiRequest({
+    url: `/users/related/${userId}`,
+    method: 'get',
+    params: { page, limit },
+  })
 }
 
-export const getUserById = async (userId: string) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    }
-    const { data: projectData } = await tesloApi.get(`/users/${userId}`, {
-      headers,
-    })
-    return projectData
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
-    }
-    throw new Error('Failed to get project by ID')
-  }
+export const getUserById = async (userId: string): Promise<object> => {
+  return apiRequest({
+    url: `/users/${userId}`,
+    method: 'get',
+    params: {},
+  })
 }
 
+//----------------------------------------------------- POST DATA ---------------------------------------------------------
 export const createUser = async (user: UserCreate) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }
-
-    const data = new URLSearchParams({
+  return apiRequest({
+    url: '/users',
+    method: 'post',
+    data: new URLSearchParams({
       name: user.name,
       email: user.email,
       phone: user.phone,
       password: user.password,
       img: user.img,
       creatorId: user.creatorId,
-    }).toString()
-
-    const response = await tesloApi.post('/users', data, { headers })
-
-    return response.data
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
-    }
-    throw new Error('Failed to create project')
-  }
+    }).toString(),
+  })
 }
 
 export const createReseller = async (user: ResellerCreate) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }
-
-    const data = new URLSearchParams({
+  return apiRequest({
+    url: '/users/reseller',
+    method: 'post',
+    data: new URLSearchParams({
       name: user.name,
       email: user.email,
       password: user.password,
       creatorId: user.creatorId,
-    }).toString()
-
-    const response = await tesloApi.post('/users/reseller', data, { headers })
-
-    return response.data
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
-    }
-    throw new Error('Failed to create project')
-  }
+    }).toString(),
+  })
 }
 
+//----------------------------------------------------- UPDATE DATA ---------------------------------------------------------
 export const updateUser = async (user: UserUpdate) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }
-
-    const data = new URLSearchParams({
+  return apiRequest({
+    url: '/users',
+    method: 'put',
+    data: new URLSearchParams({
       id: user.id,
       name: user.name,
       phone: user.phone,
       img: user.img,
       state: user.state,
-    }).toString()
-
-    const response = await tesloApi.put('/users', data, { headers })
-
-    return response.data
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
-    }
-    throw new Error('Failed to create project')
-  }
+    }),
+  })
 }
 
+//----------------------------------------------------- DELETE DATA ---------------------------------------------------------
 export const deleteUser = async (userId: string) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }
-    const data = new URLSearchParams({ id: userId }).toString()
-    const response = await tesloApi.delete('/users', {
-      headers,
-      data,
-    })
-    return response.data
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
-    }
-    throw new Error('Failed to delete project')
-  }
+  return apiRequest({
+    url: '/projects',
+    method: 'delete',
+    data: new URLSearchParams({ id: userId }).toString(),
+  })
 }
 
 export const deleteUserReseller = async (userId: string) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }
-    const data = new URLSearchParams({ id: userId }).toString()
-    const response = await tesloApi.delete('/users/reseller', {
-      headers,
-      data,
-    })
-    return response.data
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
-    }
-    throw new Error('Failed to delete project')
-  }
+  return apiRequest({
+    url: '/users/reseller',
+    method: 'delete',
+    data: new URLSearchParams({ id: userId }).toString(),
+  })
 }

@@ -54,8 +54,10 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
       try {
         const data = await getProjects(get().page, get().limit)
         set({ data: data })
-      } catch (_error) {
+      } catch (error) {
         set({ data: {} })
+        const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+        throw errorMessage
       }
     }
   },
@@ -64,8 +66,10 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
     try {
       const data = await getProjectStatus(projectId)
       set({ status: data })
-    } catch (_error) {
+    } catch (error) {
       set({ status: {} })
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 
@@ -73,8 +77,10 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
     try {
       const data = await getRelatedProjects(projectId, get().page, get().limit)
       set({ data: data })
-    } catch (_error) {
+    } catch (error) {
       set({ data: {} })
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 
@@ -82,8 +88,10 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
     try {
       const data = await getRelatedProjectReseller(projectId, get().page, get().limit)
       set({ data: data })
-    } catch (_error) {
+    } catch (error) {
       set({ data: {} })
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 
@@ -91,8 +99,10 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
     try {
       const data = await getRelatedProjectTickets(projectId, get().page, get().limit)
       set({ tickets: data })
-    } catch (_error) {
+    } catch (error) {
       set({ tickets: {} })
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 
@@ -114,8 +124,9 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
       if (res) {
         await get().getProjects(projectData.id)
       }
-    } catch (_error) {
-      throw 'Update error'
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 
@@ -125,8 +136,9 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
       if (res) {
         await get().getProjects(projectData.id)
       }
-    } catch (_error) {
-      throw 'Update member error'
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 
@@ -136,8 +148,9 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
       if (res) {
         await get().getProjects()
       }
-    } catch (_error) {
-      throw 'Delete error'
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
   cleanSelectedProject: () => set({ selectedProject: null }),

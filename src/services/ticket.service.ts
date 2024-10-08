@@ -1,49 +1,32 @@
+import { apiRequest } from '@/api/request'
 import { tesloApi } from '@/api/teslo'
 import type { TicketCreate, TicketProp, TicketUpdate } from '@/contracts'
-import { useAuthStore } from '@/store'
 import { AxiosError } from 'axios'
-import type { AxiosResponse } from 'axios'
 
-//----------------------------------------------------- GET LIST ---------------------------------------------------------
-export const getTickets = async (projectId: string, page: number, limit: number) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const response = await tesloApi.get(`/tickets/list/${projectId}`, {
-      params: {
-        page: page,
-        limit: limit,
-      },
-    })
-    return response.data
-  } catch (error) {
-    console.log(error)
-    throw new Error('UnAuthorized')
-  }
+//----------------------------------------------------- GET DATA ---------------------------------------------------------
+export const getTickets = async (
+  projectId: string,
+  page: number,
+  limit: number
+): Promise<TicketProp> => {
+  return apiRequest({
+    url: `/tickets/list/${projectId}`,
+    method: 'get',
+    params: { page, limit },
+  })
 }
 
-//----------------------------------------------------- BY ID ---------------------------------------------------------
-export const getTicketById = async (ticketId: string, isPublic: boolean) => {
+export const getTicketById = async (ticketId: string): Promise<TicketProp> => {
+  return apiRequest({
+    url: `/tickets/${ticketId}`,
+    method: 'get',
+    params: {},
+  })
+}
+
+export const getTicketByIdPublic = async (ticketId: string): Promise<TicketProp> => {
   try {
-    let response: AxiosResponse<TicketProp>
-
-    if (isPublic) {
-      response = await tesloApi.get(`/public/ticket/${ticketId}`)
-    } else {
-      const token = useAuthStore.getState().token
-      if (!token) {
-        throw new Error('UnAuthorized')
-      }
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      }
-
-      response = await tesloApi.get(`/tickets/${ticketId}`, {
-        headers: headers,
-      })
-    }
+    const response = await tesloApi.get<TicketProp>(`/public/ticket/${ticketId}`)
 
     return response.data
   } catch (error) {
@@ -55,20 +38,12 @@ export const getTicketById = async (ticketId: string, isPublic: boolean) => {
   }
 }
 
-//----------------------------------------------------- CREATE ---------------------------------------------------------
-
+//----------------------------------------------------- CREATE DATA ---------------------------------------------------------
 export const createTicket = async (ticket: TicketCreate) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }
-
-    const data = new URLSearchParams({
+  return apiRequest({
+    url: '/tickets',
+    method: 'post',
+    data: new URLSearchParams({
       number: ticket.number.toString(),
       project: ticket.project,
       seller: ticket.seller,
@@ -78,35 +53,17 @@ export const createTicket = async (ticket: TicketCreate) => {
       'ownerData[phone2]': ticket.ownerData.phone2 ?? '',
       'ownerData[address]': ticket.ownerData.address,
       'ownerData[other]': ticket.ownerData.other ?? '',
-    }).toString()
-
-    const response = await tesloApi.post('/tickets', data, { headers })
-
-    return response.data
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
-    }
-    throw new Error('Failed to create project')
-  }
+    }).toString(),
+  })
 }
 
-//----------------------------------------------------- UPDATE ---------------------------------------------------------
+//----------------------------------------------------- UPDATE DATA ---------------------------------------------------------
 
 export const updateTicket = async (ticket: TicketUpdate) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }
-
-    const data = new URLSearchParams({
+  return apiRequest({
+    url: '/tickets',
+    method: 'put',
+    data: new URLSearchParams({
       id: ticket.id,
       'ownerData[name]': ticket.ownerData.name,
       'ownerData[dni]': ticket.ownerData.dni,
@@ -115,44 +72,15 @@ export const updateTicket = async (ticket: TicketUpdate) => {
       'ownerData[address]': ticket.ownerData.address,
       'ownerData[other]': ticket.ownerData.other ?? '',
       state: ticket.state ?? '',
-    }).toString()
-
-    const response = await tesloApi.put('/tickets', data, {
-      headers,
-    })
-
-    return response.data
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
-    }
-    throw new Error('Failed to update project')
-  }
+    }).toString(),
+  })
 }
 
-//----------------------------------------------------- DELETE ---------------------------------------------------------
+//----------------------------------------------------- DELETE DATA ---------------------------------------------------------
 export const deleteTicket = async (projectId: string) => {
-  try {
-    const token = useAuthStore.getState().token
-    if (!token) {
-      throw new Error('UnAuthorized')
-    }
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    }
-    const data = new URLSearchParams({ id: projectId }).toString()
-    const response = await tesloApi.delete('/tickets', {
-      headers,
-      data,
-    })
-    return response.data
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.data)
-      throw new Error(error.response?.data)
-    }
-    throw new Error('Failed to delete project')
-  }
+  return apiRequest({
+    url: '/tickets',
+    method: 'delete',
+    data: new URLSearchParams({ id: projectId }).toString(),
+  })
 }

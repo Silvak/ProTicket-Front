@@ -1,6 +1,6 @@
 import type { TicketProp } from '@/contracts'
 import { useUserRole } from '@/hooks/useUserRole'
-import { useAuthStore, useProjectStore, useTicketStore } from '@/store'
+import { useProjectStore, useTicketStore } from '@/store'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { IoTicketOutline } from 'react-icons/io5'
 import { LuUser2 } from 'react-icons/lu'
@@ -19,8 +19,7 @@ export const TicketRow = ({ ticket }: TabletRow) => {
   const getProjects = useProjectStore((state) => state.getProjects)
   const getTicket = useTicketStore((state) => state.getTicket)
   const deleteTicket = useTicketStore((state) => state.deleteTicket)
-  const user = useAuthStore((state) => state.user)
-  const role = user?.role || ''
+  const roleUser = useUserRole()
 
   const handleDetails = () => {
     getProjects(ticket.project.id)
@@ -119,7 +118,7 @@ export const TicketRow = ({ ticket }: TabletRow) => {
             <MdOutlineDashboard />
           </button>
 
-          {(role[0] === 'USER_ROLE' || role[0] === 'RESELLER_ROLE') && (
+          {(roleUser === 'user' || roleUser === 'reseller') && (
             <div className="flex h-[40px] w-full lg:w-[40px]">
               <CustomModal
                 header={<h2>Confirmar Eliminación</h2>}

@@ -40,8 +40,8 @@ export const apiRequest = async <TResponse, TRequest = undefined>({
     return response.data
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.error(error.response?.data)
-      throw new Error(error.response?.data?.message || 'Request failed')
+      const errorMessage = error.response?.data?.error || 'Request failed'
+      throw new Error(errorMessage)
     }
     throw new Error('An unexpected error occurred')
   }
