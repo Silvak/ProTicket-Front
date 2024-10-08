@@ -1,13 +1,8 @@
-import { tesloApi } from '@/api/teslo'
 import { LayoutGrid } from '@/components'
-import { useAuthStore, useMessageStore, useSocket } from '@/store'
+import { getWhatsappStatus } from '@/services/notification.service'
+import { useMessageStore, useSocket } from '@/store'
 import QRCode from 'qrcode.react'
 import { useEffect } from 'react'
-
-interface StatusRes {
-  status: string
-  qr: string
-}
 
 export const NotificationPage = () => {
   const setData = useMessageStore((state) => state.setData)
@@ -17,18 +12,8 @@ export const NotificationPage = () => {
 
   const fetchData = async () => {
     try {
-      const token = useAuthStore.getState().token
-      if (!token) {
-        throw new Error('UnAuthorized')
-      }
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      }
-      const response = await tesloApi.get<StatusRes>('/projects/ws', {
-        headers,
-      })
-
-      setData(response.data.status, response.data.qr)
+      const response = await getWhatsappStatus()
+      setData(response.status, response.qr)
     } catch (error) {
       console.log(error)
     }
@@ -52,9 +37,9 @@ export const NotificationPage = () => {
         <h1 className="text-2xl font-semibold">Notificaciones Mainhub</h1>
       </div>
 
-      <div className="flex flex-col gap-2 bg-white rounded-xl py-3 px-2 col-span-1 sm:col-span-2 md:col-span-6  xl:col-span-12 min-h-[120px]">
+      <div className="flex flex-col gap-2 bg-white rounded-xl py-3 px-2 col-span-1 sm:col-span-2 md:col-span-4  xl:col-span-5 min-h-[120px]">
         <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
-          <h2 className="whitespace-nowrap">Whatsapp</h2>
+          <h2 className="whitespace-nowrap">Whatsapp QR</h2>
         </div>
 
         <div>
