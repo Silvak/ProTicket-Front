@@ -35,7 +35,7 @@ export const RaffleDisplay: React.FC<RaffleDisplayProps> = ({
     >
       {/* Inputs section */}
       <div className="flex flex-col gap-1 w-full border p-2 rounded">
-        <div className="flex items-center gap-1 w-[360px]">
+        <div className="flex items-center gap-1">
           <label htmlFor="id" className="text-gray-600 text-sm font-semibold font-mono">
             ID
           </label>

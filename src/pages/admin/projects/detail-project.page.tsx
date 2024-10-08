@@ -17,7 +17,7 @@ export const DetailProjectsPage = () => {
       </div>
 
       {/* ticket view */}
-      <div className="bg-white rounded-xl p-4 col-span-1 sm:col-span-2 md:col-span-3 xl:col-span-6">
+      <div className="bg-white rounded-xl p-4 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-7">
         <RaffleDisplay
           id={selectedProject?.id || ''}
           number="0001"
@@ -31,7 +31,7 @@ export const DetailProjectsPage = () => {
       </div>
 
       {/* update form */}
-      <div className="bg-white  rounded-xl p-4 col-span-1 sm:col-span-2 md:col-span-3 xl:col-span-6">
+      <div className="bg-white  rounded-xl p-4 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-5">
         {selectedProject && <UpdateProjectForm project={selectedProject} />}
       </div>
 
