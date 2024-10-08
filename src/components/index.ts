@@ -12,6 +12,8 @@ export * from './cards/customCard'
 
 //
 export * from './cards/raffleDisplay'
+export * from './cards/horizontalTicket'
+export * from './cards/verticalTicket'
 
 //dashboard & metrics
 export * from './dashboard/projectMetrics'

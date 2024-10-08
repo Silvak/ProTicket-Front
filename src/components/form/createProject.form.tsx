@@ -19,6 +19,7 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
     qrPosition: 'bl',
     numberPosition: 'tl',
     state: 'ACTIVE',
+    orientation: '',
   })
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
   const createProject = useProjectStore((state) => state.createProject)
@@ -52,6 +53,7 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
         perTicket: Number(formData.perTicket),
         qrPosition: formData.qrPosition,
         numberPosition: formData.numberPosition,
+        orientation: formData.orientation,
       },
       state: [formData.state],
       owner: {
@@ -75,6 +77,7 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
         qrPosition: 'bl',
         numberPosition: 'tl',
         state: 'ACTIVE',
+        orientation: 'portrait',
       })
       setSelectedUser(null)
       modalAutoClose()
@@ -225,6 +228,20 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
               <option value="tr">Superior Derecha</option>
             </select>
           </div>
+        </div>
+
+        {/* roientation */}
+        <div className="w-full">
+          <label className="block text-sm font-medium">Orientación</label>
+          <select
+            name="orientation"
+            value={formData.orientation}
+            onChange={handleChange}
+            className="w-full mt-1 p-2 border border-gray-300 rounded"
+          >
+            <option value="portrait">Vertical</option>
+            <option value="landscape">Horizontal</option>
+          </select>
         </div>
 
         <button

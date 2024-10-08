@@ -26,6 +26,7 @@ export const DetailProjectsPage = () => {
           numberPosition={selectedProject?.raffleConfig?.numberPosition}
           qrPosition={selectedProject?.raffleConfig?.qrPosition}
           img={selectedProject?.raffleConfig?.img}
+          orientation={selectedProject?.raffleConfig?.orientation}
         />
       </div>
 

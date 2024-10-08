@@ -20,6 +20,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
     qrPosition: project.raffleConfig?.qrPosition || 'bl',
     numberPosition: project.raffleConfig?.numberPosition || 'bl',
     state: project.state?.[0] || 'ACTIVE',
+    orientation: project.raffleConfig?.orientation || '',
   })
 
   console.log('Project:', project)
@@ -41,6 +42,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
       qrPosition: project.raffleConfig?.qrPosition || 'bl',
       numberPosition: project.raffleConfig?.numberPosition || 'bl',
       state: project.state?.[0] || 'ACTIVE',
+      orientation: project.raffleConfig?.orientation || '',
     })
     setSelectedUser(project.owner.id || null)
   }, [project])
@@ -74,6 +76,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
         perTicket: Number(formData.perTicket),
         qrPosition: formData.qrPosition,
         numberPosition: formData.numberPosition,
+        orientation: formData.orientation,
       },
       state: [formData.state],
       owner: {
@@ -220,6 +223,20 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
               <option value="tr">Superior Derecha</option>
             </select>
           </div>
+        </div>
+
+        {/* roientation */}
+        <div className="w-full">
+          <label className="block text-sm font-medium">Orientación</label>
+          <select
+            name="orientation"
+            value={formData.orientation}
+            onChange={handleChange}
+            className="w-full mt-1 p-2 border border-gray-300 rounded"
+          >
+            <option value="portrait">Vertical</option>
+            <option value="landscape">Horizontal</option>
+          </select>
         </div>
 
         <button

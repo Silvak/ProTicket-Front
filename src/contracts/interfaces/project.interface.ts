@@ -44,6 +44,7 @@ export interface ProjectProp {
     perTicket: number
     qrPosition: string
     numberPosition: string
+    orientation: string
   }
   state: string[]
   members?: { id: string; name: string; state: string[] }[]
