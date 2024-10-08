@@ -42,10 +42,13 @@ export const HorizontalTicket = ({ ticket }: TicketProp) => {
           <div className="flex relative w-[248px] border p-4 overflow-hidden">
             <div className="flex flex-col gap-1 relative -bottom-[100%] transform -rotate-90 origin-top-left">
               <div className="flex items-center gap-1 w-[360px]">
-                <label htmlFor="id" className="text-gray-600 font-semibold font-mono">
-                  ID:
+                <label
+                  htmlFor="id"
+                  className="text-gray-600 text-sm font-semibold font-mono"
+                >
+                  ID
                 </label>
-                <p className="text-sm">{ticket.id}</p>
+                <p className="text-sm font-mono">{ticket.id}</p>
               </div>
 
               <div className="flex gap-1 ">

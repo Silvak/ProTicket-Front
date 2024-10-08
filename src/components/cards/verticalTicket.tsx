@@ -5,7 +5,6 @@ const positionStyles: Record<string, string> = {
   br: 'bottom-2 right-2',
 }
 import QRCode from 'qrcode.react'
-import { LuUser2 } from 'react-icons/lu'
 
 interface TicketProp {
   ticket: {
@@ -26,6 +25,7 @@ interface TicketProp {
         numberPosition: string
         qrPosition: string
         orientation: string
+        priceTicket: string
       }
     }
     number: string
@@ -36,47 +36,108 @@ interface TicketProp {
 export const VerticalTicket = ({ ticket }: TicketProp) => {
   return (
     <>
-      <div className=" bg-white rounded-xl p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12  border border-gray-300 shadow-xl">
-        <div className="flex justify-between items-center">
-          <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
-            <h4 className="whitespace-nowrap">Info</h4>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4 w-full border">
-          <div className="grid grid-cols-1 mt-3 gap-1 text-sm">
-            <p>
-              <strong>Nombre</strong> {ticket.ownerData.name}
-            </p>
-            <p>
-              <strong>CI</strong> {ticket.ownerData.dni}
-            </p>
-            <p>
-              <strong>Teléfono 1</strong> {ticket.ownerData.phone1}
-            </p>
-            <p>
-              <strong>Teléfono 2</strong> {ticket.ownerData.phone1}
-            </p>
-            <p>
-              <strong>Direccion</strong> {ticket.ownerData.address}
-            </p>
-            <p>
-              <strong>Otro </strong> {ticket.ownerData.other}
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2 py-2 mt-3">
-            <p>Vendido por:</p>
-            <div className="flex items-center gap-2 pl-2 pr-4 p-1 border w-min rounded-full">
-              <div className="bg-slate-700 h-[32px] w-[32px] rounded-full text-white flex justify-center items-center">
-                <LuUser2 />
+      <div className=" bg-white rounded-xl p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12 overflow-x-scroll  border border-gray-300 shadow-xl">
+        <div className="flex flex-col w-[400px] py-6">
+          {/* ----------------- TICKET FIELDS ---------------- */}
+          <div className="flex flex-col w-full border p-4 overflow-hidden">
+            <div>
+              <div className="flex items-center gap-1 w-[360px]">
+                <label
+                  htmlFor="id"
+                  className="text-gray-600 text-sm font-semibold font-mono"
+                >
+                  ID
+                </label>
+                <p className="text-sm font-mono">{ticket.id}</p>
               </div>
-              {/* Add a check to ensure seller and seller.name exist */}
-              <p className="min-w text-nowrap">{ticket.seller?.name ?? 'Sin vendedor'}</p>
+
+              <div className="flex gap-1 ">
+                <label htmlFor="name" className="text-gray-600 font-semibold">
+                  Nombre:
+                </label>
+                <input
+                  type="text"
+                  value={ticket.ownerData.name}
+                  disabled
+                  className="border-b border-gray-400 bg-inherit w-full px-1"
+                />
+              </div>
+
+              <div className="flex gap-1">
+                <label htmlFor="ci" className="text-gray-600 font-semibold">
+                  C.I:
+                </label>
+                <input
+                  type="text"
+                  value={ticket.ownerData.dni}
+                  disabled
+                  className="border-b border-gray-400 bg-inherit w-full px-1"
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <div className="flex">
+                  <label htmlFor="tlf" className="text-gray-600 font-semibold">
+                    Telf:
+                  </label>
+                  <input
+                    type="text"
+                    value={ticket.ownerData.phone1}
+                    disabled
+                    className="border-b border-gray-400 bg-inherit w-full px-1"
+                  />
+                </div>
+                <div className="flex">
+                  <label htmlFor="tlf2" className="text-gray-600 font-semibold">
+                    Telf:
+                  </label>
+                  <input
+                    type="text"
+                    value={ticket.ownerData.phone2}
+                    disabled
+                    className="border-b border-gray-400 bg-inherit w-full px-1"
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-1">
+                <label htmlFor="address" className="text-gray-600 font-semibold ">
+                  Dirección:
+                </label>
+                <input
+                  type="text"
+                  value={ticket.ownerData.address}
+                  disabled
+                  className="border-b border-gray-400 bg-inherit w-full px-1"
+                />
+              </div>
+
+              <div className="flex gap-1">
+                <label htmlFor="other" className="text-gray-600 font-semibold">
+                  Otro:
+                </label>
+                <input
+                  type="text"
+                  value={ticket.ownerData.other}
+                  disabled
+                  className="border-b border-gray-400 bg-inherit w-full px-1"
+                />
+              </div>
+
+              <div className="flex gap-1">
+                <p className="font-bold text-lg uppercase text-red-600">
+                  N° {ticket.number}
+                </p>
+              </div>
+
+              <p className="text-[12px] w-full text-center text-gray-600 mt-1">
+                Tipografia Mora Cel. (0414) 731.99.79 - Tovar{' '}
+              </p>
             </div>
           </div>
 
-          <div className="relative grid w-full border min-h-[500px] rounded-md overflow-hidden">
+          {/* ----------------- IMAGE & QR---------------- */}
+          <div className="relative grid w-[400px]  h-[660px] overflow-hidden">
             <div className="absolute top-0 w-full h-full ">
               <img
                 src={ticket.project?.raffleConfig?.img}
@@ -85,7 +146,7 @@ export const VerticalTicket = ({ ticket }: TicketProp) => {
               />
             </div>
 
-            {/* Raffle Number */}
+            {/* Raffle Number 
             <div
               className={`absolute z-20 rounded-md p-1  backdrop-blur-sm bg-white/60  ${
                 positionStyles[ticket.project.raffleConfig.numberPosition]
@@ -93,20 +154,44 @@ export const VerticalTicket = ({ ticket }: TicketProp) => {
             >
               <p className="text-lg font-bold">{ticket.number}</p>
             </div>
+            */}
 
             {/* QR Code */}
             <div
-              className={`absolute z-10 bg-white border rounded-md p-4 w-[160px]  ${
+              className={`absolute z-10 bg-white rounded-sm shadow-lg ${
                 positionStyles[ticket.project.raffleConfig.qrPosition]
               }`}
             >
-              <p className="w-full text-center mb-4">
-                <span>precio:</span> <span className="text-xl font-semibold">{}</span>
-                <span>$</span>
-              </p>
-              <QRCode value={`${'http:localhost/your-ticket'}/${ticket.id}`} size={126} />
-              <p className="text-[9px] text-gray-800 mt-1 text-center">id-{ticket.id}</p>
+              <div className="py-1 bg-red-800 text-white">
+                <p className="w-full text-center">
+                  <span className="text-xl font-bold">VALOR </span>
+                  <span className="text-xl font-bold ">
+                    {ticket.project.raffleConfig.priceTicket}$
+                  </span>
+                </p>
+              </div>
+
+              <div className="border-y py-1">
+                <p className="font-bold text-lg uppercase text-red-600 w-full text-center">
+                  N° {ticket.number}
+                </p>
+              </div>
+
+              <div className="p-1">
+                <QRCode
+                  value={`${'http:localhost/your-ticket'}/${ticket.id}`}
+                  size={106}
+                />
+              </div>
             </div>
+          </div>
+
+          {/* disclaimer */}
+          <div className="flex w-full h-min pt-1 pb-2 px-4 bg-black/90">
+            <p className="text-md text-white/70">
+              Número no pagado no participa en los premios / No se devuelve dinero de
+              abono{' '}
+            </p>
           </div>
         </div>
       </div>
