@@ -19,7 +19,7 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
     qrPosition: 'bl',
     numberPosition: 'tl',
     state: 'ACTIVE',
-    orientation: '',
+    orientation: 'portrait',
   })
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
   const createProject = useProjectStore((state) => state.createProject)
