@@ -3,9 +3,11 @@ import { FaPlus } from 'react-icons/fa'
 import { CreateResellerForm } from '../form/createReseller.form'
 import { CreateUserForm } from '../form/createUser.form'
 import { CustomModal } from './customModal'
+import { useModalAutoClose } from '@/hooks'
 
 export const CreateUserModal = () => {
   const userRole = useUserRole()
+  const { isOpen, modalAutoClose } = useModalAutoClose()
 
   return (
     <CustomModal
@@ -17,8 +19,13 @@ export const CreateUserModal = () => {
       buttonText={`Crear ${userRole === 'admin' ? 'Usuario' : 'Revendedor'}`}
       buttonType="create"
       buttonIcon={<FaPlus />}
+      autoClose={isOpen}
     >
-      {userRole === 'admin' ? <CreateUserForm /> : <CreateResellerForm />}
+      {userRole === 'admin' ? (
+        <CreateUserForm modalAutoClose={modalAutoClose} />
+      ) : (
+        <CreateResellerForm modalAutoClose={modalAutoClose} />
+      )}
     </CustomModal>
   )
 }

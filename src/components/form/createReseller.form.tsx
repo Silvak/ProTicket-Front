@@ -3,7 +3,11 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 //import { UserSelect } from "./userSelect";
 
-export const CreateResellerForm = () => {
+interface CreateResellerFormProps {
+  modalAutoClose: () => void
+}
+
+export const CreateResellerForm = ({ modalAutoClose }: CreateResellerFormProps) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -55,6 +59,7 @@ export const CreateResellerForm = () => {
         creatorId: '',
         image: null,
       })
+      modalAutoClose()
       //setSelectedUser(null);
     } catch (_error) {
       toast.error('Error al crear el ticket!')

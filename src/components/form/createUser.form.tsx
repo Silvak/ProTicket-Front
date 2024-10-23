@@ -4,7 +4,11 @@ import PhoneInput from 'react-phone-input-2'
 import { toast } from 'react-toastify'
 //import { UserSelect } from "./userSelect";
 
-export const CreateUserForm = () => {
+interface CreateUserFormProps {
+  modalAutoClose: () => void
+}
+
+export const CreateUserForm = ({ modalAutoClose }: CreateUserFormProps) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -69,6 +73,7 @@ export const CreateUserForm = () => {
         creatorId: '',
         image: null,
       })
+      modalAutoClose()
       //setSelectedUser(null);
     } catch (_error) {
       toast.error('Error al crear el ticket!')
