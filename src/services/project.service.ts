@@ -1,4 +1,4 @@
-import { apiRequest } from '@/api/request'
+import { apiRequest, apiRequestFormData } from '@/api/request'
 import type { ProjectMemberProp, ProjectProp, ProjectResponse } from '@/contracts'
 
 //----------------------------------------------------- GET DATA ---------------------------------------------------------
@@ -67,46 +67,76 @@ export const getRelatedProjectTickets = async (
 
 //----------------------------------------------------- POST DATA ---------------------------------------------------------
 export const createProject = async (projectData: ProjectProp) => {
-  return apiRequest({
+  const formData = new FormData()
+
+  formData.append('name', projectData.name)
+  formData.append('date[start]', projectData.date.start)
+  formData.append('date[end]', projectData.date.end)
+  formData.append(
+    'raffleConfig[priceTicket]',
+    projectData.raffleConfig.priceTicket.toString()
+  )
+  formData.append(
+    'raffleConfig[totalTickets]',
+    projectData.raffleConfig.totalTickets.toString()
+  )
+  formData.append(
+    'raffleConfig[perTicket]',
+    projectData.raffleConfig.perTicket.toString()
+  )
+  formData.append('raffleConfig[qrPosition]', projectData.raffleConfig.qrPosition)
+  formData.append('raffleConfig[numberPosition]', projectData.raffleConfig.numberPosition)
+  formData.append('raffleConfig[orientation]', projectData.raffleConfig.orientation)
+  formData.append('owner', projectData.owner.id as string)
+  formData.append('state', projectData.state.join(','))
+
+  // if image is not null
+  if (projectData.image) {
+    formData.append('image', projectData.image)
+  }
+
+  return apiRequestFormData({
     url: '/projects',
     method: 'post',
-    data: new URLSearchParams({
-      name: projectData.name,
-      'date[start]': projectData.date.start,
-      'date[end]': projectData.date.end,
-      'raffleConfig[img]': projectData.raffleConfig.img || '',
-      'raffleConfig[priceTicket]': projectData.raffleConfig.priceTicket.toString(),
-      'raffleConfig[totalTickets]': projectData.raffleConfig.totalTickets.toString(),
-      'raffleConfig[perTicket]': projectData.raffleConfig.perTicket.toString(),
-      'raffleConfig[qrPosition]': projectData.raffleConfig.qrPosition,
-      'raffleConfig[numberPosition]': projectData.raffleConfig.numberPosition,
-      'raffleConfig[orientation]': projectData.raffleConfig.orientation,
-      owner: projectData.owner.id as string,
-      state: projectData.state.join(','),
-    }).toString(),
+    data: formData,
   })
 }
 
 //----------------------------------------------------- UPDATE DATA ---------------------------------------------------------
 export const updateProject = async (projectData: ProjectProp) => {
-  return apiRequest({
+  const formData = new FormData()
+
+  formData.append('id', projectData.id as string)
+  formData.append('name', projectData.name)
+  formData.append('date[start]', projectData.date.start)
+  formData.append('date[end]', projectData.date.end)
+  formData.append(
+    'raffleConfig[priceTicket]',
+    projectData.raffleConfig.priceTicket.toString()
+  )
+  formData.append(
+    'raffleConfig[totalTickets]',
+    projectData.raffleConfig.totalTickets.toString()
+  )
+  formData.append(
+    'raffleConfig[perTicket]',
+    projectData.raffleConfig.perTicket.toString()
+  )
+  formData.append('raffleConfig[qrPosition]', projectData.raffleConfig.qrPosition)
+  formData.append('raffleConfig[numberPosition]', projectData.raffleConfig.numberPosition)
+  formData.append('raffleConfig[orientation]', projectData.raffleConfig.orientation)
+  formData.append('owner', projectData.owner.id as string)
+  formData.append('state', projectData.state.join(','))
+
+  // if image is not null
+  if (projectData.image) {
+    formData.append('image', projectData.image)
+  }
+
+  return apiRequestFormData({
     url: '/projects',
     method: 'put',
-    data: new URLSearchParams({
-      id: projectData.id as string,
-      name: projectData.name,
-      'date[start]': projectData.date.start,
-      'date[end]': projectData.date.end,
-      'raffleConfig[img]': projectData.raffleConfig.img,
-      'raffleConfig[priceTicket]': projectData.raffleConfig.priceTicket.toString(),
-      'raffleConfig[totalTickets]': projectData.raffleConfig.totalTickets.toString(),
-      'raffleConfig[perTicket]': projectData.raffleConfig.perTicket.toString(),
-      'raffleConfig[qrPosition]': projectData.raffleConfig.qrPosition,
-      'raffleConfig[numberPosition]': projectData.raffleConfig.numberPosition,
-      'raffleConfig[orientation]': projectData.raffleConfig.orientation,
-      owner: projectData.owner.id as string,
-      state: projectData.state.join(','),
-    }).toString(),
+    data: formData,
   })
 }
 

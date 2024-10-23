@@ -48,6 +48,7 @@ export interface ProjectProp {
   }
   state: string[]
   members?: { id: string; name: string; state: string[] }[]
+  image?: File | null
 }
 
 export interface ProjectTabletProp {
@@ -67,6 +68,7 @@ export interface UserCreate {
   password: string
   img: string
   creatorId: string
+  image?: File | null
 }
 
 export interface ResellerCreate {
@@ -74,6 +76,7 @@ export interface ResellerCreate {
   email: string
   password: string
   creatorId: string
+  image?: File | null
 }
 
 export interface ProjectMemberProp {

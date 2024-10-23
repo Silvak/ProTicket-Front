@@ -40,6 +40,7 @@ export interface UserUpdate {
   id: string
   name: string
   phone: string
-  img: string
+  password?: string
   state: string
+  image?: File | null
 }

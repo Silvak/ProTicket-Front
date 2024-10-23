@@ -1,6 +1,7 @@
 import type { UserProp } from '@/contracts'
 import { useUserStore } from '@/store'
 import { useEffect, useState } from 'react'
+import PhoneInput from 'react-phone-input-2'
 import { toast } from 'react-toastify'
 
 interface UpdateUserFormProps {
@@ -13,6 +14,7 @@ export const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
     phone: user.phone || '',
     img: user.img || '',
     state: user.state.toString(), // Asegúrate de que sea un string
+    image: null as File | null,
   })
 
   const updateUser = useUserStore((state) => state.updateUser)
@@ -23,6 +25,7 @@ export const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
       phone: user.phone || '',
       img: user.img || '',
       state: user.state.toString(), // Asegúrate de que sea un valor escalar
+      image: null as File | null,
     })
   }, [user])
 
@@ -34,6 +37,22 @@ export const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
     }))
   }
 
+  const handlePhoneChange = (value: string, name: string) => {
+    setFormData({
+      ...formData,
+      [name]: `+${value}`,
+    })
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFormData({
+        ...formData,
+        image: e.target.files[0],
+      })
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -43,6 +62,7 @@ export const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
       phone: formData.phone,
       img: formData.img,
       state: formData.state,
+      image: formData.image,
     }
 
     try {
@@ -71,24 +91,27 @@ export const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
         <div className="mb-4">
           <label className="block text-sm font-medium">Imagen</label>
           <input
-            type="text"
-            name="img"
-            value={formData.img}
-            onChange={handleChange}
+            type="file"
+            name="image"
+            onChange={handleFileChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium">Teléfono</label>
-          <input
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border border-gray-300 rounded"
-            required
-          />
+        <div className="flex gap-4 justify-between mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-medium">Teléfono</label>
+            <PhoneInput
+              country={'ve'}
+              value={formData.phone}
+              onChange={(value) => handlePhoneChange(value, 'phone')}
+              inputClass="phoneInput"
+              inputProps={{
+                name: 'phone',
+                required: true,
+              }}
+            />
+          </div>
         </div>
 
         <div className="mb-4">

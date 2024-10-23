@@ -9,6 +9,7 @@ export const CreateResellerForm = () => {
     email: '',
     password: '',
     creatorId: '',
+    image: null as File | null,
   })
   //const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const userId = useAuthStore((state) => state.user?.id)
@@ -23,6 +24,15 @@ export const CreateResellerForm = () => {
     })
   }
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFormData({
+        ...formData,
+        image: e.target.files[0],
+      })
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -30,6 +40,7 @@ export const CreateResellerForm = () => {
       name: formData.name,
       email: formData.email,
       password: formData.password,
+      image: formData.image,
       creatorId: userId || '',
     }
 
@@ -42,6 +53,7 @@ export const CreateResellerForm = () => {
         email: '',
         password: '',
         creatorId: '',
+        image: null,
       })
       //setSelectedUser(null);
     } catch (_error) {
@@ -88,6 +100,17 @@ export const CreateResellerForm = () => {
               className="w-full mt-1 p-2 border border-gray-300 rounded"
             />
           </div>
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium">Imagen</label>
+          <input
+            type="file"
+            name="image"
+            onChange={handleFileChange}
+            className="w-full mt-1 p-2 border border-gray-300 rounded"
+            required
+          />
         </div>
 
         {/*

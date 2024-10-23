@@ -46,3 +46,38 @@ export const apiRequest = async <TResponse, TRequest = undefined>({
     throw new Error('An unexpected error occurred')
   }
 }
+
+export const apiRequestFormData = async <TResponse, TRequest = undefined>({
+  url,
+  method,
+  params,
+  data,
+}: RequestOptions<TRequest>): Promise<TResponse> => {
+  try {
+    const token = useAuthStore.getState().token
+    if (!token) {
+      throw new Error('Unauthorized')
+    }
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    }
+
+    const response = await tesloApi.request<TResponse>({
+      url,
+      method,
+      headers,
+      params,
+      data: data,
+    })
+
+    return response.data
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      const errorMessage = error.response?.data?.error || 'Request failed'
+      throw new Error(errorMessage)
+    }
+    throw new Error('An unexpected error occurred')
+  }
+}

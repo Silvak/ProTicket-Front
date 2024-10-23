@@ -12,7 +12,7 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
     name: '',
     startDate: new Date().toISOString().split('T')[0],
     endDate: new Date().toISOString().split('T')[0],
-    image: '',
+    image: null as File | null,
     priceTicket: '0',
     totalTickets: '100',
     perTicket: '1',
@@ -31,6 +31,15 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
     })
   }
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFormData({
+        ...formData,
+        image: e.target.files[0],
+      })
+    }
+  }
+
   const handleUserSelect = (userId: string) => {
     setSelectedUser(userId)
     //console.log('Selected User ID:', userId)
@@ -47,7 +56,7 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
         end: formData.endDate,
       },
       raffleConfig: {
-        img: formData.image,
+        img: '',
         priceTicket: Number(formData.priceTicket),
         totalTickets: Number(formData.totalTickets),
         perTicket: Number(formData.perTicket),
@@ -59,6 +68,7 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
       owner: {
         id: selectedUser,
       },
+      image: formData.image,
     }
 
     try {
@@ -70,7 +80,7 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
         name: '',
         startDate: new Date().toISOString().split('T')[0],
         endDate: new Date().toISOString().split('T')[0],
-        image: '',
+        image: null,
         priceTicket: '0',
         totalTickets: '100',
         perTicket: '1',
@@ -107,11 +117,9 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
         <div className="mb-4">
           <label className="block text-sm font-medium">Imagen</label>
           <input
-            type="text"
+            type="file"
             name="image"
-            placeholder="URL de la imagen"
-            value={formData.image}
-            onChange={handleChange}
+            onChange={handleFileChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
             required
           />

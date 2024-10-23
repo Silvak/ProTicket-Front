@@ -13,7 +13,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
     name: project.name || '',
     startDate: project.date?.start || '',
     endDate: project.date?.end || '',
-    image: project.raffleConfig?.img || '',
+    image: null as File | null,
     priceTicket: project.raffleConfig?.priceTicket || '',
     totalTickets: project.raffleConfig?.totalTickets || '',
     perTicket: project.raffleConfig?.perTicket || '1',
@@ -35,7 +35,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
       name: project.name || '',
       startDate: project.date?.start.toString() || '',
       endDate: project.date?.end.toString() || '',
-      image: project.raffleConfig?.img || '',
+      image: null as File | null,
       priceTicket: project.raffleConfig?.priceTicket || '',
       totalTickets: project.raffleConfig?.totalTickets || '',
       perTicket: project.raffleConfig?.perTicket || '1',
@@ -54,6 +54,15 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
     })
   }
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFormData({
+        ...formData,
+        image: e.target.files[0],
+      })
+    }
+  }
+
   const handleUserSelect = (userId: string) => {
     setSelectedUser(userId)
     console.log('Selected User ID:', userId)
@@ -70,7 +79,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
         end: formData.endDate,
       },
       raffleConfig: {
-        img: formData.image,
+        img: '',
         priceTicket: Number(formData.priceTicket),
         totalTickets: Number(formData.totalTickets),
         perTicket: Number(formData.perTicket),
@@ -82,6 +91,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
       owner: {
         id: selectedUser,
       },
+      image: formData.image,
     }
 
     try {
@@ -108,14 +118,12 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium">Imagen Rifa</label>
+          <label className="block text-sm font-medium">Imagen</label>
           <input
-            type="text"
+            type="file"
             name="image"
-            value={formData.image}
-            onChange={handleChange}
+            onChange={handleFileChange}
             className="w-full mt-1 p-2 border border-gray-300 rounded"
-            required
           />
         </div>
 

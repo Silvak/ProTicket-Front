@@ -1,5 +1,5 @@
-import { apiRequest } from "@/api/request";
-import type { ResellerCreate, UserCreate, UserUpdate } from "@/contracts";
+import { apiRequest, apiRequestFormData } from '@/api/request'
+import type { ResellerCreate, UserCreate, UserUpdate } from '@/contracts'
 
 //----------------------------------------------------- GET DATA ---------------------------------------------------------
 export const getUsers = async (
@@ -9,10 +9,10 @@ export const getUsers = async (
 ): Promise<object> => {
   return apiRequest({
     url: `/users/related/${userId}`,
-    method: "get",
+    method: 'get',
     params: { page, limit },
-  });
-};
+  })
+}
 
 export const getRelatedUsers = async (
   userId: string,
@@ -21,76 +21,92 @@ export const getRelatedUsers = async (
 ): Promise<object> => {
   return apiRequest({
     url: `/users/related/${userId}`,
-    method: "get",
+    method: 'get',
     params: { page, limit },
-  });
-};
+  })
+}
 
 export const getUserById = async (userId: string): Promise<object> => {
   return apiRequest({
     url: `/users/${userId}`,
-    method: "get",
+    method: 'get',
     params: {},
-  });
-};
+  })
+}
 
 //----------------------------------------------------- POST DATA ---------------------------------------------------------
 export const createUser = async (user: UserCreate) => {
-  return apiRequest({
-    url: "/users",
-    method: "post",
-    data: new URLSearchParams({
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      password: user.password,
-      img: user.img,
-      creatorId: user.creatorId,
-    }).toString(),
-  });
-};
+  const formData = new FormData()
+  formData.append('name', user.name)
+  formData.append('email', user.email)
+  formData.append('phone', user.phone)
+  formData.append('password', user.password)
+  formData.append('creatorId', user.creatorId)
+
+  // if image is not null
+  if (user.image) {
+    formData.append('image', user.image)
+  }
+
+  return apiRequestFormData({
+    url: '/users',
+    method: 'post',
+    data: formData,
+  })
+}
 
 export const createReseller = async (user: ResellerCreate) => {
-  return apiRequest({
-    url: "/users/reseller",
-    method: "post",
-    data: new URLSearchParams({
-      name: user.name,
-      email: user.email,
-      password: user.password,
-      creatorId: user.creatorId,
-    }).toString(),
-  });
-};
+  const formData = new FormData()
+  formData.append('name', user.name)
+  formData.append('email', user.email)
+  formData.append('password', user.password)
+  formData.append('creatorId', user.creatorId)
+
+  // if image is not null
+  if (user.image) {
+    formData.append('image', user.image)
+  }
+
+  return apiRequestFormData({
+    url: '/users/reseller',
+    method: 'post',
+    data: formData,
+  })
+}
 
 //----------------------------------------------------- UPDATE DATA ---------------------------------------------------------
 export const updateUser = async (user: UserUpdate) => {
-  return apiRequest({
-    url: "/users",
-    method: "put",
-    data: new URLSearchParams({
-      id: user.id,
-      name: user.name,
-      phone: user.phone,
-      img: user.img,
-      state: user.state,
-    }),
-  });
-};
+  const formData = new FormData()
+  formData.append('id', user.id)
+  formData.append('name', user.name)
+  formData.append('phone', user.phone)
+  formData.append('state', user.state)
+
+  // if image is not null
+  if (user.image) {
+    formData.append('image', user.image)
+  }
+
+  return apiRequestFormData({
+    url: '/users',
+    method: 'put',
+    data: formData,
+  })
+}
 
 //----------------------------------------------------- DELETE DATA ---------------------------------------------------------
 export const deleteUser = async (userId: string) => {
   return apiRequest({
-    url: "/users",
-    method: "delete",
+    url: '/users',
+    method: 'delete',
     data: new URLSearchParams({ id: userId }).toString(),
-  });
-};
+  })
+}
 
 export const deleteUserReseller = async (userId: string) => {
   return apiRequest({
-    url: "/users/reseller",
-    method: "delete",
+    url: '/users/reseller',
+    method: 'delete',
     data: new URLSearchParams({ id: userId }).toString(),
-  });
-};
+  })
+}
