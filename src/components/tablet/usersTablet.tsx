@@ -12,9 +12,7 @@ export const UsersTablet = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const user = useAuthStore((state) => state.user)
   const userRole = useUserRole()
-  const { limit, page, users, total } = useUserStore(
-    (state) => state.data as UserTabletProp
-  )
+  const { limit, page, users, total } = useUserStore((state) => state.data as UserTabletProp)
   const numberPages = Math.ceil(total / limit)
   const actualPage = useUserStore((state) => state.page)
   const actualLimit = useUserStore((state) => state.limit)
@@ -42,18 +40,12 @@ export const UsersTablet = () => {
   }
 
   //filter
-  const filteredUsers = users?.filter((user) =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredUsers = users?.filter((user) => user.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
   if (loading) return <Loading />
   return (
     <>
-      <div
-        className={
-          'bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 md:col-span-4 xl:col-span-9'
-        }
-      >
+      <div className={'bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 md:col-span-4 xl:col-span-9'}>
         <input
           type="text"
           placeholder="Buscar usuarios..."
@@ -82,15 +74,7 @@ export const UsersTablet = () => {
         <div>
           {users.length > 0 ? (
             filteredUsers.map((user) => (
-              <UserRow
-                key={user.id}
-                id={user.id}
-                img={user.img || ''}
-                name={user.name}
-                email={user.email}
-                role={user.role}
-                state={user.state}
-              />
+              <UserRow key={user.id} id={user.id} img={user.img || ''} name={user.name} email={user.email} role={user.role} state={user.state} />
             ))
           ) : (
             <p>No hay usuarios</p>
@@ -116,21 +100,11 @@ export const UsersTablet = () => {
             </select>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handlePrevius}
-              className="h-[42px] w-[42px] border flex justify-center items-center rounded-md hover:bg-gray-400"
-            >
+            <button type="button" onClick={handlePrevius} className="h-[42px] w-[42px] border flex justify-center items-center rounded-md hover:bg-gray-400">
               <IoIosArrowBack />
             </button>
-            <div className="h-[42px] w-[42px] border flex justify-center items-center rounded-md">
-              {page}
-            </div>
-            <button
-              type="button"
-              onClick={handleNext}
-              className="h-[42px] w-[42px] border flex justify-center items-center rounded-md hover:bg-gray-400"
-            >
+            <div className="h-[42px] w-[42px] border flex justify-center items-center rounded-md">{page}</div>
+            <button type="button" onClick={handleNext} className="h-[42px] w-[42px] border flex justify-center items-center rounded-md hover:bg-gray-400">
               <IoIosArrowForward />
             </button>
           </div>

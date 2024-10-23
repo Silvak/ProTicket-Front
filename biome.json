@@ -22,7 +22,7 @@
 			"quoteStyle": "single",
 			"indentWidth": 2,
 			"indentStyle": "space",
-			"lineWidth": 90,
+			"lineWidth": 160,
 			"arrowParentheses": "always",
 			"bracketSameLine": false,
 			"bracketSpacing": true,

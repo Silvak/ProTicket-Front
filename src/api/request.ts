@@ -9,12 +9,7 @@ interface RequestOptions<T> extends AxiosRequestConfig {
   data?: T
 }
 
-export const apiRequest = async <TResponse, TRequest = undefined>({
-  url,
-  method,
-  params,
-  data,
-}: RequestOptions<TRequest>): Promise<TResponse> => {
+export const apiRequest = async <TResponse, TRequest = undefined>({ url, method, params, data }: RequestOptions<TRequest>): Promise<TResponse> => {
   try {
     const token = useAuthStore.getState().token
 
@@ -32,9 +27,7 @@ export const apiRequest = async <TResponse, TRequest = undefined>({
       method,
       headers,
       params,
-      data: data
-        ? new URLSearchParams(data as Record<string, string>).toString()
-        : undefined,
+      data: data ? new URLSearchParams(data as Record<string, string>).toString() : undefined,
     })
 
     return response.data
@@ -47,12 +40,7 @@ export const apiRequest = async <TResponse, TRequest = undefined>({
   }
 }
 
-export const apiRequestFormData = async <TResponse, TRequest = undefined>({
-  url,
-  method,
-  params,
-  data,
-}: RequestOptions<TRequest>): Promise<TResponse> => {
+export const apiRequestFormData = async <TResponse, TRequest = undefined>({ url, method, params, data }: RequestOptions<TRequest>): Promise<TResponse> => {
   try {
     const token = useAuthStore.getState().token
     if (!token) {

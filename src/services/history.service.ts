@@ -2,11 +2,7 @@ import { apiRequest } from '@/api/request'
 import type { HistoryCreate, HistoryUpdate } from '@/contracts'
 
 //----------------------------------------------------- GET DATA ---------------------------------------------------------
-export const getHistory = async (
-  ticketId: string,
-  page: number,
-  limit: number
-): Promise<object> => {
+export const getHistory = async (ticketId: string, page: number, limit: number): Promise<object> => {
   return apiRequest({
     url: `/history/list/${ticketId}`,
     method: 'get',

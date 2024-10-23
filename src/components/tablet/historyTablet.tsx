@@ -9,9 +9,7 @@ import { HistoryRow } from './historyRow'
 export const HistoryTablet = ({ ticketId = '' }) => {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-  const { limit, page, history, total } = useHistoryStore(
-    (state) => state.data as HistoryTabletProp
-  )
+  const { limit, page, history, total } = useHistoryStore((state) => state.data as HistoryTabletProp)
   const numberPages = Math.ceil(total / limit)
   const actualPage = useHistoryStore((state) => state.page)
   const actualLimit = useHistoryStore((state) => state.limit)
@@ -40,22 +38,14 @@ export const HistoryTablet = ({ ticketId = '' }) => {
     if (page < numberPages) setPage(page + 1)
   }
 
-  const filteredHistory = history?.filter((historyElement) =>
-    historyElement.note.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredHistory = history?.filter((historyElement) => historyElement.note.toLowerCase().includes(searchQuery.toLowerCase()))
 
   if (loading) return <Loading />
   return (
     <>
       {/* filter & actions */}
       <div className="bg-white rounded-xl p-2 col-span-1 sm:col-span-2 md:col-span-4 xl:col-span-9">
-        <input
-          type="text"
-          placeholder="Buscar pagos..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full h-full p-2"
-        />
+        <input type="text" placeholder="Buscar pagos..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full h-full p-2" />
       </div>
 
       <div className="bg-white rounded-xl h-[52px] overflow-hidden col-span-1 sm:col-span-2 md:col-span-2 xl:col-span-3">
@@ -112,14 +102,8 @@ export const HistoryTablet = ({ ticketId = '' }) => {
                 >
                   <IoIosArrowBack />
                 </button>
-                <div className="h-[42px] w-[42px] border flex justify-center items-center rounded-md">
-                  {page}
-                </div>
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className="h-[42px] w-[42px] border flex justify-center items-center rounded-md hover:bg-gray-400"
-                >
+                <div className="h-[42px] w-[42px] border flex justify-center items-center rounded-md">{page}</div>
+                <button type="button" onClick={handleNext} className="h-[42px] w-[42px] border flex justify-center items-center rounded-md hover:bg-gray-400">
                   <IoIosArrowForward />
                 </button>
               </div>
@@ -127,9 +111,7 @@ export const HistoryTablet = ({ ticketId = '' }) => {
             </nav>
           </>
         ) : (
-          <div className="flex justify-center items-center w-full h-24 text-gray-500">
-            No se encontraron tickets
-          </div>
+          <div className="flex justify-center items-center w-full h-24 text-gray-500">No se encontraron tickets</div>
         )}
       </div>
     </>

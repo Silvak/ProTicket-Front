@@ -12,9 +12,7 @@ const storeApi: StateCreator<ModalState> = (set) => ({
   setOpen: () => set((state) => ({ isOpen: !state.isOpen })),
 })
 
-export const useModalStore = create<ModalState>()(
-  devtools(storeApi, { name: 'modal-storage' })
-)
+export const useModalStore = create<ModalState>()(devtools(storeApi, { name: 'modal-storage' }))
 
 /*
 export const useSidebarStore = create<ModalState>()(

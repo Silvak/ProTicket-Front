@@ -61,16 +61,9 @@ export const UpdateProjectMembersForm = ({ project }: UpdateProjectFormProps) =>
           <h3 className="text-lg font-semibold mb-2">Miembros Rifa</h3>
           <ul className="flex flex-col gap-1 h-[140px] overflow-x-hidden bg-gray-100 rounded-xl p-2 border ">
             {formData.members.map((member) => (
-              <li
-                key={member.id}
-                className="border rounded-xl pl-4 pr-2 py-1 bg-white flex  justify-between "
-              >
+              <li key={member.id} className="border rounded-xl pl-4 pr-2 py-1 bg-white flex  justify-between ">
                 <span className="text-md">{member.name}</span>
-                <button
-                  type="button"
-                  onClick={() => handleRemoveMember(member.id)}
-                  className="ml-2 text-red-500 text-lg"
-                >
+                <button type="button" onClick={() => handleRemoveMember(member.id)} className="ml-2 text-red-500 text-lg">
                   <IoClose />
                 </button>
               </li>
@@ -83,10 +76,7 @@ export const UpdateProjectMembersForm = ({ project }: UpdateProjectFormProps) =>
           <UserSelect onSelect={handleAddMember} />
         </div>
 
-        <button
-          type="submit"
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4"
-        >
+        <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4">
           Actualizar Miembros
         </button>
       </form>

@@ -1,10 +1,4 @@
-import {
-  HorizontalTicket,
-  LayoutGrid,
-  Loading,
-  Navbar,
-  VerticalTicket,
-} from '@/components'
+import { HorizontalTicket, LayoutGrid, Loading, Navbar, VerticalTicket } from '@/components'
 import { useTicketStore } from '@/store'
 import { useEffect } from 'react'
 import { LuUser2 } from 'react-icons/lu'
@@ -61,9 +55,7 @@ export const BuyerTicketPage = () => {
                 <LuUser2 />
               </div>
               {/* Add a check to ensure seller and seller.name exist */}
-              <p className="min-w text-nowrap">
-                {selectedTicket.seller?.name ?? 'Sin vendedor'}
-              </p>
+              <p className="min-w text-nowrap">{selectedTicket.seller?.name ?? 'Sin vendedor'}</p>
             </div>
           </div>
         </div>

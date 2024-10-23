@@ -25,9 +25,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
 
   console.log('Project:', project)
 
-  const [selectedUser, setSelectedUser] = useState<string | null>(
-    project.owner.id || null
-  )
+  const [selectedUser, setSelectedUser] = useState<string | null>(project.owner.id || null)
   const updateProject = useProjectStore((state) => state.updateProject)
 
   useEffect(() => {
@@ -107,24 +105,12 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-sm font-medium">Nombre</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border border-gray-300 rounded"
-            required
-          />
+          <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full mt-1 p-2 border border-gray-300 rounded" required />
         </div>
 
         <div className="mb-4">
           <label className="block text-sm font-medium">Imagen</label>
-          <input
-            type="file"
-            name="image"
-            onChange={handleFileChange}
-            className="w-full mt-1 p-2 border border-gray-300 rounded"
-          />
+          <input type="file" name="image" onChange={handleFileChange} className="w-full mt-1 p-2 border border-gray-300 rounded" />
         </div>
 
         <div className="flex justify-between w-full gap-4">
@@ -181,12 +167,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
 
         <div className="mb-4">
           <label className="block text-sm font-medium">Tickets por Rifa</label>
-          <select
-            name="perTicket"
-            value={formData.perTicket}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border border-gray-300 rounded"
-          >
+          <select name="perTicket" value={formData.perTicket} onChange={handleChange} className="w-full mt-1 p-2 border border-gray-300 rounded">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="4">4</option>
@@ -204,12 +185,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
         <div className="flex justify-between gap-4 w-full">
           <div className="mb-4 w-full">
             <label className="block text-sm font-medium">Posición del QR</label>
-            <select
-              name="qrPosition"
-              value={formData.qrPosition}
-              onChange={handleChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-            >
+            <select name="qrPosition" value={formData.qrPosition} onChange={handleChange} className="w-full mt-1 p-2 border border-gray-300 rounded">
               <option value="bl">Inferior Izquierda</option>
               <option value="br">Inferior Derecha</option>
               <option value="tl">Superior Izquierda</option>
@@ -219,12 +195,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
 
           <div className="mb-4 w-full">
             <label className="block text-sm font-medium">Posición del Número</label>
-            <select
-              name="numberPosition"
-              value={formData.numberPosition}
-              onChange={handleChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-            >
+            <select name="numberPosition" value={formData.numberPosition} onChange={handleChange} className="w-full mt-1 p-2 border border-gray-300 rounded">
               <option value="bl">Inferior Izquierda</option>
               <option value="br">Inferior Derecha</option>
               <option value="tl">Superior Izquierda</option>
@@ -236,21 +207,13 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
         {/* roientation */}
         <div className="w-full">
           <label className="block text-sm font-medium">Orientación</label>
-          <select
-            name="orientation"
-            value={formData.orientation}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border border-gray-300 rounded"
-          >
+          <select name="orientation" value={formData.orientation} onChange={handleChange} className="w-full mt-1 p-2 border border-gray-300 rounded">
             <option value="portrait">Vertical</option>
             <option value="landscape">Horizontal</option>
           </select>
         </div>
 
-        <button
-          type="submit"
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4"
-        >
+        <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4">
           Actualizar Rifa
         </button>
       </form>

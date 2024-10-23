@@ -1,11 +1,5 @@
 import { useUserRole } from '@/hooks/useUserRole'
-import {
-  useAuthStore,
-  useHistoryStore,
-  useProjectStore,
-  useTicketStore,
-  useUserStore,
-} from '@/store'
+import { useAuthStore, useHistoryStore, useProjectStore, useTicketStore, useUserStore } from '@/store'
 import { useState } from 'react'
 import { LuUser2 } from 'react-icons/lu'
 import { useNavigate } from 'react-router-dom'
@@ -37,11 +31,7 @@ export const UserButton = () => {
 
   return (
     <div className="relative">
-      <button
-        type="button"
-        onClick={handleClic}
-        className="flex justify-between items-center gap-4 md:pl-6 pl-2  pr-2 h-[52px] bg-gray-200 rounded-full"
-      >
+      <button type="button" onClick={handleClic} className="flex justify-between items-center gap-4 md:pl-6 pl-2  pr-2 h-[52px] bg-gray-200 rounded-full">
         <span className="hidden md:flex font-semibold">{user?.name || 'user'}</span>
 
         <div className=" flex justify-center items-center w-[40px] h-[40px] bg-slate-900 rounded-full text-white ">
@@ -59,11 +49,7 @@ export const UserButton = () => {
             {userRole} Dasboard
           </button>
 
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="w-full h-[42px] bg-red-600/20 hover:bg-gray-200 text-left px-2 rounded-md"
-          >
+          <button type="button" onClick={handleLogout} className="w-full h-[42px] bg-red-600/20 hover:bg-gray-200 text-left px-2 rounded-md">
             Logout
           </button>
         </div>

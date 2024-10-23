@@ -1,11 +1,5 @@
 import type { HistoryCreate, HistoryUpdate } from '@/contracts'
-import {
-  createHistory,
-  deleteHistory,
-  getHistory,
-  getHistoryById,
-  updateHistory,
-} from '@/services/history.service'
+import { createHistory, deleteHistory, getHistory, getHistoryById, updateHistory } from '@/services/history.service'
 import type { StateCreator } from 'zustand'
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
@@ -90,6 +84,4 @@ const storeApi: StateCreator<HistoryState> = (set, get) => ({
   cleanHistoryData: () => set({ data: {}, selectedHistory: {} }),
 })
 
-export const useHistoryStore = create<HistoryState>()(
-  devtools(persist(storeApi, { name: 'history-storage' }))
-)
+export const useHistoryStore = create<HistoryState>()(devtools(persist(storeApi, { name: 'history-storage' })))

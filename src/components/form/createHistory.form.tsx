@@ -93,14 +93,7 @@ export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) =>
 
         <div className="mb-4">
           <label className="block text-sm font-medium">Fecha</label>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border border-gray-300 rounded"
-            required
-          />
+          <input type="date" name="date" value={formData.date} onChange={handleChange} className="w-full mt-1 p-2 border border-gray-300 rounded" required />
         </div>
 
         <div className="mb-4">
@@ -130,13 +123,7 @@ export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) =>
 
           <div className="w-full">
             <label className="block text-sm font-medium">Tipo</label>
-            <select
-              name="badge"
-              value={formData.badge}
-              onChange={handleChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              required
-            >
+            <select name="badge" value={formData.badge} onChange={handleChange} className="w-full mt-1 p-2 border border-gray-300 rounded" required>
               <option value="VES">VES</option>
               <option value="USD">USD</option>
               <option value="COP">COP</option>
@@ -145,13 +132,7 @@ export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) =>
 
           <div className="w-full">
             <label className="block text-sm font-medium">Tipo de Pago</label>
-            <select
-              name="paymentType"
-              value={formData.paymentType}
-              onChange={handleChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              required
-            >
+            <select name="paymentType" value={formData.paymentType} onChange={handleChange} className="w-full mt-1 p-2 border border-gray-300 rounded" required>
               <option value="CASH">Efectivo</option>
               <option value="TRANSFER">Transferencia</option>
             </select>
@@ -170,10 +151,7 @@ export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) =>
           />
         </div>
 
-        <button
-          type="submit"
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4"
-        >
+        <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4">
           Registrar
         </button>
       </form>

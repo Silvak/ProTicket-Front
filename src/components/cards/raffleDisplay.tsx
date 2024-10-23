@@ -18,21 +18,11 @@ const positionStyles: Record<string, string> = {
   br: 'bottom-2 right-2',
 }
 
-export const RaffleDisplay: React.FC<RaffleDisplayProps> = ({
-  id,
-  number,
-  qr,
-  price,
-  qrPosition,
-  img,
-  orientation,
-}) => {
+export const RaffleDisplay: React.FC<RaffleDisplayProps> = ({ id, number, qr, price, qrPosition, img, orientation }) => {
   const fliedList = ['nombre', 'ci', 'telefono', 'direccion', 'otro']
 
   return (
-    <div
-      className={`flex ${orientation === 'portrait' ? 'flex-col' : 'flex-row'} w-full`}
-    >
+    <div className={`flex ${orientation === 'portrait' ? 'flex-col' : 'flex-row'} w-full`}>
       {/* Inputs section */}
       <div className="flex flex-col gap-1 w-full border p-2 rounded">
         <div className="flex items-center gap-1">
@@ -43,12 +33,7 @@ export const RaffleDisplay: React.FC<RaffleDisplayProps> = ({
         </div>
         {fliedList.map((item) => (
           <div key={item} className="flex gap-1 items-baseline w-full">
-            <input
-              type="text"
-              className="w-full border-gray-300 border-b text-[12px] px-2 bg-white"
-              disabled
-              placeholder={item}
-            />
+            <input type="text" className="w-full border-gray-300 border-b text-[12px] px-2 bg-white" disabled placeholder={item} />
           </div>
         ))}
       </div>
@@ -77,9 +62,7 @@ export const RaffleDisplay: React.FC<RaffleDisplayProps> = ({
           </div>
 
           <div className="border-y py-1">
-            <p className="font-bold text-lg uppercase text-red-600 w-full text-center">
-              N° {number}
-            </p>
+            <p className="font-bold text-lg uppercase text-red-600 w-full text-center">N° {number}</p>
           </div>
 
           <div className="p-1">

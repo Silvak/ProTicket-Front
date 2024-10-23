@@ -4,11 +4,7 @@ import type { TicketCreate, TicketProp, TicketUpdate } from '@/contracts'
 import { AxiosError } from 'axios'
 
 //----------------------------------------------------- GET DATA ---------------------------------------------------------
-export const getTickets = async (
-  projectId: string,
-  page: number,
-  limit: number
-): Promise<TicketProp> => {
+export const getTickets = async (projectId: string, page: number, limit: number): Promise<TicketProp> => {
   return apiRequest({
     url: `/tickets/list/${projectId}`,
     method: 'get',

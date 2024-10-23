@@ -12,15 +12,7 @@ interface CustomModalProps {
   autoClose?: boolean
 }
 
-export const CustomModal: React.FC<CustomModalProps> = ({
-  header,
-  children,
-  buttonText,
-  buttonType,
-  buttonIcon,
-  autoOpen = false,
-  autoClose = false,
-}) => {
+export const CustomModal: React.FC<CustomModalProps> = ({ header, children, buttonText, buttonType, buttonIcon, autoOpen = false, autoClose = false }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const openModal = () => {
@@ -67,11 +59,7 @@ export const CustomModal: React.FC<CustomModalProps> = ({
             <div className="p-4 border-b border-gray-200">
               <div className="flex justify-between items-center">
                 <div>{header}</div>
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="text-gray-500 hover:text-gray-700 text-xl"
-                >
+                <button type="button" onClick={closeModal} className="text-gray-500 hover:text-gray-700 text-xl">
                   <IoMdClose />
                 </button>
               </div>

@@ -50,9 +50,7 @@ export const HistoryRow = ({ history }: TabletRow) => {
 
         {/* allowance status */}
         <div className="flex justify-center items-center">
-          <div className="px-3 py-1 text-white bg-slate-800 rounded-md font-semibold">
-            {history.paymentType}
-          </div>
+          <div className="px-3 py-1 text-white bg-slate-800 rounded-md font-semibold">{history.paymentType}</div>
         </div>
 
         {/* state */}
@@ -73,12 +71,7 @@ export const HistoryRow = ({ history }: TabletRow) => {
         {/* actions */}
         <div className="flex items-center justify-end gap-2 col-span-1 lg:col-span-1 mt-6 lg:mt-0">
           <div className="flex h-[40px] w-full lg:w-[40px]">
-            <CustomModal
-              header={<h2>Detalles de Pago</h2>}
-              buttonText=""
-              buttonType="update"
-              buttonIcon={<MdOutlineDashboard />}
-            >
+            <CustomModal header={<h2>Detalles de Pago</h2>} buttonText="" buttonType="update" buttonIcon={<MdOutlineDashboard />}>
               <p className="text-sm">
                 <strong>ID: </strong>
                 <span className="">{history.id}</span>
@@ -96,18 +89,14 @@ export const HistoryRow = ({ history }: TabletRow) => {
                 <h3 className=" font-bold">Pago Realizado</h3>
 
                 <p>
-                  <strong className="text-gray-600 font-semibold">
-                    Pagado/Abonado:{' '}
-                  </strong>
+                  <strong className="text-gray-600 font-semibold">Pagado/Abonado: </strong>
                   <span className="">
                     {history.amount} {history.badge}
                   </span>
                 </p>
                 <p>
                   <strong className="text-gray-600 font-semibold">Tipo de pago: </strong>
-                  <span className="bg-black rounded-full px-4 py-1 text-white">
-                    {history.paymentType === 'CASH' ? 'Efectivo' : 'Transferencia'}
-                  </span>
+                  <span className="bg-black rounded-full px-4 py-1 text-white">{history.paymentType === 'CASH' ? 'Efectivo' : 'Transferencia'}</span>
                 </p>
               </div>
               <p className="">
@@ -119,22 +108,13 @@ export const HistoryRow = ({ history }: TabletRow) => {
 
           {(role[0] === 'USER_ROLE' || role[0] === 'RESELLER_ROLE') && (
             <div className="flex h-[40px] w-full lg:w-[40px]">
-              <CustomModal
-                header={<h2>Confirmar Eliminación</h2>}
-                buttonText=""
-                buttonType="delete"
-                buttonIcon={<AiOutlineDelete />}
-              >
+              <CustomModal header={<h2>Confirmar Eliminación</h2>} buttonText="" buttonType="delete" buttonIcon={<AiOutlineDelete />}>
                 <p>
                   ¿Estás seguro de que deseas eliminar el pago:
                   <span className="font-semibold ml-1">{history.note}</span>?
                 </p>
                 <div className="flex justify-end gap-4 mt-4">
-                  <button
-                    type="button"
-                    onClick={handleDelete}
-                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                  >
+                  <button type="button" onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                     Confirmar
                   </button>
                 </div>

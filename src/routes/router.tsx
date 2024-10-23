@@ -16,13 +16,7 @@ export const AppRouter = () => {
       // protected routes
       const routeObject: RouteObject = {
         path: route.path,
-        element: isPrivate ? (
-          <ProtectedRoute allowedRoles={route.allowedRoles}>
-            {route.element}
-          </ProtectedRoute>
-        ) : (
-          route.element
-        ),
+        element: isPrivate ? <ProtectedRoute allowedRoles={route.allowedRoles}>{route.element}</ProtectedRoute> : route.element,
       }
 
       // Recursively handle & generate children routes

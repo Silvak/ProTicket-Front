@@ -20,9 +20,7 @@ export const TicketsTablet = ({ projectId = '' }) => {
   const { isOpen, modalAutoClose } = useModalAutoClose()
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-  const { limit, page, tickets, total } = useTicketStore(
-    (state) => state.data as TicketTabletProp
-  )
+  const { limit, page, tickets, total } = useTicketStore((state) => state.data as TicketTabletProp)
   const numberPages = Math.ceil(total / limit)
   const actualPage = useTicketStore((state) => state.page)
   const actualLimit = useTicketStore((state) => state.limit)
@@ -65,14 +63,11 @@ export const TicketsTablet = ({ projectId = '' }) => {
     if (page < numberPages) setPage(page + 1)
   }
 
-  const filteredTicket = tickets?.filter((ticket) =>
-    ticket.ownerData.name.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredTicket = tickets?.filter((ticket) => ticket.ownerData.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
   // render
   if (loading) return <Loading />
-  if (!tickets || !tickets)
-    return <ErrorBox title={'Error'} message={'No se han encontrado tickets.'} />
+  if (!tickets || !tickets) return <ErrorBox title={'Error'} message={'No se han encontrado tickets.'} />
   return (
     <>
       {/* filter & actions */}
@@ -96,10 +91,7 @@ export const TicketsTablet = ({ projectId = '' }) => {
             autoOpen={autoOpen}
             autoClose={isOpen}
           >
-            <CreateTicketForm
-              ticketNumber={ticketNumber?.toString()}
-              modalAutoClose={modalAutoClose}
-            />
+            <CreateTicketForm ticketNumber={ticketNumber?.toString()} modalAutoClose={modalAutoClose} />
           </CustomModal>
         </div>
       </div>
@@ -121,13 +113,9 @@ export const TicketsTablet = ({ projectId = '' }) => {
             {/* rows */}
             <div>
               {tickets.length > 0 ? (
-                filteredTicket.map((ticket) => (
-                  <TicketRow key={ticket.id} ticket={ticket} />
-                ))
+                filteredTicket.map((ticket) => <TicketRow key={ticket.id} ticket={ticket} />)
               ) : (
-                <div className="flex justify-center items-center w-full h-24 text-gray-500">
-                  No se encontraron tickets
-                </div>
+                <div className="flex justify-center items-center w-full h-24 text-gray-500">No se encontraron tickets</div>
               )}
             </div>
 
@@ -157,14 +145,8 @@ export const TicketsTablet = ({ projectId = '' }) => {
                 >
                   <IoIosArrowBack />
                 </button>
-                <div className="h-[42px] w-[42px] border flex justify-center items-center rounded-md">
-                  {page}
-                </div>
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className="h-[42px] w-[42px] border flex justify-center items-center rounded-md hover:bg-gray-400"
-                >
+                <div className="h-[42px] w-[42px] border flex justify-center items-center rounded-md">{page}</div>
+                <button type="button" onClick={handleNext} className="h-[42px] w-[42px] border flex justify-center items-center rounded-md hover:bg-gray-400">
                   <IoIosArrowForward />
                 </button>
               </div>
@@ -172,9 +154,7 @@ export const TicketsTablet = ({ projectId = '' }) => {
             </nav>
           </>
         ) : (
-          <div className="flex justify-center items-center w-full h-24 text-gray-500">
-            No se encontraron tickets
-          </div>
+          <div className="flex justify-center items-center w-full h-24 text-gray-500">No se encontraron tickets</div>
         )}
       </div>
     </>

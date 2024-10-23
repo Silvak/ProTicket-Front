@@ -44,32 +44,17 @@ export const LoginPage = () => {
   return (
     <div className="relative grid place-content-center bg-gray-200 h-[100vh] w-[100vw]">
       <div className="bg-white w-[100vw] h-[100vh] md:w-[400px] md:h-min p-4 rounded-xl shadow-md">
-        <form
-          onSubmit={onSubmit}
-          className="flex flex-col gap-2 w-full  mt-[45%] md:mt-0"
-        >
+        <form onSubmit={onSubmit} className="flex flex-col gap-2 w-full  mt-[45%] md:mt-0">
           <h1 className="font-semibold text-2xl mb-4">ProTicket</h1>
 
           <label>
             <span className="text-sm">Correo</span>
-            <input
-              type="email"
-              name="username"
-              required
-              autoComplete="on"
-              className="w-full border rounded-md h-[42px] px-2"
-            />
+            <input type="email" name="username" required autoComplete="on" className="w-full border rounded-md h-[42px] px-2" />
           </label>
 
           <label>
             <span className="text-sm">Contraseña</span>
-            <input
-              type="password"
-              name="password"
-              required
-              autoComplete="on"
-              className="w-full border rounded-md h-[42px] px-2"
-            />
+            <input type="password" name="password" required autoComplete="on" className="w-full border rounded-md h-[42px] px-2" />
           </label>
 
           <div className="mb-4 flex items-center">
@@ -77,19 +62,14 @@ export const LoginPage = () => {
             <label className="text-gray-600 ml-2">Recuerdame</label>
           </div>
 
-          <button
-            type="submit"
-            className="h-[42px] bg-slate-800 text-white rounded-md mt-8"
-          >
+          <button type="submit" className="h-[42px] bg-slate-800 text-white rounded-md mt-8">
             Iniciar Sesión
           </button>
         </form>
       </div>
 
       <div className="flex justify-center absolute bottom-2 w-full">
-        <p className="text-gray-500">
-          ProTicket © {new Date().getFullYear()} Derechos Reservados.
-        </p>
+        <p className="text-gray-500">ProTicket © {new Date().getFullYear()} Derechos Reservados.</p>
       </div>
     </div>
   )

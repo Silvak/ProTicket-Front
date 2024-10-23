@@ -6,17 +6,9 @@ interface CustomCardProps {
   textInfo?: [string, string]
 }
 
-export const CustomCard = ({
-  children,
-  className,
-  title,
-  icon,
-  textInfo,
-}: CustomCardProps) => {
+export const CustomCard = ({ children, className, title, icon, textInfo }: CustomCardProps) => {
   return (
-    <div
-      className={`flex flex-col bg-white rounded-xl p-4 col-span-1 md:col-span-2 xl:col-span-3 ${className}`}
-    >
+    <div className={`flex flex-col bg-white rounded-xl p-4 col-span-1 md:col-span-2 xl:col-span-3 ${className}`}>
       <div className="relative flex justify-between items-center">
         <div className="">
           <h3 className="text-lg font-semibold">{title}</h3>

@@ -42,6 +42,4 @@ const storeApi: StateCreator<AuthState> = (set) => ({
   },
 })
 
-export const useAuthStore = create<AuthState>()(
-  devtools(persist(storeApi, { name: 'auth-storage' }))
-)
+export const useAuthStore = create<AuthState>()(devtools(persist(storeApi, { name: 'auth-storage' })))

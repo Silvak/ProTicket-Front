@@ -50,9 +50,7 @@ export const DetailUserPage = () => {
             </p>
             <p>
               <span className="font-semibold">Estado: </span>
-              <span className=" bg-slate-900 text-white px-3 py-1 rounded-full">
-                {selectUser.state}
-              </span>
+              <span className=" bg-slate-900 text-white px-3 py-1 rounded-full">{selectUser.state}</span>
             </p>
           </div>
         </div>

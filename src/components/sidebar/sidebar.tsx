@@ -38,14 +38,7 @@ export const Sidebar = () => {
     >
       <div className="flex flex-col gap-1 w-full h-full px-2 py-4">
         {menu.map((element) => (
-          <SidebarButton
-            key={element.text}
-            isOpen={isOpen}
-            icon={element.icon}
-            text={element.text}
-            url={element.url}
-            submenu={element.submenu}
-          />
+          <SidebarButton key={element.text} isOpen={isOpen} icon={element.icon} text={element.text} url={element.url} submenu={element.submenu} />
         ))}
       </div>
     </aside>

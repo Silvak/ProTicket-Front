@@ -14,6 +14,4 @@ const storeApi: StateCreator<SidebarState> = (set) => ({
   setClose: () => set({ isOpen: false }),
 })
 
-export const useSidebarStore = create<SidebarState>()(
-  devtools(persist(storeApi, { name: 'sidebar-storage' }))
-)
+export const useSidebarStore = create<SidebarState>()(devtools(persist(storeApi, { name: 'sidebar-storage' })))

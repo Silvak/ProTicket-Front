@@ -12,9 +12,7 @@ export const ProjectTablet = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const userRole = useUserRole()
   const user = useAuthStore((state) => state.user)
-  const { limit, page, projects, total } = useProjectStore(
-    (state) => state.data as ProjectTabletProp
-  )
+  const { limit, page, projects, total } = useProjectStore((state) => state.data as ProjectTabletProp)
   const numberPages = Math.ceil(total / limit)
   const actualPage = useProjectStore((state) => state.page)
   const actualLimit = useProjectStore((state) => state.limit)
@@ -22,9 +20,7 @@ export const ProjectTablet = () => {
   const setLimit = useProjectStore((state) => state.setLimit)
   const getProjects = useProjectStore((state) => state.getProjects)
   const getRelatedProjects = useProjectStore((state) => state.getRelatedProjects)
-  const getRelatedProjectReseller = useProjectStore(
-    (state) => state.getRelatedProjectReseller
-  )
+  const getRelatedProjectReseller = useProjectStore((state) => state.getRelatedProjectReseller)
 
   useEffect(() => {
     if (userRole === 'admin') {
@@ -37,15 +33,7 @@ export const ProjectTablet = () => {
 
     actualPage
     actualLimit
-  }, [
-    user,
-    userRole,
-    actualPage,
-    actualLimit,
-    getProjects,
-    getRelatedProjects,
-    getRelatedProjectReseller,
-  ])
+  }, [user, userRole, actualPage, actualLimit, getProjects, getRelatedProjects, getRelatedProjectReseller])
 
   const handlePrevius = () => {
     if (page > 1) setPage(page - 1)
@@ -55,19 +43,13 @@ export const ProjectTablet = () => {
   }
 
   //filter
-  const filteredProjects = projects?.filter((project) =>
-    project.name.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredProjects = projects?.filter((project) => project.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
   if (loading) return <Loading />
   return (
     <>
       <div
-        className={`bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 ${
-          userRole === 'admin'
-            ? 'md:col-span-4 xl:col-span-9'
-            : 'md:col-span-6 xl:col-span-12'
-        }`}
+        className={`bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 ${userRole === 'admin' ? 'md:col-span-4 xl:col-span-9' : 'md:col-span-6 xl:col-span-12'}`}
       >
         <input
           type="text"
@@ -113,9 +95,7 @@ export const ProjectTablet = () => {
               />
             ))
           ) : (
-            <div className="flex justify-center items-center w-full h-[120px]">
-              No se encontraron proyectos
-            </div>
+            <div className="flex justify-center items-center w-full h-[120px]">No se encontraron proyectos</div>
           )}
         </div>
 
@@ -138,21 +118,11 @@ export const ProjectTablet = () => {
             </select>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handlePrevius}
-              className="h-[42px] w-[42px] border flex justify-center items-center rounded-md hover:bg-gray-400"
-            >
+            <button type="button" onClick={handlePrevius} className="h-[42px] w-[42px] border flex justify-center items-center rounded-md hover:bg-gray-400">
               <IoIosArrowBack />
             </button>
-            <div className="h-[42px] w-[42px] border flex justify-center items-center rounded-md">
-              {page}
-            </div>
-            <button
-              type="button"
-              onClick={handleNext}
-              className="h-[42px] w-[42px] border flex justify-center items-center rounded-md hover:bg-gray-400"
-            >
+            <div className="h-[42px] w-[42px] border flex justify-center items-center rounded-md">{page}</div>
+            <button type="button" onClick={handleNext} className="h-[42px] w-[42px] border flex justify-center items-center rounded-md hover:bg-gray-400">
               <IoIosArrowForward />
             </button>
           </div>

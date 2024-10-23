@@ -7,14 +7,10 @@ import { useEffect, useState } from 'react'
 export const ProjectSelector = () => {
   const user = useAuthStore((state) => state.user)
   const userRole = useUserRole()
-  const [selectedProjectId, setSelectedProjectId] = useState<string>(
-    localStorage.getItem('selectedProjectId') || ''
-  )
+  const [selectedProjectId, setSelectedProjectId] = useState<string>(localStorage.getItem('selectedProjectId') || '')
   const data = useProjectStore((state) => state.data as ProjectTabletProp)
   const getRelatedProjects = useProjectStore((state) => state.getRelatedProjects)
-  const getRelatedProjectReseller = useProjectStore(
-    (state) => state.getRelatedProjectReseller
-  )
+  const getRelatedProjectReseller = useProjectStore((state) => state.getRelatedProjectReseller)
   const setSelectedProject = useProjectStore((state) => state.getProjects)
 
   //const { socket } = useSocket()

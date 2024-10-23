@@ -40,8 +40,7 @@ export const DetailTicketPage = () => {
   }, [ticketId, getTicket])
 
   if (loading) return <Loading />
-  if (!selectedTicket || !selectedTicket)
-    return <ErrorBox title={'Error'} message={'No se ha logrado obtener la data.'} />
+  if (!selectedTicket || !selectedTicket) return <ErrorBox title={'Error'} message={'No se ha logrado obtener la data.'} />
   return (
     <LayoutGrid>
       <div className="flex flex-col rounded-xl p-0 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
@@ -54,9 +53,7 @@ export const DetailTicketPage = () => {
               <LuUser2 />
             </div>
             {/* Add a check to ensure seller and seller.name exist */}
-            <p className="min-w text-nowrap">
-              {selectedTicket.seller?.name ?? 'Sin vendedor'}
-            </p>
+            <p className="min-w text-nowrap">{selectedTicket.seller?.name ?? 'Sin vendedor'}</p>
           </div>
         </div>
       </div>
@@ -72,24 +69,12 @@ export const DetailTicketPage = () => {
         <div className="grid grid-cols-1 mt-3 gap-1 text-sm">
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium w-[80px]">Nombre</label>
-            <input
-              type="text"
-              name="name"
-              value={selectedTicket.ownerData.name}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              disabled
-            />
+            <input type="text" name="name" value={selectedTicket.ownerData.name} className="w-full mt-1 p-2 border border-gray-300 rounded" disabled />
           </div>
 
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium w-[80px]">CI-DNI</label>
-            <input
-              type="text"
-              name="dni"
-              value={selectedTicket.ownerData.dni}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              disabled
-            />
+            <input type="text" name="dni" value={selectedTicket.ownerData.dni} className="w-full mt-1 p-2 border border-gray-300 rounded" disabled />
           </div>
 
           <div className="">
@@ -118,24 +103,12 @@ export const DetailTicketPage = () => {
 
           <div className="flex gap-3 items-center">
             <label className=" text-sm font-medium w-[80px]">Dirección</label>
-            <input
-              type="text"
-              name="address"
-              value={selectedTicket.ownerData.address}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              disabled
-            />
+            <input type="text" name="address" value={selectedTicket.ownerData.address} className="w-full mt-1 p-2 border border-gray-300 rounded" disabled />
           </div>
 
           <div className="flex gap-3 items-center">
             <label className=" text-sm font-medium w-[80px]">Otro</label>
-            <input
-              type="textarea"
-              name="other"
-              value={selectedTicket.ownerData.other}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-              disabled
-            />
+            <input type="textarea" name="other" value={selectedTicket.ownerData.other} className="w-full mt-1 p-2 border border-gray-300 rounded" disabled />
           </div>
         </div>
 
@@ -147,9 +120,7 @@ export const DetailTicketPage = () => {
             buttonIcon={<FaSave />}
             autoClose={isOpen}
           >
-            {selectedTicket && (
-              <UpdateTicketForm ticket={selectedTicket} modalAutoClose={modalAutoClose} />
-            )}
+            {selectedTicket && <UpdateTicketForm ticket={selectedTicket} modalAutoClose={modalAutoClose} />}
           </CustomModal>
         </div>
       </div>
@@ -196,9 +167,7 @@ export const DetailTicketPage = () => {
 
         <div className="grid grid-cols-2 w-full mt-8 gap-2 px-2">
           <p>Precio Ticket</p>
-          <p className="text-right font-semibold">
-            {selectedProject?.raffleConfig.priceTicket || 0}$
-          </p>
+          <p className="text-right font-semibold">{selectedProject?.raffleConfig.priceTicket || 0}$</p>
 
           <p>Abonado</p>
           <p className="text-right font-semibold text-gray-500">- {received}$</p>
@@ -206,9 +175,7 @@ export const DetailTicketPage = () => {
 
         <div className="grid grid-cols-2 w-full border-t  bg-gray-200 rounded-md p-2 mt-6 font-semibold">
           <p>Deuda</p>
-          <p className="text-right ">
-            {((selectedProject?.raffleConfig.priceTicket || 0) - received).toFixed(2)}$
-          </p>
+          <p className="text-right ">{((selectedProject?.raffleConfig.priceTicket || 0) - received).toFixed(2)}$</p>
         </div>
       </div>
 
@@ -220,22 +187,12 @@ export const DetailTicketPage = () => {
         <div className="flex items-center gap-3 mt-3">
           <div>
             <label className=" text-sm font-medium w-[80px] mr-2">Inicio</label>
-            <input
-              type="date"
-              value={convertToDateFormat(selectedTicket.date)}
-              className="bg-inherit h-[40px] border px-2 rounded-md bg-slate-100"
-              disabled
-            />
+            <input type="date" value={convertToDateFormat(selectedTicket.date)} className="bg-inherit h-[40px] border px-2 rounded-md bg-slate-100" disabled />
           </div>
           ➤
           <div>
             <label className=" text-sm font-medium w-[80px] mr-2">Fin</label>
-            <input
-              type="date"
-              value={selectedProject?.date.end}
-              className="bg-inherit h-[40px] border px-2 rounded-md bg-slate-100"
-              disabled
-            />
+            <input type="date" value={selectedProject?.date.end} className="bg-inherit h-[40px] border px-2 rounded-md bg-slate-100" disabled />
           </div>
         </div>
       </div>

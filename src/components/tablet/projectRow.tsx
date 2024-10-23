@@ -8,15 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { CustomModal } from '../modal/customModal'
 
-export const ProjectRow = ({
-  id,
-  name,
-  image,
-  priceTicket,
-  totalTickets,
-  state,
-  owner,
-}: ProjectList) => {
+export const ProjectRow = ({ id, name, image, priceTicket, totalTickets, state, owner }: ProjectList) => {
   const rolePath = useUserRole()
   const navigate = useNavigate()
   const getProjects = useProjectStore((state) => state.getProjects)
@@ -55,9 +47,7 @@ export const ProjectRow = ({
             />
           </div>
           <div>
-            <h2 className="font-semibold text-lg lg:text-[16px]">
-              {name.length > 20 ? `${name.slice(0, 20)}...` : name}
-            </h2>
+            <h2 className="font-semibold text-lg lg:text-[16px]">{name.length > 20 ? `${name.slice(0, 20)}...` : name}</h2>
             <p className="text-sm text-gray-400">ID: {id}</p>
           </div>
         </div>
@@ -65,9 +55,7 @@ export const ProjectRow = ({
         {/* tickets */}
         <div className="flex items-center">
           <label className="flex lg:hidden mr-2">Total Tickets:</label>
-          <div className="px-2 py-1 text-white bg-slate-900 rounded-md">
-            {totalTickets}
-          </div>
+          <div className="px-2 py-1 text-white bg-slate-900 rounded-md">{totalTickets}</div>
         </div>
 
         {/* owner */}
@@ -85,9 +73,7 @@ export const ProjectRow = ({
             <div className="bg-slate-700 h-[32px] w-[32px] rounded-full text-white flex justify-center items-center">
               <LuUser2 />
             </div>
-            <p className="min-w text-nowrap">
-              {ownerName.length > 12 ? `${ownerName.slice(0, 12)}...` : ownerName}
-            </p>
+            <p className="min-w text-nowrap">{ownerName.length > 12 ? `${ownerName.slice(0, 12)}...` : ownerName}</p>
           </div>
         </div>
 
@@ -111,21 +97,12 @@ export const ProjectRow = ({
 
           <div>
             {roleUser === 'admin' && (
-              <CustomModal
-                header={<h2>Confirmar Eliminación</h2>}
-                buttonText=""
-                buttonType="delete"
-                buttonIcon={<AiOutlineDelete />}
-              >
+              <CustomModal header={<h2>Confirmar Eliminación</h2>} buttonText="" buttonType="delete" buttonIcon={<AiOutlineDelete />}>
                 <p>
                   ¿Estás seguro de que deseas eliminar la rifa: <strong>{name}</strong>?
                 </p>
                 <div className="flex justify-end gap-4 mt-4">
-                  <button
-                    type="button"
-                    onClick={handleDelete}
-                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                  >
+                  <button type="button" onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                     Confirmar
                   </button>
                 </div>

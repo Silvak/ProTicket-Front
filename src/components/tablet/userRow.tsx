@@ -55,11 +55,7 @@ export const UserRow = ({ id, img, name, email, role, state }: UserRowProp) => {
         {/* project info */}
         <div className="flex gap-2 col-span-1 lg:col-span-2 overflow-hidden">
           <div className="h-[64px] w-[64px]  bg-gray-200 rounded-md overflow-hidden">
-            <img
-              src={img || 'https://via.placeholder.com/150'}
-              alt=""
-              className="w-full h-full object-cover"
-            />
+            <img src={img || 'https://via.placeholder.com/150'} alt="" className="w-full h-full object-cover" />
           </div>
           <div>
             <h2 className="font-semibold">{name}</h2>
@@ -100,22 +96,12 @@ export const UserRow = ({ id, img, name, email, role, state }: UserRowProp) => {
 
           <div>
             {userRole === 'admin' && (
-              <CustomModal
-                header={<h2>Confirmar Eliminación</h2>}
-                buttonText=""
-                buttonType="delete"
-                buttonIcon={<AiOutlineDelete />}
-              >
+              <CustomModal header={<h2>Confirmar Eliminación</h2>} buttonText="" buttonType="delete" buttonIcon={<AiOutlineDelete />}>
                 <p>
-                  ¿Estás seguro de que deseas eliminar el usuario: <strong>{name}</strong>
-                  ?
+                  ¿Estás seguro de que deseas eliminar el usuario: <strong>{name}</strong>?
                 </p>
                 <div className="flex justify-end gap-4 mt-4">
-                  <button
-                    type="button"
-                    onClick={handleDelete}
-                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                  >
+                  <button type="button" onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                     Confirmar
                   </button>
                 </div>
@@ -125,22 +111,12 @@ export const UserRow = ({ id, img, name, email, role, state }: UserRowProp) => {
 
           <div>
             {userRole === 'user' && (
-              <CustomModal
-                header={<h2>Confirmar Eliminación</h2>}
-                buttonText=""
-                buttonType="delete"
-                buttonIcon={<AiOutlineDelete />}
-              >
+              <CustomModal header={<h2>Confirmar Eliminación</h2>} buttonText="" buttonType="delete" buttonIcon={<AiOutlineDelete />}>
                 <p>
-                  ¿Estás seguro de que deseas eliminar el usuario: <strong>{name}</strong>
-                  ?
+                  ¿Estás seguro de que deseas eliminar el usuario: <strong>{name}</strong>?
                 </p>
                 <div className="flex justify-end gap-4 mt-4">
-                  <button
-                    type="button"
-                    onClick={handleDeleteReseller}
-                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                  >
+                  <button type="button" onClick={handleDeleteReseller} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                     Confirmar
                   </button>
                 </div>

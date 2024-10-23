@@ -1,14 +1,6 @@
 //import type { AuthStatus, User } from "@/contracts";
 import type { ResellerCreate, UserCreate, UserUpdate } from '@/contracts'
-import {
-  createReseller,
-  createUser,
-  deleteUser,
-  deleteUserReseller,
-  getUserById,
-  getUsers,
-  updateUser,
-} from '@/services/user.service'
+import { createReseller, createUser, deleteUser, deleteUserReseller, getUserById, getUsers, updateUser } from '@/services/user.service'
 import { create } from 'zustand'
 import type { StateCreator } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
@@ -114,6 +106,4 @@ const storeApi: StateCreator<UserState> = (set, get) => ({
   cleanUserData: () => set({ data: {} }),
 })
 
-export const useUserStore = create<UserState>()(
-  devtools(persist(storeApi, { name: 'user-storage' }))
-)
+export const useUserStore = create<UserState>()(devtools(persist(storeApi, { name: 'user-storage' })))

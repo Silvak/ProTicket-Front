@@ -2,11 +2,7 @@ import { apiRequest, apiRequestFormData } from '@/api/request'
 import type { ResellerCreate, UserCreate, UserUpdate } from '@/contracts'
 
 //----------------------------------------------------- GET DATA ---------------------------------------------------------
-export const getUsers = async (
-  userId: string,
-  page: number,
-  limit: number
-): Promise<object> => {
+export const getUsers = async (userId: string, page: number, limit: number): Promise<object> => {
   return apiRequest({
     url: `/users/related/${userId}`,
     method: 'get',
@@ -14,11 +10,7 @@ export const getUsers = async (
   })
 }
 
-export const getRelatedUsers = async (
-  userId: string,
-  page: number,
-  limit: number
-): Promise<object> => {
+export const getRelatedUsers = async (userId: string, page: number, limit: number): Promise<object> => {
   return apiRequest({
     url: `/users/related/${userId}`,
     method: 'get',

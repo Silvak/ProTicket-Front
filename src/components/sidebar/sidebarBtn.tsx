@@ -36,9 +36,7 @@ export const SidebarButton = ({ isOpen, icon, text, url, submenu }: SidebarBtn) 
         onKeyUp={() => ''}
         onKeyDown={() => handleBtnClick()}
         onClick={() => handleBtnClick()}
-        className={`bg-gray-300 ${
-          url !== '' && 'hover:bg-slate-900 hover:text-white cursor-pointer'
-        }
+        className={`bg-gray-300 ${url !== '' && 'hover:bg-slate-900 hover:text-white cursor-pointer'}
         ${currentLocation === url.split('/')[0] && 'bg-slate-900 text-white'}
         relative flex items-center w-full h-[52px]  rounded-md pl-[5px] overflow-hidden cursor-default `}
       >
@@ -57,11 +55,7 @@ export const SidebarButton = ({ isOpen, icon, text, url, submenu }: SidebarBtn) 
       </div>
 
       {/* submenu */}
-      <div
-        className={`w-full ${
-          menuIsOpen ? 'h-min' : 'h-0'
-        } overflow-hidden duration-150 ease-in-out`}
-      >
+      <div className={`w-full ${menuIsOpen ? 'h-min' : 'h-0'} overflow-hidden duration-150 ease-in-out`}>
         {submenu.map((element) => (
           <button
             key={element.text}
@@ -76,9 +70,7 @@ export const SidebarButton = ({ isOpen, icon, text, url, submenu }: SidebarBtn) 
             </div>
 
             <div>
-              <p className={`${isOpen ? 'flex' : 'hidden'} text-nowrap`}>
-                {element.text}
-              </p>
+              <p className={`${isOpen ? 'flex' : 'hidden'} text-nowrap`}>{element.text}</p>
             </div>
           </button>
         ))}

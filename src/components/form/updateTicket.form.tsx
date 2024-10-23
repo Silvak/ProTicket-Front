@@ -173,13 +173,7 @@ export const UpdateTicketForm = ({ ticket, modalAutoClose }: UpdateTicketFormPro
 
         <div className="mb-4">
           <label className="block text-sm font-medium">Estado</label>
-          <select
-            name="state"
-            value={formData.state}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border border-gray-300 rounded"
-            required
-          >
+          <select name="state" value={formData.state} onChange={handleChange} className="w-full mt-1 p-2 border border-gray-300 rounded" required>
             <option value="WINNER">🏆 Ganador</option>
             <option value="PAID">🟢 Pagado</option>
             <option value="UNPAID">🟠 Pendiente</option>
@@ -188,10 +182,7 @@ export const UpdateTicketForm = ({ ticket, modalAutoClose }: UpdateTicketFormPro
           </select>
         </div>
 
-        <button
-          type="submit"
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4"
-        >
+        <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4">
           Actualizar Ticket
         </button>
       </form>

@@ -11,11 +11,7 @@ export const NotificationButton = () => {
 
   return (
     <div className="relative">
-      <button
-        type="button"
-        onClick={handleClic}
-        className="flex justify-center items-center gap-4 w-[52px] h-[52px] bg-gray-200 rounded-full"
-      >
+      <button type="button" onClick={handleClic} className="flex justify-center items-center gap-4 w-[52px] h-[52px] bg-gray-200 rounded-full">
         <span className="text-2xl">
           <IoNotificationsOutline />
         </span>

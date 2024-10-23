@@ -8,11 +8,7 @@ export const ErrorBox = ({ title = '', message = '' }) => {
         <h2 className="font-semibold text-lg">{title}</h2>
         <p>{message}</p>
 
-        <button
-          type="button"
-          onClick={() => navigate(-1)}
-          className="mt-2 w-min rounded-md py-2 px-4 bg-slate-800 text-white"
-        >
+        <button type="button" onClick={() => navigate(-1)} className="mt-2 w-min rounded-md py-2 px-4 bg-slate-800 text-white">
           Vovler
         </button>
       </div>

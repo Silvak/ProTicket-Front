@@ -28,19 +28,9 @@ export const OverviewPage = () => {
         <h1 className="text-2xl font-semibold">Estadísticas</h1>
       </div>
 
-      <CustomCard
-        className={''}
-        title={'Rifas Creadas'}
-        icon={<LuClock4 />}
-        textInfo={[(projects.total || 0).toString(), 'rifas']}
-      />
+      <CustomCard className={''} title={'Rifas Creadas'} icon={<LuClock4 />} textInfo={[(projects.total || 0).toString(), 'rifas']} />
 
-      <CustomCard
-        className={''}
-        title={'Usuarios'}
-        icon={<FiUsers />}
-        textInfo={[`${users.total || 0}`, 'usuarios']}
-      />
+      <CustomCard className={''} title={'Usuarios'} icon={<FiUsers />} textInfo={[`${users.total || 0}`, 'usuarios']} />
     </LayoutGrid>
   )
 }

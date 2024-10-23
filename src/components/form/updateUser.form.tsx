@@ -78,24 +78,12 @@ export const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-sm font-medium">Nombre</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border border-gray-300 rounded"
-            required
-          />
+          <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full mt-1 p-2 border border-gray-300 rounded" required />
         </div>
 
         <div className="mb-4">
           <label className="block text-sm font-medium">Imagen</label>
-          <input
-            type="file"
-            name="image"
-            onChange={handleFileChange}
-            className="w-full mt-1 p-2 border border-gray-300 rounded"
-          />
+          <input type="file" name="image" onChange={handleFileChange} className="w-full mt-1 p-2 border border-gray-300 rounded" />
         </div>
 
         <div className="flex gap-4 justify-between mb-4">
@@ -127,10 +115,7 @@ export const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
           </select>
         </div>
 
-        <button
-          type="submit"
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4"
-        >
+        <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4">
           Actualizar Usuario
         </button>
       </form>

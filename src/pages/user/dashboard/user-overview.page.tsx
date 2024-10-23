@@ -122,10 +122,7 @@ export const UserOverviewPage = () => {
         className={'border-l-8 border-green-400'}
         title={'Pagados'}
         icon={<LuCheckCheck />}
-        textInfo={[
-          `${projectStatus?.sold || 0}/${projectStatus?.grid?.length || 0}`,
-          'tickets',
-        ]}
+        textInfo={[`${projectStatus?.sold || 0}/${projectStatus?.grid?.length || 0}`, 'tickets']}
       />
 
       <CustomCard
@@ -135,19 +132,9 @@ export const UserOverviewPage = () => {
         textInfo={[`${selectProject?.raffleConfig.priceTicket || 0}`, '$']}
       />
 
-      <CustomCard
-        className={''}
-        title={'Total Recaudado'}
-        icon={<MdOutlineSavings />}
-        textInfo={[(projectStatus?.collected || 0).toString(), '$']}
-      />
+      <CustomCard className={''} title={'Total Recaudado'} icon={<MdOutlineSavings />} textInfo={[(projectStatus?.collected || 0).toString(), '$']} />
 
-      <CustomCard
-        className={''}
-        title={'Meta Recaudación'}
-        icon={<AiOutlineFlag />}
-        textInfo={[(projectStatus?.goal || 0).toString(), '$']}
-      />
+      <CustomCard className={''} title={'Meta Recaudación'} icon={<AiOutlineFlag />} textInfo={[(projectStatus?.goal || 0).toString(), '$']} />
 
       <div className="flex flex-col  rounded-xl p-0 mt-6 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
         <h1 className="text-2xl font-semibold text-gray-500">
@@ -155,9 +142,7 @@ export const UserOverviewPage = () => {
         </h1>
       </div>
 
-      <div
-        className={`bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 ${'md:col-span-6 xl:col-span-12'}`}
-      >
+      <div className={`bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 ${'md:col-span-6 xl:col-span-12'}`}>
         <input
           type="text"
           placeholder="⌕ Buscar CI, Teléfono, Nombre o Número"
@@ -212,9 +197,7 @@ export const UserOverviewPage = () => {
               )
             })
           ) : (
-            <div className="flex justify-center items-center w-full h-[120px]">
-              No hay tickets
-            </div>
+            <div className="flex justify-center items-center w-full h-[120px]">No hay tickets</div>
           )}
         </div>
       </div>

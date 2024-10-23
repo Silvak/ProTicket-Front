@@ -56,9 +56,7 @@ export const TicketRow = ({ ticket }: TabletRow) => {
         {/* ticket number */}
         <div className="flex items-center lg:justify-center">
           <label className="flex lg:hidden mr-2">Numero:</label>
-          <div className="px-3 py-1 text-white bg-slate-800 rounded-md font-semibold">
-            {ticket.number}
-          </div>
+          <div className="px-3 py-1 text-white bg-slate-800 rounded-md font-semibold">{ticket.number}</div>
         </div>
 
         {/* allowance status */}
@@ -120,23 +118,14 @@ export const TicketRow = ({ ticket }: TabletRow) => {
 
           {(roleUser === 'user' || roleUser === 'reseller') && (
             <div className="flex h-[40px] w-full lg:w-[40px]">
-              <CustomModal
-                header={<h2>Confirmar Eliminación</h2>}
-                buttonText=""
-                buttonType="delete"
-                buttonIcon={<AiOutlineDelete />}
-              >
+              <CustomModal header={<h2>Confirmar Eliminación</h2>} buttonText="" buttonType="delete" buttonIcon={<AiOutlineDelete />}>
                 <p>
                   ¿Estás seguro de que deseas eliminar el ticket:
                   <span className="font-semibold ml-1">{ticket.number}</span> de
                   <span className="font-semibold ml-1">{ticket.ownerData.name}</span>?
                 </p>
                 <div className="flex justify-end gap-4 mt-4">
-                  <button
-                    type="button"
-                    onClick={handleDelete}
-                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                  >
+                  <button type="button" onClick={handleDelete} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                     Confirmar
                   </button>
                 </div>

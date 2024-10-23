@@ -14,6 +14,4 @@ const storeApi: StateCreator<MessageState> = (set) => ({
   setData: (state, qr) => set({ state, qr }),
 })
 
-export const useMessageStore = create<MessageState>()(
-  devtools(persist(storeApi, { name: 'message-storage' }))
-)
+export const useMessageStore = create<MessageState>()(devtools(persist(storeApi, { name: 'message-storage' })))

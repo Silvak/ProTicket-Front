@@ -11,16 +11,12 @@ export const UserSelect: React.FC<{
   const getUsers = useUserStore((state) => state.getUser)
   const user = useAuthStore((state) => state.user)
 
-  const validUserData = Array.isArray((userData as UserResponse).users)
-    ? (userData as UserResponse).users
-    : []
+  const validUserData = Array.isArray((userData as UserResponse).users) ? (userData as UserResponse).users : []
 
   // filter list with by keyword
   const filteredUsers = useMemo(() => {
     if (!searchTerm) return validUserData
-    return validUserData.filter((user: User) =>
-      user.name?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    return validUserData.filter((user: User) => user.name?.toLowerCase().includes(searchTerm.toLowerCase()))
   }, [searchTerm, validUserData])
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,13 +36,7 @@ export const UserSelect: React.FC<{
 
   return (
     <div className="user-select-component">
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={handleSearchChange}
-        placeholder="Buscar usuario..."
-        className="border p-2 mb-2 w-full rounded"
-      />
+      <input type="text" value={searchTerm} onChange={handleSearchChange} placeholder="Buscar usuario..." className="border p-2 mb-2 w-full rounded" />
       <select onChange={handleSelectChange} className="border p-2 w-full rounded">
         <option value="">Seleccione un usuario</option>
         {filteredUsers.map((user: User) => (

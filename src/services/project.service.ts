@@ -2,10 +2,7 @@ import { apiRequest, apiRequestFormData } from '@/api/request'
 import type { ProjectMemberProp, ProjectProp, ProjectResponse } from '@/contracts'
 
 //----------------------------------------------------- GET DATA ---------------------------------------------------------
-export const getProjects = async (
-  page: number,
-  limit: number
-): Promise<ProjectResponse> => {
+export const getProjects = async (page: number, limit: number): Promise<ProjectResponse> => {
   return apiRequest<ProjectResponse>({
     url: '/projects',
     method: 'get',
@@ -29,11 +26,7 @@ export const getProjectStatus = async (projectId: string): Promise<ProjectProp> 
   })
 }
 
-export const getRelatedProjects = async (
-  projectId: string,
-  page: number,
-  limit: number
-): Promise<ProjectProp> => {
+export const getRelatedProjects = async (projectId: string, page: number, limit: number): Promise<ProjectProp> => {
   return apiRequest({
     url: `/projects/related/${projectId}`,
     method: 'get',
@@ -41,11 +34,7 @@ export const getRelatedProjects = async (
   })
 }
 
-export const getRelatedProjectReseller = async (
-  projectId: string,
-  page: number,
-  limit: number
-): Promise<ProjectProp> => {
+export const getRelatedProjectReseller = async (projectId: string, page: number, limit: number): Promise<ProjectProp> => {
   return apiRequest({
     url: `/projects/related/reseller/${projectId}`,
     method: 'get',
@@ -53,11 +42,7 @@ export const getRelatedProjectReseller = async (
   })
 }
 
-export const getRelatedProjectTickets = async (
-  projectId: string,
-  page: number,
-  limit: number
-): Promise<ProjectProp> => {
+export const getRelatedProjectTickets = async (projectId: string, page: number, limit: number): Promise<ProjectProp> => {
   return apiRequest({
     url: `/projects/${projectId}/tickets`,
     method: 'get',
@@ -72,18 +57,9 @@ export const createProject = async (projectData: ProjectProp) => {
   formData.append('name', projectData.name)
   formData.append('date[start]', projectData.date.start)
   formData.append('date[end]', projectData.date.end)
-  formData.append(
-    'raffleConfig[priceTicket]',
-    projectData.raffleConfig.priceTicket.toString()
-  )
-  formData.append(
-    'raffleConfig[totalTickets]',
-    projectData.raffleConfig.totalTickets.toString()
-  )
-  formData.append(
-    'raffleConfig[perTicket]',
-    projectData.raffleConfig.perTicket.toString()
-  )
+  formData.append('raffleConfig[priceTicket]', projectData.raffleConfig.priceTicket.toString())
+  formData.append('raffleConfig[totalTickets]', projectData.raffleConfig.totalTickets.toString())
+  formData.append('raffleConfig[perTicket]', projectData.raffleConfig.perTicket.toString())
   formData.append('raffleConfig[qrPosition]', projectData.raffleConfig.qrPosition)
   formData.append('raffleConfig[numberPosition]', projectData.raffleConfig.numberPosition)
   formData.append('raffleConfig[orientation]', projectData.raffleConfig.orientation)
@@ -110,18 +86,9 @@ export const updateProject = async (projectData: ProjectProp) => {
   formData.append('name', projectData.name)
   formData.append('date[start]', projectData.date.start)
   formData.append('date[end]', projectData.date.end)
-  formData.append(
-    'raffleConfig[priceTicket]',
-    projectData.raffleConfig.priceTicket.toString()
-  )
-  formData.append(
-    'raffleConfig[totalTickets]',
-    projectData.raffleConfig.totalTickets.toString()
-  )
-  formData.append(
-    'raffleConfig[perTicket]',
-    projectData.raffleConfig.perTicket.toString()
-  )
+  formData.append('raffleConfig[priceTicket]', projectData.raffleConfig.priceTicket.toString())
+  formData.append('raffleConfig[totalTickets]', projectData.raffleConfig.totalTickets.toString())
+  formData.append('raffleConfig[perTicket]', projectData.raffleConfig.perTicket.toString())
   formData.append('raffleConfig[qrPosition]', projectData.raffleConfig.qrPosition)
   formData.append('raffleConfig[numberPosition]', projectData.raffleConfig.numberPosition)
   formData.append('raffleConfig[orientation]', projectData.raffleConfig.orientation)

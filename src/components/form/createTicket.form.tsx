@@ -21,10 +21,7 @@ interface CreateTicketFormProps {
   modalAutoClose: () => void
 }
 
-export const CreateTicketForm = ({
-  ticketNumber,
-  modalAutoClose,
-}: CreateTicketFormProps) => {
+export const CreateTicketForm = ({ ticketNumber, modalAutoClose }: CreateTicketFormProps) => {
   const [formData, setFormData] = useState({
     number: ticketNumber !== '' ? ticketNumber : ('' as string),
     name: '',
@@ -61,9 +58,7 @@ export const CreateTicketForm = ({
   }
 
   // Filtrar los números disponibles en base al término de búsqueda
-  const filteredNumbers = status?.grid
-    ? status.grid.filter((item) => item.number.includes(searchTerm))
-    : []
+  const filteredNumbers = status?.grid ? status.grid.filter((item) => item.number.includes(searchTerm)) : []
 
   const handlePhoneChange = (value: string, name: string) => {
     setFormData({
@@ -123,28 +118,16 @@ export const CreateTicketForm = ({
           />
 
           {/* Select Numbers */}
-          <select
-            name="number"
-            value={formData.number}
-            onChange={handleChange}
-            className="font-mono w-full mt-1 p-2 border border-gray-300 rounded"
-            required
-          >
+          <select name="number" value={formData.number} onChange={handleChange} className="font-mono w-full mt-1 p-2 border border-gray-300 rounded" required>
             <option value="">Selecciona un número</option>
             {filteredNumbers.map((item) => (
               <option
                 key={item.number}
                 value={item.number}
                 className="font-mono"
-                disabled={
-                  item.status === 'RESERVED' ||
-                  item.status === 'UNPAID' ||
-                  item.status === 'PAID' ||
-                  item.status === 'WINNER'
-                }
+                disabled={item.status === 'RESERVED' || item.status === 'UNPAID' || item.status === 'PAID' || item.status === 'WINNER'}
               >
-                🎫[{String(item.number).padEnd(10, '.')}]{' '}
-                {item.status === 'AVAILABLE' && '🚩 Disponible'}
+                🎫[{String(item.number).padEnd(10, '.')}] {item.status === 'AVAILABLE' && '🚩 Disponible'}
                 {item.status === 'RESERVED' && '🔵 Reservado'}
                 {item.status === 'UNPAID' && '🟠 Pendiente'}
                 {item.status === 'PAID' && '🟢 Pagado'}
@@ -233,10 +216,7 @@ export const CreateTicketForm = ({
             className="w-full mt-1 p-2 border border-gray-300 rounded"
           />
         </div>
-        <button
-          type="submit"
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded mt-4"
-        >
+        <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded mt-4">
           Registrar Ticket
         </button>
       </form>

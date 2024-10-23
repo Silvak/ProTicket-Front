@@ -13,11 +13,7 @@ export const Navbar = () => {
   return (
     <header className="fixed flex w-full h-[70px] bg-white border-b border-gray-300 z-[100]">
       {/* menu button */}
-      <div
-        className={`flex  items-center h-full pl-2 ${
-          isOpen ? 'w-[320px]' : 'min-w-[70px]'
-        }  duration-150 ease-in-out`}
-      >
+      <div className={`flex  items-center h-full pl-2 ${isOpen ? 'w-[320px]' : 'min-w-[70px]'}  duration-150 ease-in-out`}>
         {status === 'authorized' && (
           <button
             onClick={setOpen}
@@ -43,11 +39,7 @@ export const Navbar = () => {
             <UserButton />
           </>
         ) : (
-          <button
-            type="button"
-            onClick={() => navigate('/login')}
-            className="py-2 px-4 bg-slate-900 rounded-md text-white"
-          >
+          <button type="button" onClick={() => navigate('/login')} className="py-2 px-4 bg-slate-900 rounded-md text-white">
             Login
           </button>
         )}

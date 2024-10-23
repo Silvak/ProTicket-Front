@@ -160,6 +160,4 @@ const storeApi: StateCreator<ProjectState> = (set, get) => ({
   cleanProjectData: () => set({ data: {}, selectedProject: null, tickets: {} }),
 })
 
-export const useProjectStore = create<ProjectState>()(
-  devtools(persist(storeApi, { name: 'project-storage' }))
-)
+export const useProjectStore = create<ProjectState>()(devtools(persist(storeApi, { name: 'project-storage' })))

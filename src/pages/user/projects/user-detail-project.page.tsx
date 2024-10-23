@@ -7,8 +7,7 @@ export const UserDetailProjectsPage = () => {
   const { projectId } = useParams<{ projectId: string }>()
   const selectedProject = useProjectStore((state) => state.selectedProject)
 
-  if (!selectedProject)
-    return <ErrorBox title={'Error'} message={'No se ha encontrado la rifa.'} />
+  if (!selectedProject) return <ErrorBox title={'Error'} message={'No se ha encontrado la rifa.'} />
   return (
     <LayoutGrid>
       <div className="flex flex-col rounded-xl p-0 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
@@ -18,11 +17,7 @@ export const UserDetailProjectsPage = () => {
       {/* Project summary */}
       <div className=" flex flex-col gap-1 bg-white  rounded-xl p-4 col-span-1 mb-6 sm:col-span-2 md:col-span-3 xl:col-span-6">
         <div className="w-full bg-gray-100 h-[120px] rounded-md overflow-hidden">
-          <img
-            src={selectedProject.raffleConfig.img}
-            alt={selectedProject.name}
-            className="w-full h-full object-cover"
-          />
+          <img src={selectedProject.raffleConfig.img} alt={selectedProject.name} className="w-full h-full object-cover" />
         </div>
 
         <div className="flex justify-between items-center">
@@ -70,10 +65,7 @@ export const UserDetailProjectsPage = () => {
         </div>
 
         <p>
-          <strong>Estado: </strong>{' '}
-          <span className=" bg-gray-900 px-3 py-1 rounded-full text-white">
-            {selectedProject.state}
-          </span>
+          <strong>Estado: </strong> <span className=" bg-gray-900 px-3 py-1 rounded-full text-white">{selectedProject.state}</span>
         </p>
       </div>
 

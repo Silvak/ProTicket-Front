@@ -1,12 +1,5 @@
 import type { TicketCreate, TicketUpdate } from '@/contracts'
-import {
-  createTicket,
-  deleteTicket,
-  getTicketById,
-  getTicketByIdPublic,
-  getTickets,
-  updateTicket,
-} from '@/services/ticket.service'
+import { createTicket, deleteTicket, getTicketById, getTicketByIdPublic, getTickets, updateTicket } from '@/services/ticket.service'
 import type { StateCreator } from 'zustand'
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
@@ -96,6 +89,4 @@ const storeApi: StateCreator<TicketState> = (set, get) => ({
   setLimit: async (limit: number) => set({ limit: limit }),
 })
 
-export const useTicketStore = create<TicketState>()(
-  devtools(persist(storeApi, { name: 'ticket-storage' }))
-)
+export const useTicketStore = create<TicketState>()(devtools(persist(storeApi, { name: 'ticket-storage' })))
