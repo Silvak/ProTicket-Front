@@ -12,7 +12,6 @@
 		"lint-check": "biome lint ./src",
 		"lint-apply": "biome check --apply ./src",
 		"lint": "npm run format && npm run lint-check && npm run lint-apply",
-		"prepare": "husky",
 		"test": "echo \"Error: no test specified\""
 	},
 	"dependencies": {
