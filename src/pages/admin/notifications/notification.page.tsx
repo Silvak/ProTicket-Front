@@ -37,21 +37,46 @@ export const NotificationPage = () => {
         <h1 className="text-2xl font-semibold">Notificaciones Mainhub</h1>
       </div>
 
-      <div className="flex flex-col gap-2 bg-white rounded-xl py-3 px-2 col-span-1 sm:col-span-2 md:col-span-4  xl:col-span-5 min-h-[120px]">
-        <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
-          <h2 className="whitespace-nowrap">Whatsapp QR</h2>
+      <article className="flex flex-col gap-2 bg-white rounded-xl py-3 px-2 col-span-1 sm:col-span-2 md:col-span-6  xl:col-span-12 min-h-[120px]">
+        <div className="flex justify-between items-center">
+          <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
+            <h2 className="whitespace-nowrap">Whatsapp QR</h2>
+          </div>
+
+          <div className="text-sm">
+            {state === 'linkup' && (
+              <div style={{ backgroundColor: '#f1cd57' }} className="px-2 py-1 rounded-full">
+                No conectado
+              </div>
+            )}
+            {state === 'connected' && (
+              <div style={{ backgroundColor: '#79d176' }} className="px-2 py-1 rounded-full">
+                Conectado
+              </div>
+            )}
+            {state === 'disconnecte' && (
+              <div style={{ backgroundColor: '#ea635a' }} className="px-2 py-1 rounded-full">
+                Desconectado
+              </div>
+            )}
+          </div>
         </div>
 
-        <div>
-          {state === 'linkup' && <p>Escanea el código QR para vincular tu cuenta</p>}
-          {state === 'connected' && <p>Conectado a whatsapp ✅</p>}
-          {state === 'disconnected' && <p>Desconectado</p>}
+        <div className=" flex flex-col items-center mt-4">
+          <div className="relative p-4 border rounded-md h-[332px] overflow-hidden">
+            {qr !== '' && <QRCode value={qr || ''} size={300} />}
+            {state === 'connected' && <QRCode value={''} size={300} />}
+
+            <div className="absolute flex justify-center items-center top-0 left-0 w-full h-[332px] bg-slate-50/80 backdrop-blur-sm">
+              <button type="button" className="bg-slate-900 hover:bg-slate-800 px-4 py-2 rounded-md text-white ">
+                Desconectar
+              </button>
+            </div>
+          </div>
+
+          <div className="h-[28px]">{state === 'linkup' && <p className="mt-1 text-sm">Escanea el código QR para vincular tu cuenta</p>}</div>
         </div>
-        <div className=" p-4 border rounded-md w-min">
-          {qr !== '' && <QRCode value={qr || ''} size={340} />}
-          {state === 'connected' && <QRCode value={''} size={340} />}
-        </div>
-      </div>
+      </article>
     </LayoutGrid>
   )
 }
