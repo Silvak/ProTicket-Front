@@ -1,0 +1,35 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Add SSH key to known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan 92.118.56.248 >> ~/.ssh/known_hosts
+
+    - name: Copy files to VPS
+      run: scp -r ./* root@92.118.56.248:/home/administrator/pro-ticket-frontend
+
+    - name: Deploy with Docker Compose
+      run: |
+        ssh root@92.118.56.248 << 'EOF'
+          cd /home/administrator/pro-ticket-frontend
+          docker-compose down
+          docker-compose up -d
+        EOF
