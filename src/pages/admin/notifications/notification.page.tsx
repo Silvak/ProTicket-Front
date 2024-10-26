@@ -1,32 +1,26 @@
 import { LayoutGrid } from '@/components'
-import { getWhatsappStatus } from '@/services/notification.service'
 import { useMessageStore, useSocket } from '@/store'
 import QRCode from 'qrcode.react'
 import { useEffect } from 'react'
 
 export const NotificationPage = () => {
+  //const [status, setStatus] = useState('')
+  //const [qr, setQr] = useState('')
+  const wsDisconnect = useMessageStore((state) => state.wsDisconnect)
   const setData = useMessageStore((state) => state.setData)
-  const state = useMessageStore((state) => state.state)
+  const status = useMessageStore((state) => state.status)
   const qr = useMessageStore((state) => state.qr)
   const { socket } = useSocket()
 
-  const fetchData = async () => {
-    try {
-      const response = await getWhatsappStatus()
-      setData(response.status, response.qr)
-    } catch (error) {
-      console.log(error)
-    }
+  const handleDisconnect = () => {
+    wsDisconnect()
   }
-
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
 
   useEffect(() => {
     if (socket) {
       socket.on('whatsapp-qr', (data) => {
         setData(data.status, data.qr)
+        //setData(data.status, data.qr)
       })
     }
   }, [socket, setData])
@@ -44,17 +38,17 @@ export const NotificationPage = () => {
           </div>
 
           <div className="text-sm">
-            {state === 'linkup' && (
+            {status === 'linkup' && (
               <div style={{ backgroundColor: '#f1cd57' }} className="px-2 py-1 rounded-full">
                 No conectado
               </div>
             )}
-            {state === 'connected' && (
+            {status === 'connected' && (
               <div style={{ backgroundColor: '#79d176' }} className="px-2 py-1 rounded-full">
                 Conectado
               </div>
             )}
-            {state === 'disconnecte' && (
+            {status === 'disconnecte' && (
               <div style={{ backgroundColor: '#ea635a' }} className="px-2 py-1 rounded-full">
                 Desconectado
               </div>
@@ -64,17 +58,19 @@ export const NotificationPage = () => {
 
         <div className=" flex flex-col items-center mt-4">
           <div className="relative p-4 border rounded-md h-[332px] overflow-hidden">
-            {qr !== '' && <QRCode value={qr || ''} size={300} />}
-            {state === 'connected' && <QRCode value={''} size={300} />}
+            <QRCode value={qr || ''} size={300} />
+            {status === 'connected' && <QRCode value={''} size={300} />}
 
-            <div className="absolute flex justify-center items-center top-0 left-0 w-full h-[332px] bg-slate-50/80 backdrop-blur-sm">
-              <button type="button" className="bg-slate-900 hover:bg-slate-800 px-4 py-2 rounded-md text-white ">
-                Desconectar
-              </button>
-            </div>
+            {status === 'connected' && (
+              <div className="absolute flex justify-center items-center top-0 left-0 w-full h-[332px] bg-slate-50/80 backdrop-blur-sm">
+                <button type="button" onClick={handleDisconnect} className="bg-slate-900 hover:bg-slate-800 px-4 py-2 rounded-md text-white ">
+                  Desconectar
+                </button>
+              </div>
+            )}
           </div>
 
-          <div className="h-[28px]">{state === 'linkup' && <p className="mt-1 text-sm">Escanea el código QR para vincular tu cuenta</p>}</div>
+          <div className="h-[28px]">{status === 'linkup' && <p className="mt-1 text-sm">Escanea el código QR para vincular tu cuenta</p>}</div>
         </div>
       </article>
     </LayoutGrid>

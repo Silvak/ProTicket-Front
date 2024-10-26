@@ -6,10 +6,18 @@ interface StatusRes {
 }
 
 //----------------------------------------------------- GET DATA ---------------------------------------------------------
-export const getWhatsappStatus = async (): Promise<StatusRes> => {
+export const getWsStatus = async (): Promise<StatusRes> => {
   return apiRequest<StatusRes>({
-    url: '/projects/ws',
+    url: 'notificacions/ws-status',
     method: 'get',
+    params: {},
+  })
+}
+
+export const wsDisconnect = async (): Promise<StatusRes> => {
+  return apiRequest<StatusRes>({
+    url: '/notificacions/ws-disconnect',
+    method: 'post',
     params: {},
   })
 }

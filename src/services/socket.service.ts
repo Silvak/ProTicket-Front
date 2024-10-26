@@ -5,7 +5,7 @@ let socket: Socket | null = null
 
 export const initializeSocket = () => {
   if (!socket) {
-    socket = io(import.meta.env.VITE_BACKEND_URL_WS)
+    socket = io(import.meta.env.VITE_BACKEND_URL_WS || 'http://localhost:3000')
   }
   return socket
 }
