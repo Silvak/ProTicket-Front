@@ -1,21 +1,21 @@
-import { useAuthStore } from "@/store";
-import axios from "axios";
+import { useAuthStore } from '@/store'
+import axios from 'axios'
 
 const tesloApi = axios.create({
   baseURL: `${import.meta.env.VITE_BACKEND_URL}/api`,
-});
+})
 
 // Todo: interceptors
 // read zutand store
 tesloApi.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().token;
+  const token = useAuthStore.getState().token
   //console.log({ token })
 
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Bearer ${token}`
   }
 
-  return config;
-});
+  return config
+})
 
-export { tesloApi };
+export { tesloApi }

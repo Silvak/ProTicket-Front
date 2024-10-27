@@ -1,25 +1,25 @@
-import { io } from "socket.io-client";
-import type { Socket } from "socket.io-client";
+import { io } from 'socket.io-client'
+import type { Socket } from 'socket.io-client'
 
-let socket: Socket | null = null;
+let socket: Socket | null = null
 
 export const initializeSocket = () => {
   if (!socket) {
-    socket = io(import.meta.env.VITE_BACKEND_URL);
+    socket = io(import.meta.env.VITE_BACKEND_URL)
   }
-  return socket;
-};
+  return socket
+}
 
 export const getSocket = () => {
   if (!socket) {
-    throw new Error("Socket not initialized. Call initializeSocket first.");
+    throw new Error('Socket not initialized. Call initializeSocket first.')
   }
-  return socket;
-};
+  return socket
+}
 
 export const closeSocket = () => {
   if (socket) {
-    socket.disconnect();
-    socket = null;
+    socket.disconnect()
+    socket = null
   }
-};
+}
