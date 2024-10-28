@@ -39,6 +39,30 @@ export const DetailTicketPage = () => {
     }
   }, [ticketId, getTicket])
 
+  const handleCopyLink = () => {
+    const url = window.location.href
+    navigator.clipboard.writeText(url).then(() => {
+      alert('Enlace copiado al portapapeles')
+    })
+  }
+
+  const handleShareLink = async () => {
+    const url = window.location.href
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Detalles del Ticket',
+          text: 'Mira los detalles de este ticket',
+          url,
+        })
+      } catch (error) {
+        console.error('Error al compartir', error)
+      }
+    } else {
+      alert('La funcionalidad de compartir no es compatible con este navegador')
+    }
+  }
+
   if (loading) return <Loading />
   if (!selectedTicket || !selectedTicket) return <ErrorBox title={'Error'} message={'No se ha logrado obtener la data.'} />
   return (
@@ -55,6 +79,15 @@ export const DetailTicketPage = () => {
             {/* Add a check to ensure seller and seller.name exist */}
             <p className="min-w text-nowrap">{selectedTicket.seller?.name ?? 'Sin vendedor'}</p>
           </div>
+        </div>
+
+        <div className="flex items-center gap-4 mt-2">
+          <button type="button" onClick={handleShareLink} className="flex items-center gap-1 bg-blue-500 text-white px-3 py-1 rounded-md">
+            Compartir enlace
+          </button>
+          <button type="button" onClick={handleCopyLink} className="flex items-center gap-1 bg-gray-500 text-white px-3 py-1 rounded-md">
+            Copiar enlace
+          </button>
         </div>
       </div>
 
