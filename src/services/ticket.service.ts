@@ -23,14 +23,13 @@ export const getTicketById = async (ticketId: string): Promise<TicketProp> => {
 export const getTicketByIdPublic = async (ticketId: string): Promise<TicketProp> => {
   try {
     const response = await tesloApi.get<TicketProp>(`/public/ticket/${ticketId}`)
-
     return response.data
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.log(error.response?.data)
+      //console.log(error.response?.data);
       throw new Error(error.response?.data)
     }
-    throw new Error('Failed to get project by ID')
+    throw new Error('Failed to get ticket')
   }
 }
 

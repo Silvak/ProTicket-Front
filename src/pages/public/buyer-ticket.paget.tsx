@@ -1,9 +1,9 @@
 import { HorizontalTicket, LayoutGrid, Loading, Navbar, VerticalTicket } from '@/components'
 import { useTicketStore } from '@/store'
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { LuUser2 } from 'react-icons/lu'
 import { useParams } from 'react-router-dom'
-import { useReactToPrint } from 'react-to-print'
+//import { toast } from 'react-toastify'
 
 interface TicketProp {
   ownerData: {
@@ -34,15 +34,27 @@ export const BuyerTicketPage = () => {
   const { ticketId } = useParams()
   const selectedTicket = useTicketStore((state) => state.selectedTicket as TicketProp)
   const getTicket = useTicketStore((state) => state.getTicket)
-
-  const contentRef = useRef<HTMLDivElement>(null)
-  const reactToPrintFn = useReactToPrint({ contentRef })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
-    getTicket(ticketId || '', true)
+    const fetchTicket = async () => {
+      setLoading(true)
+      try {
+        await getTicket(ticketId || '', true)
+        setError(false)
+      } catch {
+        setError(true)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchTicket()
   }, [getTicket, ticketId])
 
-  if (!selectedTicket || !selectedTicket.ownerData) return <Loading />
+  if (loading) return <Loading />
+  if (error || !selectedTicket) return <div className="text-center text-black-500 mt-10">Ticket no encontrado</div>
+
   return (
     <>
       <Navbar />
@@ -65,19 +77,12 @@ export const BuyerTicketPage = () => {
         </div>
 
         {/* info / update */}
-        <div ref={contentRef} className="rounded-xl col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
-          {selectedTicket.project?.raffleConfig?.orientation === 'portrait' ? (
-            <VerticalTicket ticket={selectedTicket} />
-          ) : (
-            <HorizontalTicket ticket={selectedTicket} />
-          )}
-        </div>
 
-        <div className="mt-4">
-          <button type="button" onClick={() => reactToPrintFn?.()} className="px-4 py-2 bg-blue-500 text-white rounded-lg">
-            Imprimir Ticket
-          </button>
-        </div>
+        {selectedTicket.project?.raffleConfig?.orientation === 'portrait' ? (
+          <VerticalTicket ticket={selectedTicket} />
+        ) : (
+          <HorizontalTicket ticket={selectedTicket} />
+        )}
       </LayoutGrid>
     </>
   )

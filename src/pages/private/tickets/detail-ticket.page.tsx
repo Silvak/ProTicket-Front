@@ -7,9 +7,13 @@ import { useModalAutoClose } from '@/hooks'
 import { useHistoryStore, useProjectStore, useTicketStore } from '@/store'
 import { useEffect, useState } from 'react'
 import { FaSave } from 'react-icons/fa'
+import { FaRegCopy } from 'react-icons/fa6'
+import { IoMdShare } from 'react-icons/io'
 import { LuUser2 } from 'react-icons/lu'
 import PhoneInput from 'react-phone-input-2'
 import { useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
+//import { FaLongArrowAltRight } from 'react-icons/fa'
 
 export const convertToDateFormat = (dateString: string) => {
   const dateObject = new Date(dateString)
@@ -40,14 +44,14 @@ export const DetailTicketPage = () => {
   }, [ticketId, getTicket])
 
   const handleCopyLink = () => {
-    const url = window.location.href
+    const url = `https://proticket.app/your-ticket/${ticketId}`
     navigator.clipboard.writeText(url).then(() => {
-      alert('Enlace copiado al portapapeles')
+      toast.success('Enlace copiado al portapapeles')
     })
   }
 
   const handleShareLink = async () => {
-    const url = window.location.href
+    const url = `https://proticket.app/your-ticket/${ticketId}`
     if (navigator.share) {
       try {
         await navigator.share({
@@ -67,32 +71,21 @@ export const DetailTicketPage = () => {
   if (!selectedTicket || !selectedTicket) return <ErrorBox title={'Error'} message={'No se ha logrado obtener la data.'} />
   return (
     <LayoutGrid>
-      <div className="flex flex-col rounded-xl p-0 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
+      <div className="flex flex-col lg:flex-row lg:justify-between rounded-xl p-0 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
         <h1 className="text-2xl font-semibold">Detalles del Ticket</h1>
 
-        <div className="flex items-center gap-2 py-2">
-          <p className="font-semibold">Vendido por</p>
-          <div className="flex items-center gap-2 pl-2 pr-4 p-1 border w-min rounded-full bg-white">
-            <div className="bg-slate-700 h-[32px] w-[32px] rounded-full text-white flex justify-center items-center">
-              <LuUser2 />
-            </div>
-            {/* Add a check to ensure seller and seller.name exist */}
-            <p className="min-w text-nowrap">{selectedTicket.seller?.name ?? 'Sin vendedor'}</p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4 mt-2">
-          <button type="button" onClick={handleShareLink} className="flex items-center gap-1 bg-blue-500 text-white px-3 py-1 rounded-md">
-            Compartir enlace
+        <div className="flex items-start gap-4 mt-2">
+          <button type="button" onClick={handleShareLink} className="flex items-center gap-1 bg-blue-500 text-white px-3 py-2 rounded-md">
+            <IoMdShare /> Compartir enlace
           </button>
-          <button type="button" onClick={handleCopyLink} className="flex items-center gap-1 bg-gray-500 text-white px-3 py-1 rounded-md">
-            Copiar enlace
+          <button type="button" onClick={handleCopyLink} className="flex items-center gap-1 bg-gray-500 text-white px-3 py-2 rounded-md">
+            <FaRegCopy /> Copiar enlace
           </button>
         </div>
       </div>
 
       {/* info / update */}
-      <div className="bg-white rounded-xl p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-4">
+      <div className="bg-white rounded-xl p-2 col-span-1 row-span-2 sm:col-span-2 md:col-span-6 xl:col-span-4">
         <div className="flex justify-between items-center">
           <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
             <h4 className="whitespace-nowrap">Información</h4>
@@ -158,8 +151,25 @@ export const DetailTicketPage = () => {
         </div>
       </div>
 
+      {/*  */}
+      <div className="bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-4">
+        <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
+          <h4 className="whitespace-nowrap">Vendedor</h4>
+        </div>
+
+        <div className="flex items-start gap-2 py-2">
+          <div className="flex items-center gap-2 pl-2 pr-4 p-1 border w-min rounded-full bg-white">
+            <div className="bg-slate-700 h-[32px] w-[32px] rounded-full text-white flex justify-center items-center">
+              <LuUser2 />
+            </div>
+            {/* Add a check to ensure seller and seller.name exist */}
+            <p className="min-w text-nowrap">{selectedTicket.seller?.name ?? 'Sin vendedor'}</p>
+          </div>
+        </div>
+      </div>
+
       {/* payments state */}
-      <div className="flex flex-col justify-between bg-white rounded-xl p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-4">
+      <div className="flex flex-col justify-between bg-white rounded-xl p-2 col-span-1 row-span-2 sm:col-span-2 md:col-span-6 xl:col-span-4">
         <div className="flex justify-between items-center">
           <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
             <h4 className="whitespace-nowrap">Pagos</h4>
@@ -217,14 +227,14 @@ export const DetailTicketPage = () => {
           <h4 className="whitespace-nowrap">Fecha limite</h4>
         </div>
 
-        <div className="flex items-center gap-3 mt-3">
-          <div>
-            <label className=" text-sm font-medium w-[80px] mr-2">Inicio</label>
+        <div className="flex items-center mt-3 gap-1">
+          <div className="">
+            <label className="text-sm font-medium">Inicio</label>
             <input type="date" value={convertToDateFormat(selectedTicket.date)} className="bg-inherit h-[40px] border px-2 rounded-md bg-slate-100" disabled />
           </div>
-          ➤
-          <div>
-            <label className=" text-sm font-medium w-[80px] mr-2">Fin</label>
+
+          <div className="">
+            <label className="text-sm font-medium">Fin</label>
             <input type="date" value={selectedProject?.date.end} className="bg-inherit h-[40px] border px-2 rounded-md bg-slate-100" disabled />
           </div>
         </div>

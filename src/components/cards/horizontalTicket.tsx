@@ -5,6 +5,8 @@ const positionStyles: Record<string, string> = {
   br: 'bottom-2 right-2',
 }
 import QRCode from 'qrcode.react'
+import { useRef } from 'react'
+import { useReactToPrint } from 'react-to-print'
 
 interface TicketProp {
   ticket: {
@@ -34,10 +36,19 @@ interface TicketProp {
 }
 
 export const HorizontalTicket = ({ ticket }: TicketProp) => {
+  const contentRef = useRef<HTMLDivElement>(null)
+  const reactToPrintFn = useReactToPrint({ contentRef })
+
   return (
     <>
       <div className=" bg-white rounded-xl p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12 overflow-x-scroll border border-gray-300 shadow-xl ">
-        <div className="flex flex-row  w-min py-12">
+        <div className="mt-0">
+          <button type="button" onClick={() => reactToPrintFn?.()} className="px-4 py-2 bg-blue-500 text-white rounded-lg">
+            Imprimir Ticket
+          </button>
+        </div>
+
+        <div ref={contentRef} className="flex flex-row  w-min py-12">
           {/* ----------------- TICKET FIELDS ---------------- */}
           <div className="flex relative w-[248px] border p-4 overflow-hidden">
             <div className="flex flex-col gap-1 relative -bottom-[100%] transform -rotate-90 origin-top-left">
@@ -100,7 +111,7 @@ export const HorizontalTicket = ({ ticket }: TicketProp) => {
           </div>
 
           {/* ----------------- IMAGE & QR---------------- */}
-          <div className="relative grid w-[660px] min-h-[400px] overflow-hidden">
+          <div className="relative grid w-[600px] min-h-[400px] overflow-hidden">
             <div className="absolute top-0 w-full h-full ">
               <img src={ticket.project?.raffleConfig?.img} alt="Raffle-picture" className=" w-full h-full object-cover" />
             </div>

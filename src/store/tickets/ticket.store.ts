@@ -36,8 +36,10 @@ const storeApi: StateCreator<TicketState> = (set, get) => ({
         const data = await getTicketById(ticketId)
         set({ selectedTicket: data })
       }
-    } catch (_error) {
+    } catch (error) {
       set({ data: {} })
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 

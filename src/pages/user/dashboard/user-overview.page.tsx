@@ -153,7 +153,7 @@ export const UserOverviewPage = () => {
       </div>
 
       <div className="flex flex-col bg-white rounded-xl py-3 px-2 col-span-1 sm:col-span-2 md:col-span-6  xl:col-span-12 min-h-[120px]">
-        <div className="flex flex-wrap gap-1 p-3 justify-start max-h-[500px] overflow-y-scroll">
+        <div className="flex flex-wrap gap-[2px] p-3 justify-start max-h-[500px] overflow-y-scroll">
           {filteredTickets && filteredTickets.length > 0 ? (
             filteredTickets.map((item) => {
               let statusColor = ''
@@ -186,10 +186,10 @@ export const UserOverviewPage = () => {
                   onClick={() => handleTicketClick(item.ticket, item.number)}
                   className={`
                 ${statusColor}
-                 flex flex-col justify-around items-center min-h-[68px] w-[68px] border rounded-md overflow-hidden bg-gray-50 cursor-pointer text-sm`}
+                 flex flex-col justify-around items-center min-h-[48px] w-[48px] border rounded-md overflow-hidden bg-gray-50 cursor-pointer text-sm`}
                 >
                   {item.number.split('-').map((num) => (
-                    <p key={num} className="text-[14px]">
+                    <p key={num} className="text-[14px] font-semibold text-gray-700">
                       {num}
                     </p>
                   ))}

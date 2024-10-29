@@ -5,6 +5,8 @@ const positionStyles: Record<string, string> = {
   br: 'bottom-2 right-2',
 }
 import QRCode from 'qrcode.react'
+import { useRef } from 'react'
+import { useReactToPrint } from 'react-to-print'
 
 interface TicketProp {
   ticket: {
@@ -34,10 +36,19 @@ interface TicketProp {
 }
 
 export const VerticalTicket = ({ ticket }: TicketProp) => {
+  const contentRef = useRef<HTMLDivElement>(null)
+  const reactToPrintFn = useReactToPrint({ contentRef })
+
   return (
     <>
       <div className=" bg-white rounded-xl p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12 overflow-x-scroll  border border-gray-300 shadow-xl">
-        <div className="flex flex-col w-[400px] py-6">
+        <div className="mt-0">
+          <button type="button" onClick={() => reactToPrintFn?.()} className="px-4 py-2 bg-blue-500 text-white rounded-lg">
+            Imprimir Ticket
+          </button>
+        </div>
+
+        <div ref={contentRef} className="flex flex-col max-w-[400px] py-6">
           {/* ----------------- TICKET FIELDS ---------------- */}
           <div className="flex flex-col w-full border p-4 overflow-hidden">
             <div>
@@ -100,7 +111,7 @@ export const VerticalTicket = ({ ticket }: TicketProp) => {
           </div>
 
           {/* ----------------- IMAGE & QR---------------- */}
-          <div className="relative grid w-[400px]  h-[660px] overflow-hidden">
+          <div className="relative grid max-w-[400px]  h-[600px] overflow-hidden">
             <div className="absolute top-0 w-full h-full ">
               <img src={ticket.project?.raffleConfig?.img} alt="Raffle-picture" className="w-full h-full object-cover" />
             </div>
@@ -135,8 +146,8 @@ export const VerticalTicket = ({ ticket }: TicketProp) => {
           </div>
 
           {/* disclaimer */}
-          <div className="flex w-full h-min pt-1 pb-2 px-4 bg-black/90">
-            <p className="text-md text-white/70">Número no pagado no participa en los premios / No se devuelve dinero de abono </p>
+          <div className="flex w-full h-min py-2 px-4 bg-black/90">
+            <p className="text-sm text-white/70">Número no pagado no participa en los premios / No se devuelve dinero de abono </p>
           </div>
         </div>
       </div>
