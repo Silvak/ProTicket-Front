@@ -32,6 +32,6 @@ jobs:
           cd /home/administrator/pro-ticket-frontend
           docker compose down
           docker rmi pro-ticket-frontend-server
-          docker system prune
+          docker system prune -f
           docker compose up -d
         EOF
