@@ -1,6 +1,7 @@
 import type { UserProp } from '@/contracts'
 import { useUserStore } from '@/store'
 import { useEffect, useState } from 'react'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import PhoneInput from 'react-phone-input-2'
 import { toast } from 'react-toastify'
 
@@ -16,6 +17,7 @@ export const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
     state: user.state.toString(), // Asegúrate de que sea un string
     image: null as File | null,
   })
+  const [isLoading, setIsLoading] = useState(false)
 
   const updateUser = useUserStore((state) => state.updateUser)
 
@@ -55,6 +57,7 @@ export const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
 
     const userData = {
       id: user.id,
@@ -68,8 +71,11 @@ export const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
     try {
       await updateUser(userData)
       toast.success('Usuario actualizado exitosamente')
-    } catch (_error) {
-      toast.error('Error al actualizar el usuario')
+    } catch (error) {
+      const errorMessage = typeof error === 'string' ? error : 'Error al intentar crear el usuario'
+      toast.error(errorMessage)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -116,7 +122,16 @@ export const UpdateUserForm = ({ user }: UpdateUserFormProps) => {
         </div>
 
         <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4">
-          Actualizar Usuario
+          {isLoading ? (
+            <span className="flex justify-center items-center gap-2 ">
+              Actualizando Usuario
+              <span className=" mt-[2px] animate-spin ">
+                <AiOutlineLoading3Quarters />
+              </span>
+            </span>
+          ) : (
+            'Actualizar Usuario'
+          )}
         </button>
       </form>
     </>

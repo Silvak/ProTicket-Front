@@ -58,8 +58,9 @@ const storeApi: StateCreator<TicketState> = (set, get) => ({
       if (res) {
         await get().getTickets(ticketData.project)
       }
-    } catch (_error) {
-      console.log(_error)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 
@@ -69,8 +70,9 @@ const storeApi: StateCreator<TicketState> = (set, get) => ({
       if (res) {
         await get().getTicket(ticketData.id)
       }
-    } catch (_error) {
-      throw 'Update error'
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 
@@ -80,8 +82,9 @@ const storeApi: StateCreator<TicketState> = (set, get) => ({
       if (res) {
         await get().getTickets(projectId)
       }
-    } catch (_error) {
-      throw 'Delete error'
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 

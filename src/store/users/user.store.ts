@@ -51,8 +51,9 @@ const storeApi: StateCreator<UserState> = (set, get) => ({
       if (res) {
         await get().getUser(ticketData.creatorId)
       }
-    } catch (_error) {
-      console.log(_error)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 
@@ -62,8 +63,9 @@ const storeApi: StateCreator<UserState> = (set, get) => ({
       if (res) {
         await get().getUser(userData.creatorId)
       }
-    } catch (_error) {
-      console.log(_error)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 
@@ -73,8 +75,9 @@ const storeApi: StateCreator<UserState> = (set, get) => ({
       if (res) {
         await get().getUserById(userData.id)
       }
-    } catch (_error) {
-      console.log(_error)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 
@@ -84,8 +87,9 @@ const storeApi: StateCreator<UserState> = (set, get) => ({
       if (res) {
         await get().getUser(creatorId)
       }
-    } catch (_error) {
-      throw 'Delete error'
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 
@@ -95,8 +99,9 @@ const storeApi: StateCreator<UserState> = (set, get) => ({
       if (res) {
         await get().getUser(creatorId)
       }
-    } catch (_error) {
-      throw 'Delete error'
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 

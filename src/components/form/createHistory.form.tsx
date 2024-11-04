@@ -1,6 +1,7 @@
 import type { TicketProp } from '@/contracts'
 import { useAuthStore, useHistoryStore, useTicketStore } from '@/store'
 import { useState } from 'react'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { toast } from 'react-toastify'
 //import { UserSelect } from "./userSelect";
 
@@ -18,7 +19,7 @@ export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) =>
     paymentType: 'TRANSFER',
     ref: '',
   })
-
+  const [isLoading, setIsLoading] = useState(false)
   const user = useAuthStore((state) => state.user)
   const selectedTicket = useTicketStore((state) => state.selectedTicket as TicketProp)
   const createHistory = useHistoryStore((state) => state.createHistory)
@@ -43,6 +44,7 @@ export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) =>
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
 
     const historyData = {
       note: formData.note,
@@ -70,8 +72,11 @@ export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) =>
         ref: '',
       })
       modalAutoClose()
-    } catch (_error) {
-      toast.error('Error al intentar intentar guardar abono!')
+    } catch (error) {
+      const errorMessage = typeof error === 'string' ? error : 'Error al intentar crear el usuario'
+      toast.error(errorMessage)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -152,7 +157,16 @@ export const CreateHistoryForm = ({ modalAutoClose }: CreateHistoryFormProps) =>
         </div>
 
         <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4">
-          Registrar
+          {isLoading ? (
+            <span className="flex justify-center items-center gap-2 ">
+              Registrando Abono
+              <span className=" mt-[2px] animate-spin ">
+                <AiOutlineLoading3Quarters />
+              </span>
+            </span>
+          ) : (
+            'Registrar Abono'
+          )}
         </button>
       </form>
     </>

@@ -1,6 +1,7 @@
 import type { ProjectProp } from '@/contracts'
 import { useProjectStore } from '@/store'
 import { useEffect, useState } from 'react'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { toast } from 'react-toastify'
 import { UserSelect } from '../form/userSelect'
 
@@ -23,8 +24,8 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
     orientation: project.raffleConfig?.orientation || '',
   })
 
-  console.log('Project:', project)
-
+  //console.log('Project:', project)
+  const [isLoading, setIsLoading] = useState(false)
   const [selectedUser, setSelectedUser] = useState<string | null>(project.owner.id || null)
   const updateProject = useProjectStore((state) => state.updateProject)
 
@@ -68,6 +69,7 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
 
     const updatedProjectData = {
       id: project.id as string,
@@ -95,8 +97,11 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
     try {
       await updateProject(updatedProjectData)
       toast.success('Proyecto actualizado exitosamente')
-    } catch (_error) {
-      toast.error('Error al actualizar el proyecto')
+    } catch (error) {
+      const errorMessage = typeof error === 'string' ? error : 'Error al intentar crear el usuario'
+      toast.error(errorMessage)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -214,7 +219,16 @@ export const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
         </div>
 
         <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4">
-          Actualizar Rifa
+          {isLoading ? (
+            <span className="flex justify-center items-center gap-2 ">
+              Actualizamdo Rifa
+              <span className=" mt-[2px] animate-spin ">
+                <AiOutlineLoading3Quarters />
+              </span>
+            </span>
+          ) : (
+            'Actualizar Rifa'
+          )}
         </button>
       </form>
     </>

@@ -51,8 +51,9 @@ const storeApi: StateCreator<HistoryState> = (set, get) => ({
       if (res) {
         await get().getHistories(historyData.ticket)
       }
-    } catch (_error) {
-      console.log(_error)
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 
@@ -62,8 +63,9 @@ const storeApi: StateCreator<HistoryState> = (set, get) => ({
       if (res) {
         await get().getHistory(historyData.id)
       }
-    } catch (_error) {
-      throw 'Update error'
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 
@@ -73,8 +75,9 @@ const storeApi: StateCreator<HistoryState> = (set, get) => ({
       if (res) {
         await get().getHistories(ticketId)
       }
-    } catch (_error) {
-      throw 'Delete error'
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido'
+      throw errorMessage
     }
   },
 

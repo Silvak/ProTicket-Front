@@ -1,5 +1,6 @@
 import { useAuthStore, useUserStore } from '@/store'
 import { useState } from 'react'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { toast } from 'react-toastify'
 //import { UserSelect } from "./userSelect";
 
@@ -16,6 +17,7 @@ export const CreateResellerForm = ({ modalAutoClose }: CreateResellerFormProps) 
     image: null as File | null,
   })
   //const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false)
   const userId = useAuthStore((state) => state.user?.id)
   //const selectedProjectId = useProjectStore((state) => state.selectedProject?.id);
   const createReseller = useUserStore((state) => state.createReseller)
@@ -39,6 +41,7 @@ export const CreateResellerForm = ({ modalAutoClose }: CreateResellerFormProps) 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
 
     const newUserData = {
       name: formData.name,
@@ -61,8 +64,11 @@ export const CreateResellerForm = ({ modalAutoClose }: CreateResellerFormProps) 
       })
       modalAutoClose()
       //setSelectedUser(null);
-    } catch (_error) {
-      toast.error('Error al crear el ticket!')
+    } catch (error) {
+      const errorMessage = typeof error === 'string' ? error : 'Error al intentar crear el usuario'
+      toast.error(errorMessage)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -114,7 +120,16 @@ export const CreateResellerForm = ({ modalAutoClose }: CreateResellerFormProps) 
         */}
 
         <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded mt-4">
-          Crear Usuario
+          {isLoading ? (
+            <span className="flex justify-center items-center gap-2 ">
+              Creando Usuario
+              <span className=" mt-[2px] animate-spin ">
+                <AiOutlineLoading3Quarters />
+              </span>
+            </span>
+          ) : (
+            'Crear Usuario'
+          )}
         </button>
       </form>
     </>

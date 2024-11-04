@@ -1,6 +1,7 @@
 import type { ProjectMemberProp, ProjectProp } from '@/contracts'
 import { useProjectStore } from '@/store'
 import { useEffect, useState } from 'react'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { IoClose } from 'react-icons/io5'
 import { toast } from 'react-toastify'
 import { UserSelect } from './userSelect'
@@ -13,7 +14,7 @@ export const UpdateProjectMembersForm = ({ project }: UpdateProjectFormProps) =>
   const [formData, setFormData] = useState({
     members: project.members || [],
   })
-
+  const [isLoading, setIsLoading] = useState(false)
   const updateProjectMembers = useProjectStore((state) => state.updateProjectMember)
 
   useEffect(() => {
@@ -40,6 +41,7 @@ export const UpdateProjectMembersForm = ({ project }: UpdateProjectFormProps) =>
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
 
     const updatedProjectData = {
       id: project.id as string,
@@ -48,9 +50,12 @@ export const UpdateProjectMembersForm = ({ project }: UpdateProjectFormProps) =>
 
     try {
       await updateProjectMembers(updatedProjectData)
-      toast.success('Proyecto actualizado exitosamente')
-    } catch (_error) {
-      toast.error('Error al actualizar el proyecto')
+      toast.success('Miembros actualizados exitosamente')
+    } catch (error) {
+      const errorMessage = typeof error === 'string' ? error : 'Error al intentar crear el usuario'
+      toast.error(errorMessage)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -77,7 +82,16 @@ export const UpdateProjectMembersForm = ({ project }: UpdateProjectFormProps) =>
         </div>
 
         <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4">
-          Actualizar Miembros
+          {isLoading ? (
+            <span className="flex justify-center items-center gap-2 ">
+              Actualizando Miembros
+              <span className=" mt-[2px] animate-spin ">
+                <AiOutlineLoading3Quarters />
+              </span>
+            </span>
+          ) : (
+            ' Actualizar Miembros'
+          )}
         </button>
       </form>
     </>

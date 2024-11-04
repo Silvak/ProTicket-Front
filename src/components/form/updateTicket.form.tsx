@@ -4,6 +4,7 @@ import { useState } from 'react'
 import PhoneInput from 'react-phone-input-2'
 import { toast } from 'react-toastify'
 import 'react-phone-input-2/lib/style.css'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 interface UpdateTicketFormProps {
   ticket: TicketProp
@@ -21,7 +22,7 @@ export const UpdateTicketForm = ({ ticket, modalAutoClose }: UpdateTicketFormPro
     other: ticket.ownerData.other || '',
     state: ticket.state || '',
   })
-
+  const [isLoading, setIsLoading] = useState(false)
   const userId = useAuthStore((state) => state.user?.id)
   const selectedProjectId = useProjectStore((state) => state.selectedProject?.id)
   const updateTicket = useTicketStore((state) => state.updateTicket)
@@ -42,6 +43,7 @@ export const UpdateTicketForm = ({ ticket, modalAutoClose }: UpdateTicketFormPro
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
 
     const ticketData = {
       id: ticket.id,
@@ -63,8 +65,11 @@ export const UpdateTicketForm = ({ ticket, modalAutoClose }: UpdateTicketFormPro
       await updateTicket(ticketData)
       toast.success('Ticket actualizado exitosamente')
       modalAutoClose()
-    } catch (_error) {
-      toast.error('Error al actualizar el ticket')
+    } catch (error) {
+      const errorMessage = typeof error === 'string' ? error : 'Error al intentar crear el usuario'
+      toast.error(errorMessage)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -183,7 +188,16 @@ export const UpdateTicketForm = ({ ticket, modalAutoClose }: UpdateTicketFormPro
         </div>
 
         <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded-md mt-4">
-          Actualizar Ticket
+          {isLoading ? (
+            <span className="flex justify-center items-center gap-2 ">
+              Actualizando Ticket
+              <span className=" mt-[2px] animate-spin ">
+                <AiOutlineLoading3Quarters />
+              </span>
+            </span>
+          ) : (
+            'Actualizar Ticket'
+          )}
         </button>
       </form>
     </>

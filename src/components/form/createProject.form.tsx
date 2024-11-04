@@ -1,5 +1,6 @@
 import { useProjectStore } from '@/store'
 import { useState } from 'react'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { toast } from 'react-toastify'
 import { UserSelect } from '../form/userSelect'
 
@@ -21,6 +22,7 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
     state: 'ACTIVE',
     orientation: 'portrait',
   })
+  const [isLoading, setIsLoading] = useState(false)
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
   const createProject = useProjectStore((state) => state.createProject)
 
@@ -47,6 +49,7 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
 
     const projectData = {
       id: ' ',
@@ -94,6 +97,8 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
     } catch (error) {
       const errorMessage = typeof error === 'string' ? error : 'Error al intentar crear la rifa'
       toast.error(errorMessage)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -222,7 +227,16 @@ export const CreateProjectForm = ({ modalAutoClose }: CreateProjectFormProps) =>
         </div>
 
         <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg mt-4">
-          Crear Rifa
+          {isLoading ? (
+            <span className="flex justify-center items-center gap-2 ">
+              Creando Rifa
+              <span className=" mt-[2px] animate-spin ">
+                <AiOutlineLoading3Quarters />
+              </span>
+            </span>
+          ) : (
+            'Crear Rifa'
+          )}
         </button>
       </form>
     </>

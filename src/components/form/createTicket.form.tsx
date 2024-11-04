@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import PhoneInput from 'react-phone-input-2'
 import { toast } from 'react-toastify'
 import 'react-phone-input-2/lib/style.css'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 interface ProjectStatusProp {
   collected: number
@@ -31,7 +32,7 @@ export const CreateTicketForm = ({ ticketNumber, modalAutoClose }: CreateTicketF
     address: '',
     other: '',
   })
-
+  const [isLoading, setIsLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const getStatus = useProjectStore((state) => state.getStatus)
   const status = useProjectStore((state) => state.status as ProjectStatusProp)
@@ -69,6 +70,7 @@ export const CreateTicketForm = ({ ticketNumber, modalAutoClose }: CreateTicketF
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
 
     const ticketData = {
       number: formData.number || '',
@@ -99,8 +101,11 @@ export const CreateTicketForm = ({ ticketNumber, modalAutoClose }: CreateTicketF
         other: '',
       })
       modalAutoClose()
-    } catch (_error) {
-      toast.error('Error al crear el ticket!')
+    } catch (error) {
+      const errorMessage = typeof error === 'string' ? error : 'Error al intentar crear el usuario'
+      toast.error(errorMessage)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -217,7 +222,16 @@ export const CreateTicketForm = ({ ticketNumber, modalAutoClose }: CreateTicketF
           />
         </div>
         <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded mt-4">
-          Registrar Ticket
+          {isLoading ? (
+            <span className="flex justify-center items-center gap-2 ">
+              Registrando Ticket
+              <span className=" mt-[2px] animate-spin ">
+                <AiOutlineLoading3Quarters />
+              </span>
+            </span>
+          ) : (
+            ' Registrar Ticket'
+          )}
         </button>
       </form>
     </>
