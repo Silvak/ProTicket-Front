@@ -30,6 +30,7 @@ jobs:
       run: |
         ssh root@92.118.56.248 << 'EOF'
           cd /home/administrator/pro-ticket-frontend
-          docker-compose down
-          docker-compose up -d
+          docker compose down
+          docker rmi pro-ticket-frontend-server
+          docker compose up -d
         EOF
