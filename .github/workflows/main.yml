@@ -21,14 +21,14 @@ jobs:
     - name: Add SSH key to known hosts
       run: |
         mkdir -p ~/.ssh
-        ssh-keyscan 92.118.56.248 >> ~/.ssh/known_hosts
+        ssh-keyscan 192.99.150.140 >> ~/.ssh/known_hosts
 
     - name: Copy files to VPS
-      run: scp -r ./* root@92.118.56.248:/home/administrator/pro-ticket-frontend
+      run: scp -r ./* administrator@92.118.56.248:/home/administrator/pro-ticket-frontend
 
     - name: Deploy with Docker Compose
       run: |
-        ssh root@92.118.56.248 << 'EOF'
+        ssh administrator@192.99.150.140 << 'EOF'
           cd /home/administrator/pro-ticket-frontend
           docker compose down
           docker rmi pro-ticket-frontend-server
