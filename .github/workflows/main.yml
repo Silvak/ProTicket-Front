@@ -24,7 +24,7 @@ jobs:
         ssh-keyscan 192.99.150.140 >> ~/.ssh/known_hosts
 
     - name: Copy files to VPS
-      run: scp -r ./* administrator@92.118.56.248:/home/administrator/pro-ticket-frontend
+      run: scp -r ./* administrator@192.99.150.140:/home/administrator/pro-ticket-frontend
 
     - name: Deploy with Docker Compose
       run: |
