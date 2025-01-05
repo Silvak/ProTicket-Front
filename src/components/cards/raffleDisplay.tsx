@@ -22,24 +22,26 @@ export const RaffleDisplay: React.FC<RaffleDisplayProps> = ({ id, number, qr, pr
   const fliedList = ['nombre', 'ci', 'telefono', 'direccion', 'otro']
 
   return (
-    <div className={`flex ${orientation === 'portrait' ? 'flex-col' : 'flex-row'} w-full`}>
+    <div className={`flex ${orientation === 'portrait' ? 'flex-col max-w-[400px] h-[848px]' : 'flex-row w-[848px] h-[400px]'}`}>
       {/* Inputs section */}
-      <div className="flex flex-col gap-1 w-full border p-2 rounded">
-        <div className="flex items-center gap-1">
-          <label htmlFor="id" className="text-gray-600 text-sm font-semibold font-mono">
-            ID
-          </label>
-          <p className="text-sm font-mono">{id}</p>
-        </div>
-        {fliedList.map((item) => (
-          <div key={item} className="flex gap-1 items-baseline w-full">
-            <input type="text" className="w-full border-gray-300 border-b text-[12px] px-2 bg-white" disabled placeholder={item} />
+      <div className={` ${orientation === 'portrait' ? 'w-full h-[229px]' : 'w-[248px]'} flex flex-col gap-1  border p-2 rounded`}>
+        <div>
+          <div className="flex items-center gap-1">
+            <label htmlFor="id" className="text-gray-600 text-sm font-semibold font-mono">
+              ID
+            </label>
+            <p className="text-sm font-mono">{id}</p>
           </div>
-        ))}
+          {fliedList.map((item) => (
+            <div key={item} className="flex gap-1 items-baseline w-full">
+              <input type="text" className="w-full border-gray-300 border-b text-[12px] px-2 bg-white" disabled placeholder={item} />
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Image and QR code section */}
-      <div className="relative grid border min-h-[340px] overflow-hidden w-full">
+      <div className="relative grid border h-full overflow-hidden w-full">
         <div className="absolute top-0 w-full h-full">
           <img src={img} alt="Raffle-picture" className="w-full h-full object-cover" />
         </div>

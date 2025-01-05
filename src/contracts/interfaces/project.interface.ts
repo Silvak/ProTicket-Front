@@ -45,6 +45,7 @@ export interface ProjectProp {
     qrPosition: string
     numberPosition: string
     orientation: string
+    prizesList: { [key: string]: string }[]
   }
   state: string[]
   members?: { id: string; name: string; state: string[] }[]

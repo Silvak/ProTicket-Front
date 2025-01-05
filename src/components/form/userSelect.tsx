@@ -41,7 +41,7 @@ export const UserSelect: React.FC<{
         <option value="">Seleccione un usuario</option>
         {filteredUsers.map((user: User) => (
           <option key={user.id} value={user.id} className="">
-            {user.name} - {user.email}
+            👤 {user.name} - ✉️ {user.email}
           </option>
         ))}
       </select>

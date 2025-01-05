@@ -63,6 +63,7 @@ export const createProject = async (projectData: ProjectProp) => {
   formData.append('raffleConfig[qrPosition]', projectData.raffleConfig.qrPosition)
   formData.append('raffleConfig[numberPosition]', projectData.raffleConfig.numberPosition)
   formData.append('raffleConfig[orientation]', projectData.raffleConfig.orientation)
+  formData.append('raffleConfig[prizesList]', JSON.stringify(projectData.raffleConfig.prizesList))
   formData.append('owner', projectData.owner.id as string)
   formData.append('state', projectData.state.join(','))
 
@@ -92,6 +93,7 @@ export const updateProject = async (projectData: ProjectProp) => {
   formData.append('raffleConfig[qrPosition]', projectData.raffleConfig.qrPosition)
   formData.append('raffleConfig[numberPosition]', projectData.raffleConfig.numberPosition)
   formData.append('raffleConfig[orientation]', projectData.raffleConfig.orientation)
+  formData.append('raffleConfig[prizesList]', JSON.stringify(projectData.raffleConfig.prizesList))
   formData.append('owner', projectData.owner.id as string)
   formData.append('state', projectData.state.join(','))
 
