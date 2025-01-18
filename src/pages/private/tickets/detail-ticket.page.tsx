@@ -9,9 +9,10 @@ import { useEffect, useState } from 'react'
 import { FaSave } from 'react-icons/fa'
 import { FaRegCopy } from 'react-icons/fa6'
 import { IoMdShare } from 'react-icons/io'
+import { IoIosArrowBack } from 'react-icons/io'
 import { LuUser2 } from 'react-icons/lu'
 import PhoneInput from 'react-phone-input-2'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 //import { FaLongArrowAltRight } from 'react-icons/fa'
 
@@ -27,6 +28,7 @@ export const convertToDateFormat = (dateString: string) => {
 }
 
 export const DetailTicketPage = () => {
+  const navigate = useNavigate()
   const { ticketId } = useParams<{ ticketId: string }>()
   const { isOpen, modalAutoClose } = useModalAutoClose()
   const [loading, setLoading] = useState(true)
@@ -42,6 +44,14 @@ export const DetailTicketPage = () => {
       getTicket(ticketId).finally(() => setLoading(false))
     }
   }, [ticketId, getTicket])
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (ticketId) {
+      getTicket(ticketId).finally(() => setLoading(false))
+    }
+    received
+  }, [ticketId, getTicket, received])
 
   const handleCopyLink = () => {
     const url = `https://proticket.app/your-ticket/${ticketId}`
@@ -72,13 +82,26 @@ export const DetailTicketPage = () => {
   return (
     <LayoutGrid>
       <div className="flex flex-col lg:flex-row lg:justify-between rounded-xl p-0 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
-        <h1 className="text-2xl font-semibold">Detalles del Ticket</h1>
+        <div className="flex flex-row items-center rounded-xl p-0 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
+          <button type="button" className="text-xl mt-1 mr-2 hover:text-blue-600" onClick={() => navigate(-1)}>
+            <IoIosArrowBack />
+          </button>
+          <h1 className="text-2xl font-semibold">Detalles del Ticket</h1>
+        </div>
 
-        <div className="flex items-start gap-4 mt-2">
-          <button type="button" onClick={handleShareLink} className="flex items-center gap-1 bg-blue-500 text-white px-3 py-2 rounded-md">
+        <div className="flex items-start gap-3 mt-2">
+          <button
+            type="button"
+            onClick={handleShareLink}
+            className="flex items-center justify-center text-nowrap gap-1 bg-blue-500 text-white px-3 py-2 rounded-md w-full"
+          >
             <IoMdShare /> Compartir enlace
           </button>
-          <button type="button" onClick={handleCopyLink} className="flex items-center gap-1 bg-gray-500 text-white px-3 py-2 rounded-md">
+          <button
+            type="button"
+            onClick={handleCopyLink}
+            className="flex items-center justify-center text-nowrap gap-1 bg-gray-500 text-white px-3 py-2 rounded-md w-full"
+          >
             <FaRegCopy /> Copiar enlace
           </button>
         </div>
@@ -90,55 +113,78 @@ export const DetailTicketPage = () => {
           <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
             <h4 className="whitespace-nowrap">Información</h4>
           </div>
+
+          <div className="">
+            <div className="flex items-center border p-1 px-3 font-semibold rounded-sm h-[38px]">Nº {selectedTicket.number.replace(/-/g, ' ‧ ')}</div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 mt-3 gap-1 text-sm">
+        <div className="flex flex-col justify-start w-full gap-2 mt-4">
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium w-[80px]">Número/s</label>
+            <input
+              type="text"
+              name="name"
+              value={selectedTicket.number.replace(/-/g, '-')}
+              className="w-full  p-2 border border-gray-300 rounded font-semibold"
+              disabled
+            />
+          </div>
+
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium w-[80px]">Nombre</label>
-            <input type="text" name="name" value={selectedTicket.ownerData.name} className="w-full mt-1 p-2 border border-gray-300 rounded" disabled />
+            <input type="text" name="name" value={selectedTicket.ownerData.name} className="w-full  p-2 border border-gray-300 rounded" disabled />
           </div>
 
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium w-[80px]">CI-DNI</label>
-            <input type="text" name="dni" value={selectedTicket.ownerData.dni} className="w-full mt-1 p-2 border border-gray-300 rounded" disabled />
+            <label className="text-sm font-medium w-[80px]">CI - DNI</label>
+            <input type="text" name="dni" value={selectedTicket.ownerData.dni} className="w-full  p-2 border border-gray-300 rounded" disabled />
           </div>
 
-          <div className="">
-            <PhoneInput
-              country={'ve'}
-              value={selectedTicket.ownerData.phone1}
-              inputClass="phoneInput"
-              inputProps={{
-                name: 'phone1',
-              }}
-              disabled
-            />
+          <div className="flex flex-col items-center gap-2">
+            <div className="flex items-center w-full gap-2">
+              <label className="text-sm font-medium w-[80px]">Telf 1</label>
+              <div className="w-full">
+                <PhoneInput
+                  country={'ve'}
+                  value={selectedTicket.ownerData.phone1}
+                  inputClass="phoneInput"
+                  inputProps={{
+                    name: 'phone1',
+                  }}
+                  disabled
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center w-full gap-2">
+              <label className="text-sm font-medium w-[80px]">Telf 2</label>
+              <div className="w-full">
+                <PhoneInput
+                  country={'ve'}
+                  value={selectedTicket.ownerData.phone2}
+                  inputClass="phoneInput"
+                  inputProps={{
+                    name: 'phone2',
+                  }}
+                  disabled
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="">
-            <PhoneInput
-              country={'ve'}
-              value={selectedTicket.ownerData.phone2}
-              inputClass="phoneInput"
-              inputProps={{
-                name: 'phone2',
-              }}
-              disabled
-            />
+          <div className="flex gap-2 items-center justify-start">
+            <label className="text-sm font-medium w-[80px]">Dirección</label>
+            <input type="text" name="address" value={selectedTicket.ownerData.address} className="w-full p-2 border border-gray-300 rounded" disabled />
           </div>
 
-          <div className="flex gap-3 items-center">
-            <label className=" text-sm font-medium w-[80px]">Dirección</label>
-            <input type="text" name="address" value={selectedTicket.ownerData.address} className="w-full mt-1 p-2 border border-gray-300 rounded" disabled />
-          </div>
-
-          <div className="flex gap-3 items-center">
+          <div className="flex gap-2 items-center justify-start">
             <label className=" text-sm font-medium w-[80px]">Otro</label>
-            <input type="textarea" name="other" value={selectedTicket.ownerData.other} className="w-full mt-1 p-2 border border-gray-300 rounded" disabled />
+            <input type="textarea" name="other" value={selectedTicket.ownerData.other} className="w-full p-2 border border-gray-300 rounded" disabled />
           </div>
         </div>
 
-        <div className="h-[38px] mt-2">
+        <div className="h-[38px] mt-6">
           <CustomModal
             header={<h2 className="text-xl font-semibold">Detalles Ticket</h2>}
             buttonText="Actualizar"
@@ -152,21 +198,6 @@ export const DetailTicketPage = () => {
       </div>
 
       {/*  */}
-      <div className="bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-4">
-        <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
-          <h4 className="whitespace-nowrap">Vendedor</h4>
-        </div>
-
-        <div className="flex items-start gap-2 py-2">
-          <div className="flex items-center gap-2 pl-2 pr-4 p-1 border w-min rounded-full bg-white">
-            <div className="bg-slate-700 h-[32px] w-[32px] rounded-full text-white flex justify-center items-center">
-              <LuUser2 />
-            </div>
-            {/* Add a check to ensure seller and seller.name exist */}
-            <p className="min-w text-nowrap">{selectedTicket.seller?.name ?? 'Sin vendedor'}</p>
-          </div>
-        </div>
-      </div>
 
       {/* payments state */}
       <div className="flex flex-col justify-between bg-white rounded-xl p-2 col-span-1 row-span-2 sm:col-span-2 md:col-span-6 xl:col-span-4">
@@ -184,7 +215,7 @@ export const DetailTicketPage = () => {
 
             {selectedTicket.state === 'RESERVED' && (
               <div className="bg-blue-300/50 px-4 p-1 rounded-full">
-                <p className="text-sm font-bold">RESERVADO</p>
+                <p className="text-sm font-bold">APARTADO</p>
               </div>
             )}
 
@@ -222,20 +253,43 @@ export const DetailTicketPage = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-4">
-        <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
-          <h4 className="whitespace-nowrap">Fecha limite</h4>
-        </div>
-
-        <div className="flex items-center mt-3 gap-1">
-          <div className="">
-            <label className="text-sm font-medium">Inicio</label>
-            <input type="date" value={convertToDateFormat(selectedTicket.date)} className="bg-inherit h-[40px] border px-2 rounded-md bg-slate-100" disabled />
+      <div className="flex flex-col gap-2 bg-white rounded-xl p-2 col-span-1 row-span-2 sm:col-span-2 md:col-span-6 xl:col-span-4">
+        <div className="border p-2 h-[50%] rounded-md">
+          <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm">
+            <h4 className="whitespace-nowrap">Vendedor</h4>
           </div>
 
-          <div className="">
-            <label className="text-sm font-medium">Fin</label>
-            <input type="date" value={selectedProject?.date.end} className="bg-inherit h-[40px] border px-2 rounded-md bg-slate-100" disabled />
+          <div className="flex items-start gap-2 mt-3">
+            <div className="flex items-center gap-2 pl-2 pr-4 p-1 border w-min rounded-md bg-white">
+              <div className="bg-slate-700 h-[32px] w-[32px] rounded-full text-white flex justify-center items-center">
+                <LuUser2 />
+              </div>
+              {/* Add a check to ensure seller and seller.name exist */}
+              <p className="min-w text-nowrap">{selectedTicket.seller?.name ?? 'Sin vendedor'}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="border p-2 h-[60%] rounded-md">
+          <div className="border w-min py-1 px-2 bg-slate-100 rounded-sm ">
+            <h4 className="whitespace-nowrap">Fecha limite</h4>
+          </div>
+
+          <div className="flex items-center mt-2 gap-2">
+            <div className="w-full">
+              <label className="text-sm font-medium">Inicio</label>
+              <input
+                type="date"
+                value={convertToDateFormat(selectedTicket.date)}
+                className="bg-inherit h-[40px] border px-2 rounded-md bg-slate-100 w-full"
+                disabled
+              />
+            </div>
+
+            <div className="w-full">
+              <label className="text-sm font-medium">Fin</label>
+              <input type="date" value={selectedProject?.date.end} className="bg-inherit h-[40px] border px-2 rounded-md bg-slate-100 w-full" disabled />
+            </div>
           </div>
         </div>
       </div>

@@ -5,22 +5,16 @@ import { useEffect, useState } from 'react'
 //import { useSocket } from '@/store'
 
 export const ProjectSelector = () => {
-  const user = useAuthStore((state) => state.user)
   const userRole = useUserRole()
   const [selectedProjectId, setSelectedProjectId] = useState<string>(localStorage.getItem('selectedProjectId') || '')
-  const data = useProjectStore((state) => state.data as ProjectTabletProp)
+  const [hasForcedFirstProject, setHasForcedFirstProject] = useState(false)
+
+  //stores
+  const user = useAuthStore((state) => state.user)
+  const data = useProjectStore((state) => state.data) as ProjectTabletProp
+  const setSelectedProject = useProjectStore((state) => state.getProjects)
   const getRelatedProjects = useProjectStore((state) => state.getRelatedProjects)
   const getRelatedProjectReseller = useProjectStore((state) => state.getRelatedProjectReseller)
-  const setSelectedProject = useProjectStore((state) => state.getProjects)
-
-  //const { socket } = useSocket()
-  /*
-  const _joinRoom = (projectId: string) => {
-    if (socket) {
-      socket.emit('joinProjectRoom', { projectId })
-      //console.log(`Evento JoinProject enviado: ${projectId}`)
-    }
-  }*/
 
   useEffect(() => {
     if (user?.id) {
@@ -33,20 +27,34 @@ export const ProjectSelector = () => {
   }, [userRole, user?.id, getRelatedProjects, getRelatedProjectReseller])
 
   useEffect(() => {
-    if (data?.projects?.length && !selectedProjectId) {
-      const firstProjectId = data.projects[0].id
+    const projects = data?.projects
+    if (!projects?.length) return
+    // Checamos si el ID guardado en localStorage está en la lista actual
+    const foundInList = projects.some((p) => p.id === selectedProjectId)
+    // Si ya forzamos antes y el `selectedProjectId` es válido, no hacemos nada
+    if (hasForcedFirstProject && foundInList) {
+      return
+    }
+
+    // Si no hay ID en localStorage o es inválido, forzamos el primer proyecto
+    if (!selectedProjectId || !foundInList) {
+      const firstProjectId = projects[0].id
       setSelectedProjectId(firstProjectId)
       setSelectedProject(firstProjectId)
       localStorage.setItem('selectedProjectId', firstProjectId)
+    } else {
+      // Si hay uno válido, lo seteamos en la store para reflejarlo
+      setSelectedProject(selectedProjectId)
     }
-  }, [data.projects, selectedProjectId, setSelectedProject])
+    // Marcamos que ya hicimos la "forzada" inicial
+    setHasForcedFirstProject(true)
+  }, [data?.projects, selectedProjectId, hasForcedFirstProject, setSelectedProject])
 
   const handleProjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const projectId = event.target.value
     setSelectedProjectId(projectId)
     setSelectedProject(projectId)
     localStorage.setItem('selectedProjectId', projectId)
-    //joinRoom(projectId)
   }
 
   return (
@@ -73,3 +81,12 @@ export const ProjectSelector = () => {
     </div>
   )
 }
+
+/*
+  const { socket } = useSocket()
+  const _joinRoom = (projectId: string) => {
+    if (socket) {
+      socket.emit('joinProjectRoom', { projectId })
+      //console.log(`Evento JoinProject enviado: ${projectId}`)
+    }
+  }*/

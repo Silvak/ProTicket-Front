@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import type React from 'react'
+
 interface LayoutProps {
   children: ReactNode
 }

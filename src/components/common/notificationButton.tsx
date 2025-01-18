@@ -31,8 +31,8 @@ export const NotificationButton = () => {
             </div>
 
             {/* element */}
-            <ul className="flex flex-col gap-2 w-full">
-              <li className="flex justify-between items-center border-b border-gray-300 rounded-md w-full h-[62px] px-3">
+            <ul className="flex flex-col gap-2 w-full min-h-[120px]">
+              <li className="hidden  justify-between items-center border-b border-gray-300 rounded-md w-full h-[62px] px-3">
                 <div className="flex items-center gap-2">
                   <p>Proyecto Creado</p>
                   <div className="h-[20px] w-[20px] bg-green-700 rounded-full">{''}</div>

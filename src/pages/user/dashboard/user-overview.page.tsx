@@ -1,12 +1,10 @@
-import { CustomCard, LayoutGrid, ProjectSelector } from '@/components'
-import { useUserRole } from '@/hooks/useUserRole'
+import { CustomCard, LayoutGrid, NumberGrid, ProjectSelector } from '@/components'
 import { useAuthStore, useProjectStore, useSocket } from '@/store'
 import { useEffect, useState } from 'react'
 import { AiOutlineFlag } from 'react-icons/ai'
 import { LuCheckCheck } from 'react-icons/lu'
 import { LuClock4 } from 'react-icons/lu'
 import { MdOutlineSavings } from 'react-icons/md'
-import { useNavigate } from 'react-router-dom'
 
 interface ProjectStatusProp {
   collected: number
@@ -27,15 +25,14 @@ interface ProjectStatusProp {
 }
 
 export const UserOverviewPage = () => {
-  const navigate = useNavigate()
-  const rolePath = useUserRole()
-  const [searchQuery, setSearchQuery] = useState('')
+  // ResellerOverviewPage
+  const { socket } = useSocket()
   const user = useAuthStore((state) => state.user)
-  const projectStatus = useProjectStore((state) => state.status as ProjectStatusProp)
-  const selectProject = useProjectStore((state) => state.selectedProject)
-  const getStatus = useProjectStore((state) => state.getStatus)
 
-  const { socket } = useSocket() // Obtener el socket
+  //stores
+  const selectedProject = useProjectStore((state) => state.selectedProject)
+  const projectStatus = useProjectStore((state) => state.status as ProjectStatusProp)
+  const getStatus = useProjectStore((state) => state.getStatus)
   const [_status, setProjectStatus] = useState<ProjectStatusProp>({
     collected: 0,
     goal: 0,
@@ -45,51 +42,43 @@ export const UserOverviewPage = () => {
     grid: [],
   })
 
+  /*
+  useEffect(() => {
+    if (selectedProject?.id) {
+      getStatus(selectedProject.id);
+    }
+    setNewTicket([]);
+  }, [getStatus, selectedProject]);
+  */
+
+  // Escucha socket para actualizaciones en tiempo real
   useEffect(() => {
     if (socket) {
-      socket.on('project-status', (data) => {
+      socket.on('project-status', (data: ProjectStatusProp) => {
         setProjectStatus(data)
-        //console.log('user:', data)
       })
-
-      // cleanup
       return () => {
         socket.off('project-status')
       }
     }
   }, [socket])
 
+  // Cada vez que cambie el proyecto seleccionado, pide su status
   useEffect(() => {
-    if (selectProject?.id) {
-      getStatus(selectProject.id)
+    if (selectedProject?.id) {
+      getStatus(selectedProject.id)
     }
-  }, [getStatus, selectProject])
+  }, [getStatus, selectedProject])
 
+  // Llama a getStatus periódicamente (ej. cada 5s) si hay proyecto
   useEffect(() => {
     const interval = setInterval(() => {
-      if (selectProject?.id) {
-        getStatus(selectProject.id)
+      if (selectedProject?.id) {
+        getStatus(selectedProject.id)
       }
     }, 10000)
-
     return () => clearInterval(interval)
-  }, [getStatus, selectProject])
-
-  const handleTicketClick = (ticketId: string, number: string) => {
-    if (ticketId) {
-      navigate(`/${rolePath}/ticket/detail/${ticketId}`)
-    } else {
-      navigate(`/${rolePath}/project/detail/${selectProject?.id}?number=${number}`)
-    }
-  }
-
-  const filteredTickets = projectStatus.grid?.filter(
-    (ticket) =>
-      ticket.number.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ticket.ownerData?.dni.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ticket.ownerData?.phone1.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ticket.ownerData?.name.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  }, [getStatus, selectedProject])
 
   return (
     <LayoutGrid>
@@ -106,7 +95,7 @@ export const UserOverviewPage = () => {
 
       <CustomCard
         className={'border-l-8 border-blue-400'}
-        title={'Reservados'}
+        title={'Apartados'}
         icon={<LuClock4 />}
         textInfo={[(projectStatus?.reserved || 0).toString(), 'tickets']}
       />
@@ -122,85 +111,29 @@ export const UserOverviewPage = () => {
         className={'border-l-8 border-green-400'}
         title={'Pagados'}
         icon={<LuCheckCheck />}
-        textInfo={[`${projectStatus?.sold || 0}/${projectStatus?.grid?.length || 0}`, 'tickets']}
+        textInfo={[`${projectStatus?.sold || 0}/${projectStatus?.grid?.length / (selectedProject?.raffleConfig?.perTicket || 1)}`, 'tickets']}
+      />
+
+      <CustomCard
+        className={'border-l-8 border-gray-400'}
+        title={'Número/s por ticket'}
+        icon={<LuCheckCheck />}
+        textInfo={[`${selectedProject?.raffleConfig?.perTicket || 0}`, '']}
       />
 
       <CustomCard
         className={'hidden sm:flex'}
         title={'Precio del Ticket'}
         icon={<LuCheckCheck />}
-        textInfo={[`${selectProject?.raffleConfig.priceTicket || 0}`, '$']}
+        textInfo={[`${selectedProject?.raffleConfig.priceTicket || 0}`, '$ c/u']}
       />
 
       <CustomCard className={''} title={'Total Recaudado'} icon={<MdOutlineSavings />} textInfo={[(projectStatus?.collected || 0).toString(), '$']} />
 
       <CustomCard className={''} title={'Meta Recaudación'} icon={<AiOutlineFlag />} textInfo={[(projectStatus?.goal || 0).toString(), '$']} />
 
-      <div className="flex flex-col  rounded-xl p-0 mt-6 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
-        <h1 className="text-2xl font-semibold text-gray-500">
-          Tabla de: <span className="text-gray-900">{selectProject?.name}</span>
-        </h1>
-      </div>
-
-      <div className={`bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 ${'md:col-span-6 xl:col-span-12'}`}>
-        <input
-          type="text"
-          placeholder="⌕ Buscar CI, Teléfono, Nombre o Número"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full h-full p-2 outline-none"
-        />
-      </div>
-
-      <div className="flex flex-col bg-white rounded-xl py-3 px-2 col-span-1 sm:col-span-2 md:col-span-6  xl:col-span-12 min-h-[120px]">
-        <div className="flex flex-wrap gap-[2px] p-3 justify-start max-h-[500px] overflow-y-scroll">
-          {filteredTickets && filteredTickets.length > 0 ? (
-            filteredTickets.map((item) => {
-              let statusColor = ''
-
-              switch (item.status) {
-                case 'WINNER':
-                  statusColor = '#FDE047'
-                  break
-                case 'PAID':
-                  statusColor = '#4ADE80'
-                  break
-                case 'UNPAID':
-                  statusColor = '#FB923C'
-                  break
-                case 'RESERVED':
-                  statusColor = '#60A5FA'
-                  break
-                case 'CANCELLED':
-                  statusColor = '#8E232A'
-                  break
-                default:
-                  statusColor = ''
-              }
-
-              return (
-                <button
-                  key={item.number}
-                  type="button"
-                  style={{ backgroundColor: statusColor }}
-                  onClick={() => handleTicketClick(item.ticket, item.number)}
-                  className={`
-                ${statusColor}
-                 flex flex-col justify-around items-center min-h-[48px] w-[48px] border rounded-md overflow-hidden bg-gray-50 cursor-pointer text-sm`}
-                >
-                  {item.number.split('-').map((num) => (
-                    <p key={num} className="text-[14px] font-semibold text-gray-700">
-                      {num}
-                    </p>
-                  ))}
-                </button>
-              )
-            })
-          ) : (
-            <div className="flex justify-center items-center w-full h-[120px]">No hay tickets</div>
-          )}
-        </div>
-      </div>
+      {/* Tabla / Grid de números  */}
+      <NumberGrid projectStatus={projectStatus} selectedProject={selectedProject} />
     </LayoutGrid>
   )
 }

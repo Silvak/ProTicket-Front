@@ -49,7 +49,7 @@ export interface TicketUpdate {
 // --------------------------- PROPS --------------------------
 export interface TicketProp {
   id: string
-  number: number
+  number: string
   date: string
   qr: string
   price: number
@@ -58,6 +58,7 @@ export interface TicketProp {
   state?: string
   project: { id: string | '' }
   seller: { id: string | ''; name: string }
+  currentDeposited?: number
 }
 
 export type TicketTabletProp = {

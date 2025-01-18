@@ -64,14 +64,18 @@ export const TicketsTablet = ({ projectId = '' }) => {
   }
 
   const filteredTicket = tickets?.filter((ticket) => ticket.ownerData.name.toLowerCase().includes(searchQuery.toLowerCase()))
+  console.log(tickets)
 
   // render
   if (loading) return <Loading />
   if (!tickets || !tickets) return <ErrorBox title={'Error'} message={'No se han encontrado tickets.'} />
   return (
     <>
+      <div className="flex flex-col rounded-xl p-0 col-span-1 sm:col-span-2 md:col-span-3 xl:col-span-6">
+        <h3 className="text-2xl font-semibold">Lista de tickets</h3>
+      </div>
       {/* filter & actions */}
-      <div className="bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 md:col-span-4 xl:col-span-9">
+      <div className="bg-white rounded-xl  p-2 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
         <input
           type="text"
           placeholder="Buscar tickets..."
@@ -81,8 +85,9 @@ export const TicketsTablet = ({ projectId = '' }) => {
         />
       </div>
 
-      <div className="bg-white rounded-xl p-0 overflow-hidden col-span-1 sm:col-span-2 md:col-span-2 xl:col-span-3">
-        <div className="h-full min-h-[52px]">
+      <div className=" bg-white rounded-xl p-0 overflow-hidden col-span-1 sm:col-span-2 md:col-span-2 xl:col-span-3">
+        {/* hidden buton with overflow-hidden*/}
+        <div className="h-[0px] w-[0px] overflow-hidden">
           <CustomModal
             header={<h2 className="text-xl font-semibold">Añádir Nuevo Ticket</h2>}
             buttonText="Nuevo Ticket"

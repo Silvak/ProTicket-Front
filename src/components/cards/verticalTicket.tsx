@@ -102,8 +102,8 @@ export const VerticalTicket = ({ ticket }: TicketProp) => {
                 <input type="text" value={ticket.ownerData.other} disabled className="border-b border-gray-400 bg-inherit w-full px-1" />
               </div>
 
-              <div className="flex gap-1">
-                <p className="font-bold text-lg uppercase text-red-600">N° {ticket.number}</p>
+              <div className="flex gap-1 mt-1">
+                <p className="font-bold text-lg uppercase text-red-600">N° {ticket.number.replace(/-/g, ' - ')}</p>
               </div>
 
               <p className="text-[12px] w-full text-center text-gray-600 mt-1">Tipografia Mora Cel. (0414) 731.99.79 - Tovar </p>
@@ -130,17 +130,24 @@ export const VerticalTicket = ({ ticket }: TicketProp) => {
             <div className={`absolute z-10 bg-white rounded-sm shadow-lg ${positionStyles[ticket.project.raffleConfig.qrPosition]}`}>
               <div className="py-1 bg-red-800 text-white">
                 <p className="w-full text-center">
-                  <span className="text-xl font-bold">VALOR </span>
+                  <span className="text-lg font-bold">VALOR </span>
                   <span className="text-xl font-bold ">{ticket.project.raffleConfig.priceTicket}$</span>
                 </p>
               </div>
 
-              <div className="border-y py-1">
-                <p className="font-bold text-lg uppercase text-red-600 w-full text-center">N° {ticket.number}</p>
+              <div className="border-y">
+                <div className="flex flex-wrap gap-x-[6px] w-[116px] justify-center font-bold text-lg uppercase text-red-700 text-center">
+                  <p>N°</p>
+                  {ticket.number.split('-').map((numb) => (
+                    <div key={numb} className="font-mono">
+                      {numb}
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <div className="p-1">
-                <QRCode value={`${'http:localhost/your-ticket'}/${ticket.id}`} size={106} />
+                <QRCode value={`${'http:localhost/your-ticket'}/${ticket.id}`} size={110} />
               </div>
             </div>
           </div>

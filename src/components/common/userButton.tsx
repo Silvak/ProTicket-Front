@@ -46,11 +46,11 @@ export const UserButton = () => {
             onClick={() => navigate(`/${userRole}/overview`)}
             className="w-full h-[42px] hover:bg-gray-200 text-left px-2 rounded-md capitalize"
           >
-            {userRole} Dasboard
+            Panel de Control
           </button>
 
           <button type="button" onClick={handleLogout} className="w-full h-[42px] bg-red-600/20 hover:bg-gray-200 text-left px-2 rounded-md">
-            Logout
+            Cerrar sesión
           </button>
         </div>
       )}

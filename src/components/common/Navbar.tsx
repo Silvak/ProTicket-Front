@@ -1,7 +1,7 @@
 import { useAuthStore, useSidebarStore } from '@/store'
 import { CgMenuGridO } from 'react-icons/cg'
 import { useNavigate } from 'react-router-dom'
-import { NotificationButton } from './notificationButton'
+//import { NotificationButton } from './notificationButton'
 import { UserButton } from './userButton'
 
 export const Navbar = () => {
@@ -35,12 +35,12 @@ export const Navbar = () => {
 
         {status === 'authorized' ? (
           <>
-            <NotificationButton />
+            {/* <NotificationButton /> Ocultas en esta actualización */}
             <UserButton />
           </>
         ) : (
           <button type="button" onClick={() => navigate('/login')} className="py-2 px-4 bg-slate-900 rounded-md text-white">
-            Login
+            Inicio sesión
           </button>
         )}
       </div>

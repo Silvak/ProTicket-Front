@@ -36,6 +36,12 @@ export const TicketRow = ({ ticket }: TabletRow) => {
     }
   }
 
+  if (!ticket || !ticket.ownerData || !ticket.seller) {
+    return null // O muestra un mensaje predeterminado
+  }
+
+  console.log(ticket)
+
   return (
     <>
       <div className="grid  grid-cols-1 lg:grid-cols-7 border-b p-4 gap-y-2 xl:gap-0">
@@ -63,14 +69,18 @@ export const TicketRow = ({ ticket }: TabletRow) => {
         <div className="flex items-center">
           <label className="flex lg:hidden mr-2">Abonado:</label>
           <p>
-            <span className=""> 0$ de {ticket.price}</span>$
+            <span className="">
+              {' '}
+              {ticket.currentDeposited || 0}$ de {ticket.price || 0}
+            </span>
+            $
           </p>
         </div>
 
         {/* seller */}
         <div className="flex items-center lg:justify-center">
           <label className="flex lg:hidden mr-2">Vendido por:</label>
-          <div className="flex items-center gap-2 pl-2 pr-4 p-1 border w-min rounded-full">
+          <div className="flex items-center gap-2 pl-2 pr-4 p-1 border w-min rounded-full bg-white">
             <div className="bg-slate-700 h-[32px] w-[32px] rounded-full text-white flex justify-center items-center">
               <LuUser2 />
             </div>
@@ -95,7 +105,7 @@ export const TicketRow = ({ ticket }: TabletRow) => {
 
           {ticket.state === 'RESERVED' && (
             <div className="bg-blue-300/50 px-4 p-1 rounded-full">
-              <p className="text-sm font-bold">RESERVADO</p>
+              <p className="text-sm font-bold">APARTADO</p>
             </div>
           )}
 

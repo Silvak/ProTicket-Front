@@ -1,17 +1,22 @@
 import { ErrorBox, LayoutGrid, TicketsTablet } from '@/components'
 import { UpdateProjectMembersForm } from '@/components/form/updateProjectMembers.form'
 import { useProjectStore } from '@/store'
-import { useParams } from 'react-router-dom'
+import { IoIosArrowBack } from 'react-icons/io'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export const UserDetailProjectsPage = () => {
+  const navigate = useNavigate()
   const { projectId } = useParams<{ projectId: string }>()
   const selectedProject = useProjectStore((state) => state.selectedProject)
 
   if (!selectedProject) return <ErrorBox title={'Error'} message={'No se ha encontrado la rifa.'} />
   return (
     <LayoutGrid>
-      <div className="flex flex-col rounded-xl p-0 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
-        <h1 className="text-2xl font-semibold"> Detalles Rifa </h1>
+      <div className="flex flex-row items-center rounded-xl p-0 col-span-1 sm:col-span-2 md:col-span-6 xl:col-span-12">
+        <button type="button" className="text-xl mt-1 mr-2 hover:text-blue-600" onClick={() => navigate(-1)}>
+          <IoIosArrowBack />
+        </button>
+        <h1 className="text-2xl font-semibold">Detalles de Rifa</h1>
       </div>
 
       {/* Project summary */}

@@ -20,7 +20,7 @@ function App() {
           <AppRouter />
         </Suspense>
       </Router>
-      <ToastContainer />
+      <ToastContainer position="bottom-right" autoClose={5000} closeOnClick />
     </main>
   )
 }
