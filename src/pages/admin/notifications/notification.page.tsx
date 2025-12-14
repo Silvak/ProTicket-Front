@@ -1,6 +1,6 @@
 import { LayoutGrid } from '@/components'
 import { useMessageStore, useSocket } from '@/store'
-import QRCode from 'qrcode.react'
+import QRCode from 'react-qr-code'
 import { useEffect } from 'react'
 
 export const NotificationPage = () => {

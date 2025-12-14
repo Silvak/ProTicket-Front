@@ -4,7 +4,7 @@ const positionStyles: Record<string, string> = {
   bl: 'bottom-2 left-2',
   br: 'bottom-2 right-2',
 }
-import QRCode from 'qrcode.react'
+import QRCode from 'react-qr-code'
 import { useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
 
